@@ -15,7 +15,7 @@ public class Dash : MonoBehaviour
     //Cooldown mechanics sets at 7.5 at default
     public float coolDown = 0.5f;
     public float nextFire = 0;
-    public bool notForward = false;
+    public bool notForward = false; //False at default
     // Update is called once per frame
     void Update()
     {
@@ -31,9 +31,9 @@ public class Dash : MonoBehaviour
             if (Input.GetKey(KeyCode.LeftShift)) // GetKey > GetKeyDown for key combinations 
             {
                 if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) ||
-                    Input.GetKey(KeyCode.W))
+                    Input.GetKey(KeyCode.W)) //Checks the input of the directional keys
                 {
-                    if (Input.GetKey(KeyCode.A))
+                    if (Input.GetKey(KeyCode.A)) //Moves Left
                     {
                         dash = -transform.right * dashDistance;
                         notForward = true; //Moves left
@@ -51,7 +51,7 @@ public class Dash : MonoBehaviour
                         notForward = true;
                     }
 
-                    if (Input.GetKey(KeyCode.W))
+                    if (Input.GetKey(KeyCode.W)) //Moves forward
                     {
                         dash = transform.forward * dashDistance;
                         notForward = true;
@@ -59,17 +59,17 @@ public class Dash : MonoBehaviour
                 }
                 else
                 {
-                    if (!notForward)
+                    if (!notForward) //Checks if player already dashed in another direction
                         dash = transform.forward * dashDistance;
                 }
             }
-            currentDashTime += dashStoppingSpeed;
+            currentDashTime += dashStoppingSpeed; //Updates the time
         }
         
         else
         {
             dash = Vector3.zero; //Stops the player
-            notForward = false;
+            notForward = false; //Resets the bool to original state
         }
 
         controller.Move(dash * Time.deltaTime * dashSpeed); //Moves character controller

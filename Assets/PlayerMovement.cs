@@ -19,14 +19,24 @@ public class PlayerMovement : MonoBehaviour
     //Setting up for ground check
     private Vector3 velocity;
     //Velocity vector for movement
+    public bool blocked = false;
+    public Transform roofCheck;
+    public float roofDistance = 0.1f;
+    //Roof check so that if a player jumps and is blocked on a roof surface he doesn't levitate
     void Update()
     {
+        blocked = Physics.CheckSphere(roofCheck.position, roofDistance, groundMask);
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         //Sets up a bool that makes a virtual sphere to check if the shpere collides with the layer ground (setted up in 
         // unity to the plane object
         if (isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f; // If the player is ground and velocity too low sets the velocity at a normal state
+            velocity.y = 0f; // If the player is ground and velocity too low sets the velocity at a normal state
+        }
+
+        if (blocked)
+        {
+            velocity.y = -2f;
         }
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");

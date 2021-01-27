@@ -13,8 +13,9 @@ public class Dash : MonoBehaviour
     private float dashSpeed = 6; //Dash speed
     public CharacterController controller;
     //Cooldown mechanics sets at 7.5 at default
-    public float coolDown = 7.5f;
+    public float coolDown = 0.5f;
     public float nextFire = 0;
+    public bool notForward = false;
     // Update is called once per frame
     void Update()
     {
@@ -29,31 +30,46 @@ public class Dash : MonoBehaviour
         { 
             if (Input.GetKey(KeyCode.LeftShift)) // GetKey > GetKeyDown for key combinations 
             {
-                if (Input.GetKey(KeyCode.A))
+                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) ||
+                    Input.GetKey(KeyCode.W))
                 {
-                    dash = -transform.right * dashDistance; //Moves left
-                } 
-                if (Input.GetKey(KeyCode.S))
-                {
-                    dash = -transform.forward * dashDistance; //Moves backwards
-                } 
-                if (Input.GetKey(KeyCode.D))
-                {
-                    dash = transform.right * dashDistance; //Moves right
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        dash = -transform.right * dashDistance;
+                        notForward = true; //Moves left
+                    }
+
+                    if (Input.GetKey(KeyCode.S))
+                    {
+                        dash = -transform.forward * dashDistance; //Moves backwards
+                        notForward = true;
+                    }
+
+                    if (Input.GetKey(KeyCode.D))
+                    {
+                        dash = transform.right * dashDistance; //Moves right
+                        notForward = true;
+                    }
+
+                    if (Input.GetKey(KeyCode.W))
+                    {
+                        dash = transform.forward * dashDistance;
+                        notForward = true;
+                    }
                 }
-                else//This is the default (forward) dash, if W or no other key is pressed
+                else
                 {
-                    dash = transform.forward * dashDistance; //Moves forward
-                } 
+                    if (!notForward)
+                        dash = transform.forward * dashDistance;
+                }
             }
             currentDashTime += dashStoppingSpeed;
         }
-    
-
         
         else
         {
             dash = Vector3.zero; //Stops the player
+            notForward = false;
         }
 
         controller.Move(dash * Time.deltaTime * dashSpeed); //Moves character controller

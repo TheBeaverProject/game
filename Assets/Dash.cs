@@ -25,10 +25,32 @@ public class Dash : MonoBehaviour
         }
 
         if (currentDashTime < maxDashTime)
-        {
-            dash = transform.forward * dashDistance; //Moves forward
-            currentDashTime += dashStoppingSpeed; //Adds the stopping speed
+
+        { 
+            if (Input.GetKey(KeyCode.LeftShift)) // GetKey > GetKeyDown for key combinations 
+            {
+                if (Input.GetKey(KeyCode.A))
+                {
+                    dash = -transform.right * dashDistance; //Moves left
+                } 
+                if (Input.GetKey(KeyCode.S))
+                {
+                    dash = -transform.forward * dashDistance; //Moves backwards
+                } 
+                if (Input.GetKey(KeyCode.D))
+                {
+                    dash = transform.right * dashDistance; //Moves right
+                }
+                else//This is the default (forward) dash, if W or no other key is pressed
+                {
+                    dash = transform.forward * dashDistance; //Moves forward
+                } 
+            }
+            currentDashTime += dashStoppingSpeed;
         }
+    
+
+        
         else
         {
             dash = Vector3.zero; //Stops the player

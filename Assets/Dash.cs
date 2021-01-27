@@ -12,12 +12,15 @@ public class Dash : MonoBehaviour
     float currentDashTime = maxDashTime;
     private float dashSpeed = 6;
     public CharacterController controller;
+    public float coolDown = 7.5f;
+    public float nextFire = 0;
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > nextFire)
         {
             currentDashTime = 0;
+            nextFire = Time.time + coolDown;
         }
 
         if (currentDashTime < maxDashTime)

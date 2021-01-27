@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
     private bool isGrounded;
+    private bool canDoubleJump = false;
     //Setting up for ground check
     private Vector3 velocity;
     //Velocity vector for movement
@@ -33,9 +34,30 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z; //multiply the inputs by the unit vector
         controller.Move(move * speed * Time.deltaTime); //Moves the player (Time.deltaTime allows to not depend on
         //fps
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump")) //Check if spacebar button is pressed
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity); // Jump action
+            if (isGrounded) //Check if grounded for simple jump
+            {
+                velocity.y = 0; //Resets velocity Y vector
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity); //Physics formula
+                canDoubleJump = true; //Allows to double jump
+            }
+            else
+            {
+                if (canDoubleJump)
+                {
+                    if (isGrounded)
+                    {
+                        canDoubleJump = false;
+                    }
+                    else
+                    {
+                        canDoubleJump = false;
+                        velocity.y = 0;
+                        velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                    }
+                }
+            }
         }
         velocity.y += gravity * Time.deltaTime; //Gravity force
         controller.Move(velocity * Time.deltaTime); // moves the player downwards

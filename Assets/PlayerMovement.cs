@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                if (canDoubleJump || !hasJumped)
+                if (canDoubleJump || !hasJumped) //if player didn't jump and falled allows to jump
                 {
                     if (!hasJumped)
                         hasJumped = true;
@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (isGrounded)
-            hasJumped = false;
+            hasJumped = false; //when player touches the ground resets hasJumped
         velocity.y += gravity * Time.deltaTime; //Gravity force
         controller.Move(velocity * Time.deltaTime); // moves the player downwards
     }

@@ -31,24 +31,21 @@ public class Dash : MonoBehaviour
                 if (Input.GetKey(KeyCode.A))
                 {
                     dash = -transform.right * dashDistance; //Moves left
-                    currentDashTime += dashStoppingSpeed; //Adds the stopping speed
                 } 
                 if (Input.GetKey(KeyCode.S))
                 {
                     dash = -transform.forward * dashDistance; //Moves backwards
-                    currentDashTime += dashStoppingSpeed; //Adds the stopping speed
                 } 
                 if (Input.GetKey(KeyCode.D))
                 {
                     dash = transform.right * dashDistance; //Moves right
-                    currentDashTime += dashStoppingSpeed; //Adds the stopping speed
                 }
                 else//This is the default (forward) dash, if W or no other key is pressed
                 {
                     dash = transform.forward * dashDistance; //Moves forward
-                    currentDashTime += dashStoppingSpeed; //Adds the stopping speed
                 } 
             }
+            currentDashTime += dashStoppingSpeed;
         }
     
         else

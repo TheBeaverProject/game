@@ -18,13 +18,14 @@ public class Dash : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > nextFire) //Checks input and if the cooldown is ready
-        {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > nextFire)
+        { //Checks input and if the cooldown is ready
             currentDashTime = 0; //Initiate dash time
             nextFire = Time.time + coolDown; //Starts the cooldown
         }
 
         if (currentDashTime < maxDashTime)
+
         { 
             if (Input.GetKey(KeyCode.LeftShift)) // GetKey > GetKeyDown for key combinations 
             {
@@ -48,6 +49,8 @@ public class Dash : MonoBehaviour
             currentDashTime += dashStoppingSpeed;
         }
     
+
+        
         else
         {
             dash = Vector3.zero; //Stops the player

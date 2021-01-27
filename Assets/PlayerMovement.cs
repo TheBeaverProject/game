@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     //Base speed will change
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
+    public bool hasJumped = false;
     //Base settings for jump and gravity
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -54,21 +55,19 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                if (canDoubleJump)
+                if (canDoubleJump || !hasJumped) //if player didn't jump and falled allows to jump
                 {
-                    if (isGrounded)
-                    {
-                        canDoubleJump = false;
-                    }
-                    else
-                    {
-                        canDoubleJump = false;
-                        velocity.y = 0;
-                        velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-                    }
+                    if (!hasJumped)
+                        hasJumped = true;
+                    canDoubleJump = false;
+                    velocity.y = 0;
+                    velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
                 }
             }
         }
+
+        if (isGrounded)
+            hasJumped = false; //when player touches the ground resets hasJumped
         velocity.y += gravity * Time.deltaTime; //Gravity force
         controller.Move(velocity * Time.deltaTime); // moves the player downwards
     }

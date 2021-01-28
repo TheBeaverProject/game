@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,9 +10,10 @@ namespace HUD.Scripts.Abilities
     public class DashDisplay : MonoBehaviour
     {
         public Slider cooldownSlider;
+        public GameObject dashIcon;
+        public TextMeshProUGUI cdText;
 
         private float startTime;
-
         private float endTime;
         
         /*
@@ -21,19 +23,28 @@ namespace HUD.Scripts.Abilities
         {
             this.startTime = Time.time;
             this.endTime = startTime + cooldown;
+            
+            // Hide icon
+            dashIcon.SetActive(false);
 
             cooldownSlider.maxValue = cooldown;
         }
 
         public void UpdateCooldownDisplay()
         {
-            cooldownSlider.value = Time.time - this.startTime;
+            float currentTime = Time.time - this.startTime;
+            cooldownSlider.value = currentTime;
+            cdText.text = String.Format("{0,1:00}", currentTime);
 
             if (Time.time > this.endTime)
             {
                 this.startTime = 0;
                 this.endTime = 0;
+                
+                // Resetting Slider, Text and Icon
+                cdText.text = "";
                 cooldownSlider.value = cooldownSlider.maxValue;
+                dashIcon.SetActive(true);
             }
         }
 

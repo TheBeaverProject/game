@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,7 @@ namespace HUD.Scripts
             set => health = value < 0 ? 0 : value;
         }
 
-        public Text healthText;
+        public TextMeshProUGUI healthText;
         public Slider healthSlider;
         public Image Fill;
         

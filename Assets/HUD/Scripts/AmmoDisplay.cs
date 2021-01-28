@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,9 +18,9 @@ namespace HUD.Scripts
             set => ammo = value < 0 ? 0 : value;
         }
         
-        public Text magazineAmount;
-        public Text magazineTotal;
-        public Text magazinesLeft;
+        public TextMeshProUGUI magazineAmount;
+        public TextMeshProUGUI magazineTotal;
+        public TextMeshProUGUI magazinesLeft;
         
         public Slider ammoSlider;
         public Color ammoSliderColor = new Color(236, 211, 43, 200);

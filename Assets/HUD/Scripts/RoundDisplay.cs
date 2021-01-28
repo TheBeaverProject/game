@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +9,8 @@ namespace HUD.Scripts
 {
     public class RoundDisplay : MonoBehaviour
     {
-        public Text blueText;
-        public Text redText;
+        public TextMeshProUGUI blueText;
+        public TextMeshProUGUI redText;
 
         public int blueRounds = 0;
         public int redRounds = 0;

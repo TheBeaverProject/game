@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
 	private float accel = 1f;
 	private float groundAccel = 1f;
 	private float airAccel = 1.4f;
-	private float maxSpeed = 15f;
+	private float maxSpeed = 18f;
     //Base speed will change
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 			if (Input.GetAxis("Mouse X") > 0 && Input.GetKey(KeyCode.D) || Input.GetAxis("Mouse X") < 0 && Input.GetKey(KeyCode.A))
 				accel = airAccel; // Set the acceleration to airAccel (higher than ground accel)
 
-		speed *= accel; // Moduling speed in function of accel (default accel is 1)
+		speed = speed * accel; // Moduling speed in function of accel (default accel is 1)
 
 		if (speed > maxSpeed) // If speed is > maxSpeed set speed to maxSpeed
 			speed = maxSpeed;
@@ -82,7 +82,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (isGrounded){
+        if (isGrounded)
+		{
             hasJumped = false; //when player touches the ground resets hasJumped
 			accel = groundAccel; // If player is grounded, reset the accel to groundAccel
 		}

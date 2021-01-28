@@ -5,31 +5,53 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
-    //Sets up the character controller
-    public float speed = 12f;
-	private float accel = 1f;
+	//Sets up the character controller
+
+	public float speed = 5f;
+    private float walkSpeed = 5f; 
+    private float runSpeed = 10f;
+	private float maxSpeed = 16f; //Speed cap for game purposes, will be changed later
+	bool isWalking;
+    //Speed attributes
+
+	private float accel = 1f; //Value used in functions
 	private float groundAccel = 1f;
-	private float airAccel = 1.4f;
-	private float maxSpeed = 18f;
-    //Base speed will change
+	private float airAccel = 1.4f; 
+	//Accel attributes
+
+
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
     public bool hasJumped = false;
     //Base settings for jump and gravity
+
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
     private bool isGrounded;
     private bool canDoubleJump = false;
     //Setting up for ground check
+
     private Vector3 velocity;
     //Velocity vector for movement
+
     public bool blocked = false;
     public Transform roofCheck;
     public float roofDistance = 0.1f;
     //Roof check so that if a player jumps and is blocked on a roof surface he doesn't levitate
+
     void Update()
     {
+		if (isWalking || Input.GetKey(KeyCode.LeftControl)) // Check for LCONTROL and bool is walking
+		{
+            speed = walkSpeed;
+		}
+        else
+        {
+			isWalking = false; 
+			speed = runSpeed;
+		}
+		
         blocked = Physics.CheckSphere(roofCheck.position, roofDistance, groundMask);
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         //Sets up a bool that makes a virtual sphere to check if the shpere collides with the layer ground (setted up in 
@@ -52,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
 			if (Input.GetAxis("Mouse X") > 0 && Input.GetKey(KeyCode.D) || Input.GetAxis("Mouse X") < 0 && Input.GetKey(KeyCode.A))
 				accel = airAccel; // Set the acceleration to airAccel (higher than ground accel)
 
-		speed = speed * accel; // Moduling speed in function of accel (default accel is 1)
+        speed = speed * accel; // Moduling speed in function of accel (default accel is 1)
 
 		if (speed > maxSpeed) // If speed is > maxSpeed set speed to maxSpeed
 			speed = maxSpeed;

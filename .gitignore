@@ -1,3 +1,5 @@
+*.meta
+.vscode/
 .idea
 [Ll]ibrary/
 [Tt]emp/

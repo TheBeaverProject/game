@@ -1,51 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace HUD.Scripts
+namespace UI.HUD.Scripts
 {
     public class WeaponDisplay : MonoBehaviour
     {
-        public GameObject  selected1;
-        public GameObject  selected2;
-        public GameObject  selected3;
+        public TextMeshProUGUI  text1;
+        public TextMeshProUGUI  text2;
+        public TextMeshProUGUI  text3;
 
-        public void ToggleSelectedWeapon(int selected)
+        public TextMeshProUGUI weaponNameText;
+
+        public void ToggleSelectedWeapon(int selected, string weaponName)
         {
-            selected1.SetActive(false);
-            selected2.SetActive(false);
-            selected3.SetActive(false);
+            text1.color = Color.white;
+            text2.color = Color.white;
+            text3.color = Color.white;
+
+            weaponNameText.text = weaponName.ToUpper();
+
+            Color32 selectedColor = new Color32(236, 211, 43, 200);
             
             switch (selected)
             {
                 case 1:
-                    selected1.SetActive(true);
+                    text1.color = selectedColor;
                     break;
                 case 2:
-                    selected2.SetActive(true);
+                    text2.color = selectedColor;
                     break;
                 case 3:
-                    selected3.SetActive(true);
+                    text3.color = selectedColor;
                     break;
             }
         }
         
-        // Start is called before the first frame update
+        // TODO: Remove when merging with actual controllers
         void Start()
         {
-            ToggleSelectedWeapon(1);
+            ToggleSelectedWeapon(1, "AK 47");
         }
 
-        // Update is called once per frame
+        // TODO: Remove when merging with actual controllers
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
-                ToggleSelectedWeapon(1);
+                ToggleSelectedWeapon(1, "AK 47");
             if (Input.GetKeyDown(KeyCode.Alpha2))
-                ToggleSelectedWeapon(2);
+                ToggleSelectedWeapon(2, "Glock 18");
             if (Input.GetKeyDown(KeyCode.Alpha3))
-                ToggleSelectedWeapon(3);
+                ToggleSelectedWeapon(3, "Knife");
         }
     }
 }

@@ -4,14 +4,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace HUD.Scripts
+namespace UI.HUD.Scripts
 {
     public class HealthDisplay : MonoBehaviour
     {
+        // TODO: Remove when merging with actual controllers
         private int health = 100;
         private int maxHealth = 100;
 
-        // Temporary getter to make sure the healter never goes below 0
+        // TODO: Remove when merging with actual controllers
         public int Health
         {
             get => health;
@@ -39,12 +40,14 @@ namespace HUD.Scripts
             healthText.text = $"{displayHealth}";
         }
         
+        // TODO: Remove when merging with actual controllers
         void Start()
         {
             // Initialize the Health display with the right values & colors
             SetHUDHealth(health);
         }
         
+        // TODO: Remove when merging with actual controllers
         private void Update()
         {
             // Testing purposes, will be removed in after

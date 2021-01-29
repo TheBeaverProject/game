@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace HUD.Scripts
+namespace UI.HUD.Scripts
 {
     public class RoundDisplay : MonoBehaviour
     {
@@ -29,14 +29,8 @@ namespace HUD.Scripts
                     break;
             }
         }
-        
-        // Start is called before the first frame update
-        void Start()
-        {
-            
-        }
 
-        // Update is called once per frame
+        // TODO: Remove when merging with actual controllers
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.B))

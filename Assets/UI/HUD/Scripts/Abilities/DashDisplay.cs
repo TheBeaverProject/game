@@ -5,13 +5,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace HUD.Scripts.Abilities
+namespace UI.HUD.Scripts.Abilities
 {
     public class DashDisplay : MonoBehaviour
     {
         public Slider cooldownSlider;
         public GameObject dashIcon;
         public TextMeshProUGUI cdText;
+        public TextMeshProUGUI keyText;
 
         private float startTime;
         private float endTime;
@@ -30,11 +31,19 @@ namespace HUD.Scripts.Abilities
             cooldownSlider.maxValue = cooldown;
         }
 
-        public void UpdateCooldownDisplay()
+        // TODO: better way to display the keys from the config
+        public void UpdateAssignedKey(KeyCode key)
+        {
+            keyText.text = key.ToString().ToUpper();
+        }
+
+        private void UpdateCooldownDisplay()
         {
             float currentTime = Time.time - this.startTime;
+            float elapsedTime = this.endTime - Time.time;
+            
             cooldownSlider.value = currentTime;
-            cdText.text = String.Format("{0,1:00}", currentTime);
+            cdText.text = String.Format("{0,1:00}", elapsedTime);
 
             if (Time.time > this.endTime)
             {
@@ -46,6 +55,11 @@ namespace HUD.Scripts.Abilities
                 cooldownSlider.value = cooldownSlider.maxValue;
                 dashIcon.SetActive(true);
             }
+        }
+
+        void Start()
+        {
+            UpdateAssignedKey(KeyCode.LeftShift);
         }
 
         void Update()

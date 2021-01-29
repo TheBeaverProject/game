@@ -4,20 +4,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace HUD.Scripts
+namespace UI.HUD.Scripts
 {
     public class AmmoDisplay : MonoBehaviour
     {
+        // TODO: Remove when merging with actual controllers
         private static int ammo = 30;
         private static int maxAmmo = 30;
         private static int mags = 3;
-        
-        public int Health
-        {
-            get => ammo;
-            set => ammo = value < 0 ? 0 : value;
-        }
-        
+
         public TextMeshProUGUI magazineAmount;
         public TextMeshProUGUI magazineTotal;
         public TextMeshProUGUI magazinesLeft;
@@ -36,28 +31,29 @@ namespace HUD.Scripts
             ammoSlider.value = magAmount;
         }
         
-        // Start is called before the first frame update
+        // TODO: Remove when merging with actual controllers
         void Start()
         {
             SetHUDAmmo(ammo, maxAmmo, mags);
         }
 
-        // Update is called once per frame
+        // TODO: Remove when merging with actual controllers
         void Update()
         {
-// Testing purposes, will be removed in after
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 ammo--;
+                
+                SetHUDAmmo(ammo, maxAmmo, mags);
             }
-
+            
             if (Input.GetKeyDown(KeyCode.R))
             {
                 ammo = maxAmmo;
                 mags--;
+                
+                SetHUDAmmo(ammo, maxAmmo, mags);
             }
-
-            SetHUDAmmo(ammo, maxAmmo, mags);
         }
     }
 }

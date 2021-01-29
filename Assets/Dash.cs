@@ -38,7 +38,7 @@ public class Dash : MonoBehaviour
         { 
             if (Input.GetKey(KeyCode.LeftShift)) // GetKey > GetKeyDown for key combinations 
             {
-                if (controller.velocity.y > 0)
+                if (controller.velocity.y != 0)
                 {
                     dashY = transform.up * dashDistance / 2;
                 }

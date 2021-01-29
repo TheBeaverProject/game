@@ -7,16 +7,17 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController controller;
 	//Sets up the character controller
 
-	public float speed = 5f;
-    private float walkSpeed = 5f; 
-    private float runSpeed = 10f;
+	public float speed = 4f;
+    private float walkSpeed = 4f; 
+    private float runSpeed = 8f;
 	private float maxSpeed = 16f; //Speed cap for game purposes, will be changed later
 	bool isWalking;
     //Speed attributes
 
 	private float accel = 1f; //Value used in functions
 	private float groundAccel = 1f;
-	private float airAccel = 1.4f; 
+	private float airAccel = 1.4f;
+	private float timeInAir; 
 	//Accel attributes
 
 
@@ -28,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
-    private bool isGrounded;
+    public bool isGrounded;
     private bool canDoubleJump = false;
     //Setting up for ground check
 
@@ -72,8 +73,10 @@ public class PlayerMovement : MonoBehaviour
 		
 		if (!isGrounded) // For bhop accel: If (look left+move left) or (move right+look right)
 			if (Input.GetAxis("Mouse X") > 0 && Input.GetKey(KeyCode.D) || Input.GetAxis("Mouse X") < 0 && Input.GetKey(KeyCode.A))
-				accel = airAccel; // Set the acceleration to airAccel (higher than ground accel)
-
+			{	
+				accel = airAccel + (timeInAir / 10); // Set the acceleration to airAccel (higher than ground accel)
+				timeInAir += Time.deltaTime;
+			}
         speed = speed * accel; // Moduling speed in function of accel (default accel is 1)
 
 		if (speed > maxSpeed) // If speed is > maxSpeed set speed to maxSpeed
@@ -108,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
 		{
             hasJumped = false; //when player touches the ground resets hasJumped
 			accel = groundAccel; // If player is grounded, reset the accel to groundAccel
+			timeInAir = 0;
 		}
         velocity.y += gravity * Time.deltaTime; //Gravity force
         controller.Move(velocity * Time.deltaTime); // moves the player downwards

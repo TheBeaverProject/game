@@ -1,5 +1,6 @@
 *.meta
-.vscode/
+.vscode
+.prettierrc
 .idea
 [Ll]ibrary/
 [Tt]emp/

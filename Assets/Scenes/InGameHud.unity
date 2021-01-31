@@ -304,7 +304,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 25890592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cb8d78aec41969e662a2f6bbdba77, type: 3}
+  m_Script: {fileID: 11500000, guid: d98b55f1014f5394bab5c6ffd57319ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   text1: {fileID: 88721036}
@@ -1617,7 +1617,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 649369692}
-  - component: {fileID: 649369693}
   m_Layer: 5
   m_Name: TeamDisplay
   m_TagString: Untagged
@@ -1648,22 +1647,6 @@ RectTransform:
   m_AnchoredPosition: {x: 50, y: -50}
   m_SizeDelta: {x: 180, y: 250}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &649369693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 649369691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efa33f25b5e2481fa55fb2495587d1a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerContainer1: {fileID: 2077158645}
-  playerContainer2: {fileID: 10191097}
-  playerContainer3: {fileID: 536058778}
-  playerContainer4: {fileID: 1008864244}
 --- !u!1 &714321600
 GameObject:
   m_ObjectHideFlags: 0
@@ -3483,7 +3466,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1356899235}
-  - component: {fileID: 1356899236}
   m_Layer: 5
   m_Name: Rounds
   m_TagString: Untagged
@@ -3513,20 +3495,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.00024414062}
   m_SizeDelta: {x: 379.27664, y: 100}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &1356899236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1356899234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d414b8891c41449290fe75fdeecf7bd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blueText: {fileID: 1203734659}
-  redText: {fileID: 1475151246}
 --- !u!1 &1358647438
 GameObject:
   m_ObjectHideFlags: 0
@@ -3736,11 +3704,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1437864394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b8090da33a34bb494abcf4590e299a4, type: 3}
+  m_Script: {fileID: 11500000, guid: c95045df2a6b1b344adacead08e70632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthText: {fileID: 388777702}
   healthSlider: {fileID: 1358647441}
+  Fill: {fileID: 714321602}
+  maxHealthColor: {r: 0.09233712, g: 0.7416607, b: 0.7830189, a: 127.5}
+  minHealthColor: {r: 0.7490196, g: 0.18039216, b: 0.2750787, a: 127.5}
 --- !u!1 &1440371562
 GameObject:
   m_ObjectHideFlags: 0
@@ -5459,13 +5430,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1908987655}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aec868238520433b9850c639de29945e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d02499bbbd5299459e0ceb52d3aa490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   magazineAmount: {fileID: 1948927066}
   magazineTotal: {fileID: 1277470671}
   magazinesLeft: {fileID: 359055219}
   ammoSlider: {fileID: 332916774}
+  ammoSliderColor: {r: 0.735849, g: 0.6588644, b: 0.13536847, a: 200}
   Fill: {fileID: 1221665677}
 --- !u!1 &1948927064
 GameObject:

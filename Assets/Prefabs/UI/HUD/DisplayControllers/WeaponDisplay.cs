@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace src.UI.HUD.DisplayControllers
+namespace Prefabs.UI.HUD.DisplayControllers
 {
     public class WeaponDisplay : MonoBehaviour
     {

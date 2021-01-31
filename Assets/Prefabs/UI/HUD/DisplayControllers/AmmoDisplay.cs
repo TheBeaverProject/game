@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.HUD.Scripts
+namespace Prefabs.UI.HUD.DisplayControllers
 {
     public class AmmoDisplay : MonoBehaviour
     {

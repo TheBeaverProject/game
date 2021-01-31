@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace src.UI.HUD.DisplayControllers.Abilities
+namespace Prefabs.UI.HUD.DisplayControllers.Abilities
 {
     public class DashDisplay : MonoBehaviour
     {

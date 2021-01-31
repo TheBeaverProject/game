@@ -806,8 +806,6 @@ GameObject:
   - component: {fileID: 241940874}
   - component: {fileID: 241940873}
   - component: {fileID: 241940872}
-  - component: {fileID: 241940876}
-  - component: {fileID: 241940877}
   - component: {fileID: 241940878}
   m_Layer: 5
   m_Name: Canvas
@@ -902,31 +900,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &241940876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 241940871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a96a7c8dacb21854c870376b0789d6b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &241940877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 241940871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConversionMode: 0
 --- !u!222 &241940878
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1617,6 +1590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 649369692}
+  - component: {fileID: 649369693}
   m_Layer: 5
   m_Name: TeamDisplay
   m_TagString: Untagged
@@ -1647,6 +1621,23 @@ RectTransform:
   m_AnchoredPosition: {x: 50, y: -50}
   m_SizeDelta: {x: 180, y: 250}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &649369693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649369691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c9ace81f4145554d9feda53aa734ac3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerContainers:
+  - {fileID: 2077158645}
+  - {fileID: 10191097}
+  - {fileID: 536058778}
+  - {fileID: 1008864244}
 --- !u!1 &714321600
 GameObject:
   m_ObjectHideFlags: 0
@@ -3466,6 +3457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1356899235}
+  - component: {fileID: 1356899236}
   m_Layer: 5
   m_Name: Rounds
   m_TagString: Untagged
@@ -3495,6 +3487,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.00024414062}
   m_SizeDelta: {x: 379.27664, y: 100}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &1356899236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356899234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35300e1c7e2bc5d429b30a2a412810d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blueText: {fileID: 1203734659}
+  redText: {fileID: 1475151246}
+  blueRounds: 0
+  redRounds: 0
 --- !u!1 &1358647438
 GameObject:
   m_ObjectHideFlags: 0

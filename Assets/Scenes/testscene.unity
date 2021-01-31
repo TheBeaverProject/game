@@ -441,6 +441,7 @@ MonoBehaviour:
   speed: 12
   gravity: -9.81
   jumpHeight: 3
+  hasJumped: 0
   groundCheck: {fileID: 1765094850}
   groundDistance: 0.4
   groundMask:
@@ -463,7 +464,7 @@ CharacterController:
   m_Height: 3.8
   m_Radius: 0.6
   m_SlopeLimit: 45
-  m_StepOffset: 0.7
+  m_StepOffset: 0.4
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -497,6 +498,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed71994210c0214583043787f3f6482, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dash: {x: 0, y: 0, z: 0}
+  dashDistance: 5
+  dashStoppingSpeed: 0.1
+  controller: {fileID: 837645070}
+  coolDown: 10
+  nextFire: 0
 --- !u!1 &849165348
 GameObject:
   m_ObjectHideFlags: 0

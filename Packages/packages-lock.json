@@ -1,5 +1,6 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "com.havok.physics": {
       "version": "0.3.1-preview",
       "depth": 0,
@@ -17,6 +18,11 @@
     "com.unity.burst": {
       "version": "1.3.0",
       "depth": 1,
+=======
+    "com.unity.burst": {
+      "version": "1.3.0-preview.12",
+      "depth": 2,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.1.0"
@@ -32,7 +38,11 @@
     },
     "com.unity.collections": {
       "version": "0.9.0-preview.6",
+<<<<<<< HEAD
       "depth": 1,
+=======
+      "depth": 2,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {
         "com.unity.test-framework.performance": "2.0.8-preview",
@@ -40,6 +50,7 @@
       },
       "url": "https://packages.unity.com"
     },
+<<<<<<< HEAD
     "com.unity.dots.editor": {
       "version": "0.8.2-preview",
       "depth": 0,
@@ -58,6 +69,11 @@
     "com.unity.entities": {
       "version": "0.11.2-preview.1",
       "depth": 0,
+=======
+    "com.unity.entities": {
+      "version": "0.11.1-preview.4",
+      "depth": 1,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {
         "com.unity.burst": "1.3.0-preview.12",
@@ -66,8 +82,13 @@
         "com.unity.mathematics": "1.1.0",
         "com.unity.test-framework.performance": "2.0.8-preview",
         "com.unity.serialization": "1.2.0-preview",
+<<<<<<< HEAD
         "com.unity.nuget.mono-cecil": "0.1.6-preview.2",
         "com.unity.jobs": "0.2.10-preview.13",
+=======
+        "nuget.mono-cecil": "0.1.5-preview",
+        "com.unity.jobs": "0.2.10-preview.12",
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
         "com.unity.scriptablebuildpipeline": "1.6.4-preview",
         "com.unity.platforms": "0.3.0-preview.4"
       },
@@ -97,8 +118,13 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.jobs": {
+<<<<<<< HEAD
       "version": "0.2.10-preview.13",
       "depth": 1,
+=======
+      "version": "0.2.10-preview.12",
+      "depth": 2,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {
         "com.unity.collections": "0.9.0-preview.6",
@@ -107,12 +133,18 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.mathematics": {
+<<<<<<< HEAD
       "version": "1.2.1",
       "depth": 0,
+=======
+      "version": "1.1.0",
+      "depth": 2,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+<<<<<<< HEAD
     "com.unity.nuget.mono-cecil": {
       "version": "0.1.6-preview.2",
       "depth": 1,
@@ -125,10 +157,16 @@
     "com.unity.nuget.newtonsoft-json": {
       "version": "2.0.0-preview",
       "depth": 2,
+=======
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "2.0.0-preview",
+      "depth": 3,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+<<<<<<< HEAD
     "com.unity.physics": {
       "version": "0.4.1-preview",
       "depth": 1,
@@ -149,6 +187,11 @@
     "com.unity.platforms": {
       "version": "0.3.0-preview.4",
       "depth": 1,
+=======
+    "com.unity.platforms": {
+      "version": "0.3.0-preview.4",
+      "depth": 2,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {
         "com.unity.properties": "1.1.1-preview",
@@ -160,7 +203,11 @@
     },
     "com.unity.properties": {
       "version": "1.2.0-preview",
+<<<<<<< HEAD
       "depth": 1,
+=======
+      "depth": 2,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {
         "nuget.mono-cecil": "0.1.5-preview",
@@ -169,12 +216,21 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.properties.ui": {
+<<<<<<< HEAD
       "version": "1.2.0-preview",
       "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.properties": "1.2.0-preview",
         "com.unity.serialization": "1.2.0-preview"
+=======
+      "version": "1.1.1-preview",
+      "depth": 3,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.properties": "1.1.1-preview",
+        "com.unity.serialization": "1.1.1-preview"
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       },
       "url": "https://packages.unity.com"
     },
@@ -189,21 +245,33 @@
     },
     "com.unity.scriptablebuildpipeline": {
       "version": "1.6.4-preview",
+<<<<<<< HEAD
       "depth": 1,
+=======
+      "depth": 2,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.searcher": {
       "version": "4.0.9",
+<<<<<<< HEAD
       "depth": 2,
+=======
+      "depth": 3,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.serialization": {
       "version": "1.2.0-preview",
+<<<<<<< HEAD
       "depth": 1,
+=======
+      "depth": 2,
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "source": "registry",
       "dependencies": {
         "com.unity.collections": "0.7.0-preview.2",
@@ -226,7 +294,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework.performance": {
+<<<<<<< HEAD
       "version": "2.2.0-preview",
+=======
+      "version": "2.0.8-preview",
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "depth": 2,
       "source": "registry",
       "dependencies": {
@@ -261,7 +333,11 @@
       }
     },
     "nuget.mono-cecil": {
+<<<<<<< HEAD
       "version": "0.1.6-preview",
+=======
+      "version": "0.1.5-preview",
+>>>>>>> 34712c557ed8fe5113d7fe6190502e6d7156ee3c
       "depth": 2,
       "source": "registry",
       "dependencies": {},

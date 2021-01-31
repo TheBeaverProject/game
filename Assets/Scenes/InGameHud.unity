@@ -292,7 +292,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -3}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -50, y: 180}
+  m_AnchoredPosition: {x: -50, y: 200}
   m_SizeDelta: {x: 222.6217, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &25890594
@@ -304,7 +304,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 25890592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d98b55f1014f5394bab5c6ffd57319ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 480e47bb4fe745ae8718a407e7e05420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   text1: {fileID: 88721036}
@@ -807,8 +807,9 @@ GameObject:
   - component: {fileID: 241940873}
   - component: {fileID: 241940872}
   - component: {fileID: 241940878}
+  - component: {fileID: 241940876}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -900,6 +901,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &241940876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241940871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 737d113f64214fecbd1b90f84b6ccf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoDisplay: {fileID: 1908987657}
+  healthDisplay: {fileID: 1437864396}
+  roundDisplay: {fileID: 1356899236}
+  teamDisplay: {fileID: 649369693}
+  weaponDisplay: {fileID: 25890594}
 --- !u!222 &241940878
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1630,7 +1648,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 649369691}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c9ace81f4145554d9feda53aa734ac3, type: 3}
+  m_Script: {fileID: 11500000, guid: d25e4b21ecad5894995602ae9409a90e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerContainers:
@@ -3496,7 +3514,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1356899234}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35300e1c7e2bc5d429b30a2a412810d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 6294a1f971da02642b9c8af32f5b63b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   blueText: {fileID: 1203734659}
@@ -5426,7 +5444,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -3}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -53.08008, y: 14.820068}
+  m_AnchoredPosition: {x: -50, y: 50}
   m_SizeDelta: {x: 397.9662, y: 137.27777}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1908987657

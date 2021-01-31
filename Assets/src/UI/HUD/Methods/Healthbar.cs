@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace src.UI.HUD.Controllers
+namespace src.UI.HUD.Methods
 { 
-    public class HealthBarController
+    public class Healthbar
     {
         public static int maxHealth = 100;
         public static Color maxHealthColor = new Color32(31, 235, 248, 255/2);
@@ -14,6 +14,9 @@ namespace src.UI.HUD.Controllers
         public static void UpdateHealth(Slider slider, int health)
         {
             slider.value = health;
+            /*
+             * Creates a gradient from the minHealthColor to the maxHealthColor according to the health value
+             */
             slider.GetComponentInChildren<Image>().color = Color32.Lerp(minHealthColor, maxHealthColor, (float) health / maxHealth);
         }
     }

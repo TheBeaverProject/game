@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Prefabs.UI.HUD.DisplayControllers.Abilities
+namespace Scripts.UI.HUD.DisplayControllers.Abilities
 {
     public class DashDisplay : MonoBehaviour
     {
@@ -54,25 +54,6 @@ namespace Prefabs.UI.HUD.DisplayControllers.Abilities
                 cdText.text = "";
                 cooldownSlider.value = cooldownSlider.maxValue;
                 dashIcon.SetActive(true);
-            }
-        }
-
-        void Start()
-        {
-            UpdateAssignedKey(KeyCode.LeftShift);
-        }
-
-        void Update()
-        {
-            // values are different than 0 => cooldown is in progress
-            if (startTime != 0 && endTime != 0)
-            {
-                UpdateCooldownDisplay();
-            }
-            // TODO: Remove when merging with dash
-            else if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
-            {
-                DisplayCooldown(7f);
             }
         }
     }

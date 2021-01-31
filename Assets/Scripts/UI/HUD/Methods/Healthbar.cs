@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Prefabs.UI.HUD.Methods
+namespace Scripts.UI.HUD.Methods
 { 
     public class Healthbar
     {

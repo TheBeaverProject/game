@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Prefabs.UI.HUD.DisplayControllers
+namespace Scripts.UI.HUD.DisplayControllers
 {
     public class HealthDisplay : MonoBehaviour
     {

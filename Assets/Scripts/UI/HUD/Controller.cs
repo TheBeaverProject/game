@@ -1,8 +1,8 @@
 using System;
-using Prefabs.UI.HUD.DisplayControllers;
+using Scripts.UI.HUD.DisplayControllers;
 using UnityEngine;
 
-namespace Prefabs.UI.HUD
+namespace Scripts.UI.HUD
 {
     public class Controller : MonoBehaviour
     {

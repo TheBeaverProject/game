@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Prefabs.UI.HUD.DisplayControllers
+namespace Scripts.UI.HUD.DisplayControllers
 {
     public class WeaponDisplay : MonoBehaviour
     {
@@ -36,23 +36,6 @@ namespace Prefabs.UI.HUD.DisplayControllers
                     text3.color = selectedColor;
                     break;
             }
-        }
-        
-        // TODO: Remove when merging with actual controllers
-        void Start()
-        {
-            ToggleSelectedWeapon(1, "AK 47");
-        }
-
-        // TODO: Remove when merging with actual controllers
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                ToggleSelectedWeapon(1, "AK 47");
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-                ToggleSelectedWeapon(2, "Glock 18");
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-                ToggleSelectedWeapon(3, "Knife");
         }
     }
 }

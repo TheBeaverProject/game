@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Prefabs.UI.HUD.DisplayControllers
+namespace Scripts.UI.HUD.DisplayControllers
 {
     public class RoundDisplay : MonoBehaviour
     {
@@ -28,15 +28,6 @@ namespace Prefabs.UI.HUD.DisplayControllers
                     redText.text = String.Format("{0,2:00}", redRounds);;
                     break;
             }
-        }
-
-        // TODO: Remove when merging with actual controllers
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.B))
-                AddRound(0);
-            if (Input.GetKeyDown(KeyCode.N))
-                AddRound(1);
         }
     }
 }

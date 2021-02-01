@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
     bool isGrounded;
     // Roof collision check
+    public Transform roofCheck;
+    bool isHittingRoof;
 
     // [TMP DEV]Set the player movement speed
     public float movementSpeed = 16f;
@@ -30,9 +32,11 @@ public class PlayerMovement : MonoBehaviour
         // Simulate a invisible sphere at players feet with ground distance radius
         // if sphere collide then the player is grounded
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        // Same for ceiling
+        isHittingRoof = Physics.CheckSphere(roofCheck.position, groundDistance, groundMask);
 
         // If player is grounded then we reset his velocity
-        if (isGrounded && velocity.y < 0)
+        if (isGrounded && velocity.y < 0 || isHittingRoof)
             velocity.y = -2f;           // not 0 because gravity goes brrrr
 
         // Gets w a s d inputs

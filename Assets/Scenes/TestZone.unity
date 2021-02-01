@@ -2035,7 +2035,9 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+  roofCheck: {fileID: 2012075553}
   movementSpeed: 12
+  jumpHeight: 3
 --- !u!64 &855944776
 MeshCollider:
   m_ObjectHideFlags: 0

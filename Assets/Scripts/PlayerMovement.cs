@@ -7,39 +7,58 @@ public class PlayerMovement : MonoBehaviour
     // Character Controller  reference
     // Sets up the character controller
     public CharacterController controller;
+
+    // Physics var
     private Vector3 velocity;
+    private float gravitationalConstant = -9.81f;
+
+    // == Collision check attributs ==
+    // Ground collision check
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
+    bool isGrounded;
+    // Roof collision check
 
     // [TMP DEV]Set the player movement speed
-    public float movementSpeed = 16f; //Speed cap for game purposes, will be changed later
-    protected bool isJumping = false;
-    private float gravitationalConstant = -9.81f;
-       
+    public float movementSpeed = 16f;
+    public float jumpHeight = 3f;
+
     void Update()
     {
+        // Check if player is grounded
+        // Simulate a invisible sphere at players feet with ground distance radius
+        // if sphere collide then the player is grounded
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        // If player is grounded then we reset his velocity
+        if (isGrounded && velocity.y < 0)
+            velocity.y = -2f;           // not 0 because gravity goes brrrr
+
         // Gets w a s d inputs
         // Vertical:
         //      W: Vertical = 1, S: Vertical = -1
         // Horizontal:
         //      A: Horizontal = -1, D: Horizontal = 1
-        Debug.Log("Update:");
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-        Debug.Log($"got x: ${x} z: ${z}");
 
-        Vector3 move = transform.right * x + transform.forward * z; //multiply the inputs by the unit vector
-        controller.Move(move * movementSpeed * Time.deltaTime); // move player on x and z axis (A and D input)
+        //multiply the inputs by the unit vector
+        Vector3 move = transform.right * x + transform.forward * z;
+        controller.Move(move * movementSpeed * Time.deltaTime);
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            jump();
+        }
 
         velocity.y += gravitationalConstant * Time.deltaTime;
-        if(controller.isGrounded)
-            velocity.y = 0;
-
         controller.Move(velocity * Time.deltaTime);
     }
 
     protected void jump()
     {
-        // Player has landed
-        if(isJumping && controller.isGrounded)
-            velocity.y = 0;
+        if(isGrounded)
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravitationalConstant);
     }
 }

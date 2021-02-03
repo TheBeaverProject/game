@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
         // If player is grounded then we reset his velocity
         if (isGrounded && velocity.y < 0 || isHittingRoof)
-            velocity.y = -2f;           // not 0 because gravity goes brrrr
+            velocity.y = -0.5f;           // not 0 because gravity goes brrrr
 
         // Gets w a s d inputs
         // Vertical:
@@ -62,7 +62,5 @@ public class PlayerMovement : MonoBehaviour
 
     protected void jump()
     {
-        if(isGrounded)
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravitationalConstant);
     }
 }

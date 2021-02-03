@@ -36,7 +36,7 @@ public class MouseLook : MonoBehaviour
         *   FIX: As in real life, if you look 90degrees down you look though your neck :)
         *        set max degree down to 45 (it can be a bit reduce but it match the model)  
         **/
-        xRotation = Mathf.Clamp(xRotation, -90f, 45f);
+        xRotation = Mathf.Clamp(xRotation, -90f, 75f);
         //-90 and 90 to not allow the player to move too fast and see behind him
         
         transform.localRotation = Quaternion.Euler(xRotation,0f,0f);

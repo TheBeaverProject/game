@@ -1,75 +1,66 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // Character Controller  reference
+    // Sets up the character controller
     public CharacterController controller;
-    //Sets up the character controller
-    public float speed = 12f;
-    //Base speed will change
-    public float gravity = -9.81f;
-    public float jumpHeight = 3f;
-    //Base settings for jump and gravity
+
+    // Physics var
+    private Vector3 velocity;
+    private float gravitationalConstant = -9.81f;
+
+    // == Collision check attributs ==
+    // Ground collision check
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
-    private bool isGrounded;
-    private bool canDoubleJump = false;
-    //Setting up for ground check
-    private Vector3 velocity;
-    //Velocity vector for movement
-    public bool blocked = false;
+    bool isGrounded;
+    // Roof collision check
     public Transform roofCheck;
-    public float roofDistance = 0.1f;
-    //Roof check so that if a player jumps and is blocked on a roof surface he doesn't levitate
+    bool isHittingRoof;
+
+    // [TMP DEV]Set the player movement speed
+    public float movementSpeed = 16f;
+    public float jumpHeight = 3f;
+
     void Update()
     {
-        blocked = Physics.CheckSphere(roofCheck.position, roofDistance, groundMask);
+        // Check if player is grounded
+        // Simulate a invisible sphere at players feet with ground distance radius
+        // if sphere collide then the player is grounded
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        //Sets up a bool that makes a virtual sphere to check if the shpere collides with the layer ground (setted up in 
-        // unity to the plane object
-        if (isGrounded && velocity.y < 0)
-        {
-            velocity.y = 0f; // If the player is ground and velocity too low sets the velocity at a normal state
-        }
+        // Same for ceiling
+        isHittingRoof = Physics.CheckSphere(roofCheck.position, groundDistance, groundMask);
 
-        if (blocked)
-        {
-            velocity.y = -2f;
-        }
+        // If player is grounded then we reset his velocity
+        if (isGrounded && velocity.y < 0 || isHittingRoof)
+            velocity.y = -0.5f;           // not 0 because gravity goes brrrr
+
+        // Gets w a s d inputs
+        // Vertical:
+        //      W: Vertical = 1, S: Vertical = -1
+        // Horizontal:
+        //      A: Horizontal = -1, D: Horizontal = 1
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-        // Gets w a s d inputs
-        Vector3 move = transform.right * x + transform.forward * z; //multiply the inputs by the unit vector
-        controller.Move(move * speed * Time.deltaTime); //Moves the player (Time.deltaTime allows to not depend on
-        //fps
-        if (Input.GetButtonDown("Jump")) //Check if spacebar button is pressed
+
+        //multiply the inputs by the unit vector
+        Vector3 move = transform.right * x + transform.forward * z;
+        controller.Move(move * movementSpeed * Time.deltaTime);
+
+        if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded) //Check if grounded for simple jump
-            {
-                velocity.y = 0; //Resets velocity Y vector
-                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity); //Physics formula
-                canDoubleJump = true; //Allows to double jump
-            }
-            else
-            {
-                if (canDoubleJump)
-                {
-                    if (isGrounded)
-                    {
-                        canDoubleJump = false;
-                    }
-                    else
-                    {
-                        canDoubleJump = false;
-                        velocity.y = 0;
-                        velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-                    }
-                }
-            }
+            jump();
         }
-        velocity.y += gravity * Time.deltaTime; //Gravity force
-        controller.Move(velocity * Time.deltaTime); // moves the player downwards
+
+        velocity.y += gravitationalConstant * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+    }
+
+    protected void jump()
+    {
     }
 }

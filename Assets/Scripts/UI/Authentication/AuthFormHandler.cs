@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -13,7 +14,16 @@ namespace UI.Authentication
         public TMP_InputField passwordInput;
         public TextMeshProUGUI errorText;
         public Button submitButton;
-        
+
+        public void Start()
+        {
+            Firebase.AuthHandler.CheckAuthentication(state =>
+            {
+                if (state)
+                    NextStep();
+            });
+        }
+
         public void OnSubmit()
         {
             var email = emailInput.text;
@@ -22,14 +32,15 @@ namespace UI.Authentication
             Firebase.AuthHandler.SignIn(email, password, user =>
             {
                 if (user != null)
-                {
-                    SceneManager.LoadScene("MainMenu");
-                }
+                    NextStep();
                 else
-                {
                     errorText.text = "Authentication failed: invalid email or password.";
-                }
             });
+        }
+
+        private void NextStep()
+        {
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }

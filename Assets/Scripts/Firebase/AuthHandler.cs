@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Firebase.Data;
 using FullSerializer;
 using Proyecto26;
+using RSG;
 using UnityEngine;
 
 namespace Firebase
@@ -70,7 +71,7 @@ namespace Firebase
             var payload = $"{{\"email\":\"{email}\"," +
                           $"\"password\":\"{password}\"," +
                           $"\"returnSecureToken\":true}}";
-
+            
             RestClient.Post($"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={APIKey}", payload)
                 .Then(authRes =>
                 {

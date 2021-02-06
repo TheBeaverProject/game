@@ -50,6 +50,7 @@ namespace Firebase
                 .Catch(err =>
                 {
                     Debug.LogErrorFormat($"Firebase.DatabaseHandler: Exception when trying to retrieve the user {userId} from the database: {err}");
+                    callback(null);
                 });
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI.Authentication
@@ -20,7 +21,14 @@ namespace UI.Authentication
             
             Firebase.AuthHandler.SignIn(email, password, user =>
             {
-                PlayerPrefs.SetString(PlayerPrefKeys.PlayerName, user.Username);
+                if (user != null)
+                {
+                    SceneManager.LoadScene("MainMenu");
+                }
+                else
+                {
+                    errorText.text = "Authentication failed: invalid email or password.";
+                }
             });
         }
     }

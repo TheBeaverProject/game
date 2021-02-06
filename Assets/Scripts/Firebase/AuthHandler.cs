@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Firebase.Data;
 using FullSerializer;
 using Proyecto26;
@@ -32,18 +33,19 @@ namespace Firebase
                 .Then(authRes =>
                 {
                     var authResponseJson = authRes.Text;
-                    
-                    // Using the FullSerializer library: https://github.com/jacobdufault/fullserializer
-                    // to serialize more complex types (a Dictionary, in this case)
-                    var authData = fsJsonParser.Parse(authResponseJson);
-                    object authDeserialized = null;
-                    Serializer.TryDeserialize(authData, typeof(Dictionary<string, string>), ref authDeserialized);
 
-                    if (!(authDeserialized is Dictionary<string, string> authResponse)) return;
+                    var authResponse = FirebaseAuthResponse.FromJson(authResponseJson);
                     
-                    Debug.Log($"Firebase.AuthHandler: User logged in: {authResponse["localId"]}");
+                    Debug.Log($"Firebase.AuthHandler: User logged in: {authResponse.LocalId}");
+                    
+                    PlayerPrefs.SetString(PlayerPrefKeys.LoggedUserId, authResponse.LocalId);
+                    PlayerPrefs.SetString(PlayerPrefKeys.LoggedUserToken, authResponse.IdToken);
+                    PlayerPrefs.SetString(PlayerPrefKeys.LoggedUserExpiration, DateTimeOffset.Now.AddSeconds(authResponse.ExpiresIn).ToString());
+                    PlayerPrefs.SetString(PlayerPrefKeys.LoggedUserRefreshToken, authResponse.RefreshToken);
+                    
+                    Debug.Log($"Token expiration date: {PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserExpiration)}");
 
-                    DatabaseHandler.GetUserById(authResponse["localId"], user =>
+                    DatabaseHandler.GetUserById(authResponse.LocalId, user =>
                     {
                         callback(user);
                     });
@@ -51,6 +53,7 @@ namespace Firebase
                 .Catch(err =>
                 {
                     Debug.LogErrorFormat($"Firebase.AuthHandler: Exception when trying to authenticate the user: {err}");
+                    callback(null);
                 });
         }
     }

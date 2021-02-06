@@ -13,6 +13,14 @@ namespace UI.MainMenu
         public GameObject SoloTab;
         public GameObject MultiTab;
         public GameObject SettingsTab;
+        
+        private void OnApplicationQuit()
+        {
+            if (PlayerPrefs.GetInt(PlayerPrefKeys.SaveCredentials) != 1) // Logout at application quit if the user have chosen not to save credentials 
+            {
+                Firebase.AuthHandler.LogOut();
+            }
+        }
 
         private void ToggleTab(string tab)
         {

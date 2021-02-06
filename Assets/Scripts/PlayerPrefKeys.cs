@@ -24,4 +24,9 @@
     /// Contains the firebase refreshToken of the connected user
     /// </summary>
     public static string LoggedUserRefreshToken = "LoggedUserRefreshToken";
+    
+    /// <summary>
+    /// Last state of the save credential preference. 1 if true, else 0
+    /// </summary>
+    public static string SaveCredentials = "SaveCredentials";
 }

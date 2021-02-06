@@ -13,6 +13,7 @@ namespace UI.Authentication
         public TMP_InputField emailInput;
         public TMP_InputField passwordInput;
         public TextMeshProUGUI errorText;
+        public Toggle saveCredentialsToggle;
         public Button submitButton;
 
         public void Start()
@@ -29,7 +30,7 @@ namespace UI.Authentication
             var email = emailInput.text;
             var password = passwordInput.text;
             
-            Firebase.AuthHandler.SignIn(email, password, user =>
+            Firebase.AuthHandler.SignIn(email, password, saveCredentialsToggle.isOn, user =>
             {
                 if (user != null)
                     NextStep();

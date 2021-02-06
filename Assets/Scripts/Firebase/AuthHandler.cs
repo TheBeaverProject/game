@@ -13,6 +13,14 @@ namespace Firebase
         
         private const string APIKey = "AIzaSyDVEizX_DZkdCWYht3c7i83z6WbMBgewdU";
 
+        private void OnApplicationQuit()
+        {
+            if (PlayerPrefs.GetInt(PlayerPrefKeys.SaveCredentials) != 1) // Logout at application quit if the user have chosen not to save credentials 
+            {
+                LogOut();
+            }
+        }
+
         /// <summary>
         /// Saves the provided authentication data in the playerPrefs for future use
         /// </summary>
@@ -20,13 +28,29 @@ namespace Firebase
         /// <param name="idToken">temporary token provided by firebase</param>
         /// <param name="refreshToken">refresh token provided by firebase</param>
         /// <param name="expiresIn">expiration time of the provided token</param>
-        private static void SaveLoggedUserData(string localId, string idToken, string refreshToken, long expiresIn)
+        /// <param name="saveCredentials">Save credentials to the disk ?</param>
+        private static void SaveLoggedUserData(string localId, string idToken, string refreshToken, long expiresIn, bool saveCredentials)
         {
             PlayerPrefs.SetString(PlayerPrefKeys.LoggedUserId, localId);
             PlayerPrefs.SetString(PlayerPrefKeys.LoggedUserToken, idToken);
             PlayerPrefs.SetString(PlayerPrefKeys.LoggedUserExpiration, DateTimeOffset.Now.AddSeconds(expiresIn).ToString());
             PlayerPrefs.SetString(PlayerPrefKeys.LoggedUserRefreshToken, refreshToken);
-            
+            PlayerPrefs.SetInt(PlayerPrefKeys.SaveCredentials, saveCredentials ? 1 : 0);
+
+            if (saveCredentials)
+                PlayerPrefs.Save();
+        }
+        
+        /// <summary>
+        /// Deletes the saved credentials, having the effect of logging out
+        /// </summary>
+        public static void LogOut()
+        {
+            PlayerPrefs.DeleteKey(PlayerPrefKeys.LoggedUserId);
+            PlayerPrefs.DeleteKey(PlayerPrefKeys.LoggedUserToken);
+            PlayerPrefs.DeleteKey(PlayerPrefKeys.LoggedUserExpiration);
+            PlayerPrefs.DeleteKey(PlayerPrefKeys.LoggedUserRefreshToken);
+            PlayerPrefs.DeleteKey(PlayerPrefKeys.SaveCredentials);
             PlayerPrefs.Save();
         }
         
@@ -38,9 +62,10 @@ namespace Firebase
         /// </summary>
         /// <param name="email">Email registered in Firebase</param>
         /// <param name="password">Password associated with the email</param>
+        /// <param name="saveCredentials">Save credentials to disk ?</param>
         /// <param name="callback">Callback containing the retrieved data</param>
         /// <returns>Object containing the user info</returns>
-        public static void SignIn(string email, string password, SignInCallback callback)
+        public static void SignIn(string email, string password, bool saveCredentials, SignInCallback callback)
         {
             var payload = $"{{\"email\":\"{email}\"," +
                           $"\"password\":\"{password}\"," +
@@ -52,13 +77,11 @@ namespace Firebase
                     var authResponseJson = authRes.Text;
 
                     var authResponse = FirebaseAuthResponse.FromJson(authResponseJson);
-                    
-                    Debug.Log($"Firebase.AuthHandler: User logged in: {authResponse.LocalId}");
 
                     SaveLoggedUserData(authResponse.LocalId, authResponse.IdToken, authResponse.RefreshToken,
-                        authResponse.ExpiresIn);
-
-                    Debug.Log($"Token expiration date: {PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserExpiration)}");
+                        authResponse.ExpiresIn, saveCredentials);
+                    
+                    Debug.Log($"Firebase.AuthHandler: User logged in: {authResponse.LocalId}");
 
                     DatabaseHandler.GetUserById(authResponse.LocalId, user =>
                     {
@@ -93,7 +116,9 @@ namespace Firebase
                     var firebaseIdTokenResponse = FirebaseIdTokenResponse.FromJson(jsonString);
                     
                     SaveLoggedUserData(firebaseIdTokenResponse.UserId, firebaseIdTokenResponse.IdToken, firebaseIdTokenResponse.RefreshToken,
-                        firebaseIdTokenResponse.ExpiresIn);
+                        firebaseIdTokenResponse.ExpiresIn, PlayerPrefs.GetInt(PlayerPrefKeys.SaveCredentials) == 1);
+                    
+                    Debug.Log($"Firebase.AuthHandler: Token refreshed");
 
                     callback(firebaseIdTokenResponse);
                 })
@@ -113,27 +138,32 @@ namespace Firebase
         /// <returns></returns>
         public static void CheckAuthentication(CheckAuthenticationCallback callback)
         {
-            if (PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserId) is string loggedUserId
-                && PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserToken) is string idToken
-                && PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserExpiration) is string idTokenExpirationStr
-                && PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserRefreshToken) is string loggedRefreshToken) // The necessary keys for authentication are still present. we can therefore proceed
+            if (PlayerPrefs.HasKey(PlayerPrefKeys.LoggedUserId)
+                && PlayerPrefs.HasKey(PlayerPrefKeys.LoggedUserToken)
+                && PlayerPrefs.HasKey(PlayerPrefKeys.LoggedUserExpiration)
+                && PlayerPrefs.HasKey(PlayerPrefKeys.LoggedUserRefreshToken)) // The necessary keys for authentication are still present. we can therefore proceed
             {
+                var idTokenExpirationStr = PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserExpiration);
+                
                 var idTokenExpiration = DateTimeOffset.Parse(idTokenExpirationStr);
 
                 if (idTokenExpiration.CompareTo(DateTimeOffset.Now) <= 0) // New id token needs to be generated, but auth credentials are still valid
                 {
+                    var loggedRefreshToken = PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserRefreshToken);
+                    
                     GetNewIdToken(loggedRefreshToken, response => { callback(response != null); });
                 }
                 else
                 {
+                    Debug.Log($"Firebase.AuthHandler: User still authenticated");
                     callback(true);
                 }
             }
             else
             {
+                Debug.Log($"Firebase.AuthHandler: not authenticated anymore");
                 callback(false);
             }
         }
-        
     }
 }

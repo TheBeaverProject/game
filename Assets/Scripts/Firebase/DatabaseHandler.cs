@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Firebase.Data;
-using FullSerializer;
 using Proyecto26;
 using UnityEngine;
 
@@ -8,8 +7,6 @@ namespace Firebase
 {
     public class DatabaseHandler : MonoBehaviour
     {
-        private static readonly fsSerializer Serializer = new fsSerializer();
-        
         private const string ProjectId = "beaver-ea0ea";
         private const string DatabaseId = "(default)";
         

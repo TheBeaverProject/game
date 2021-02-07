@@ -837,7 +837,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 632134469}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d87a22a2b8f50884383d26227cf2b925, type: 3}
+  m_Script: {fileID: 11500000, guid: f6aeedaf3a6395542a539766c323371c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxPlayersPerRoom: 10
@@ -2087,7 +2087,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1315596301}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68d98c1160a84011839085dcb3884fcc, type: 3}
+  m_Script: {fileID: 11500000, guid: 33fafa09de7d4332be64f8c446471ab5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1379143816
@@ -3068,7 +3068,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1315596303}
-        m_MethodName: LogOut
+        m_MethodName: OnLogoutClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3077,7 +3077,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!114 &1871701242
 MonoBehaviour:
   m_ObjectHideFlags: 0

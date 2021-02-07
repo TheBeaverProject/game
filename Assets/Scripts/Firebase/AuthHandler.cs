@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using Firebase.Data;
-using FullSerializer;
 using Proyecto26;
-using RSG;
 using UnityEngine;
 
 namespace Firebase
 {
     public class AuthHandler : MonoBehaviour
-    {
-        private static readonly fsSerializer Serializer = new fsSerializer();
-        
+    { 
         private const string APIKey = "AIzaSyDVEizX_DZkdCWYht3c7i83z6WbMBgewdU";
 
         private void OnApplicationQuit()
@@ -47,6 +42,8 @@ namespace Firebase
         /// </summary>
         public static void LogOut()
         {
+            Debug.Log("Successfully logged out");
+            
             PlayerPrefs.DeleteKey(PlayerPrefKeys.LoggedUserId);
             PlayerPrefs.DeleteKey(PlayerPrefKeys.LoggedUserToken);
             PlayerPrefs.DeleteKey(PlayerPrefKeys.LoggedUserExpiration);

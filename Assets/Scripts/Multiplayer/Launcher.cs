@@ -21,6 +21,20 @@ namespace Multiplayer
         [SerializeField]
         private byte maxPlayersPerRoom = 10;
 
+        [Tooltip("UI Panel for the user to enter its name, connect and play")]
+        [SerializeField]
+        private GameObject controlPanel;
+        
+        [Tooltip("UI Label to inform the user of the connection progress")]
+        [SerializeField]
+        private GameObject progressLabel;
+
+        private void Start()
+        {
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
+        }
+
         /// <summary>
         /// MonoBehavior method called on GameObject by Unity during early initialisation phase
         /// </summary>
@@ -34,6 +48,9 @@ namespace Multiplayer
 
         public void Connect()
         {
+            progressLabel.SetActive(true);
+            controlPanel.SetActive(false);
+            
             // Checks if the client is connected
             if (PhotonNetwork.IsConnected)
             {
@@ -56,6 +73,8 @@ namespace Multiplayer
 
         public override void OnDisconnected(DisconnectCause cause)
         {
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
             Debug.LogWarningFormat("Multiplayer/Launcher: OnDisconnected was called by PUN with reason {0}", cause);
         }
 

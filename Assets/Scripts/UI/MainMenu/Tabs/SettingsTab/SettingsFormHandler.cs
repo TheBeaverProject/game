@@ -1,5 +1,6 @@
 ﻿using Firebase;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UI.MainMenu.Tabs.SettingsTab
 {
@@ -8,6 +9,7 @@ namespace UI.MainMenu.Tabs.SettingsTab
         public void OnLogoutClick()
         {
             AuthHandler.LogOut();
+            SceneManager.LoadScene("Authentication");
         }
     }
 }

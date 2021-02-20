@@ -9,6 +9,8 @@ namespace Firebase
     { 
         private const string APIKey = "AIzaSyDVEizX_DZkdCWYht3c7i83z6WbMBgewdU";
 
+        public static User loggedinUser = null;
+
         private void OnApplicationQuit()
         {
             if (PlayerPrefs.GetInt(PlayerPrefKeys.SaveCredentials) != 1) // Logout at application quit if the user have chosen not to save credentials 
@@ -33,8 +35,7 @@ namespace Firebase
             PlayerPrefs.SetString(PlayerPrefKeys.LoggedUserRefreshToken, refreshToken);
             PlayerPrefs.SetInt(PlayerPrefKeys.SaveCredentials, saveCredentials ? 1 : 0);
 
-            if (saveCredentials)
-                PlayerPrefs.Save();
+            PlayerPrefs.Save();
         }
         
         /// <summary>
@@ -83,12 +84,14 @@ namespace Firebase
 
                     DatabaseHandler.GetUserById(authResponse.LocalId, user =>
                     {
+                        loggedinUser = user;
                         callback(user);
                     });
                 })
                 .Catch(err =>
                 {
                     Debug.LogErrorFormat($"Firebase.AuthHandler: Exception when trying to authenticate the user: {err}");
+                    loggedinUser = null;
                     callback(null);
                 });
         }
@@ -123,6 +126,7 @@ namespace Firebase
                 .Catch(err =>
                 {
                     Debug.LogErrorFormat($"Firebase.AuthHandler: Exception when trying to authenticate the user: {err}");
+                    loggedinUser = null;
                     callback(null);
                 });
         }
@@ -149,17 +153,41 @@ namespace Firebase
                 {
                     var loggedRefreshToken = PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserRefreshToken);
                     
-                    GetNewIdToken(loggedRefreshToken, response => { callback(response != null); });
+                    GetNewIdToken(loggedRefreshToken, response =>
+                    {
+                        if (response != null && loggedinUser == null)
+                        {
+                            DatabaseHandler.GetUserById(response.UserId, user =>
+                            {
+                                loggedinUser = user;
+                                
+                                callback(true);
+                            });
+                        }
+                        
+                        callback(response != null);
+                    });
                 }
                 else
                 {
                     Debug.Log($"Firebase.AuthHandler: User still authenticated");
-                    callback(true);
+                    
+                    if (loggedinUser == null)
+                    {
+                        DatabaseHandler.GetUserById(PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserId), user =>
+                        {
+                            loggedinUser = user;
+                            callback(true);
+                        });
+                    }
+                    else
+                        callback(true);
                 }
             }
             else
             {
                 Debug.Log($"Firebase.AuthHandler: not authenticated anymore");
+                loggedinUser = null;
                 callback(false);
             }
         }

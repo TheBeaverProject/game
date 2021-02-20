@@ -24,12 +24,8 @@ namespace Firebase
                 .Then(userRes =>
                 {
                     var userResponseJson = userRes.Text;
-                    
-                    Debug.Log(userResponseJson);
-                    
+
                     var firebaseUserDocument = FirebaseUserDocument.FromJson(userResponseJson);
-                    
-                    Debug.Log(firebaseUserDocument.Fields.Email.StringValue);
 
                     callback(new User(
                         firebaseUserDocument.Fields.Username.StringValue,

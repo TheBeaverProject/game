@@ -46,5 +46,43 @@ namespace Firebase
                     callback(null);
                 });
         }
+
+        public delegate void GetAllNewsCallback(List<News> newsList);
+
+        public static void GetAllNews(GetAllNewsCallback callback)
+        {
+            
+            RestClient.Get($"https://firestore.googleapis.com/v1/projects/{ProjectId}/databases/{DatabaseId}/documents/news")
+                .Then(userRes =>
+                {
+                    var userResponseJson = userRes.Text;
+
+                    var firebaseNewsDocumentAll = FirebaseNewsDocumentAll.FromJson(userResponseJson);
+
+                    var newsList = new List<News>();
+
+                    foreach (var firebaseNewsDocument in firebaseNewsDocumentAll.Documents)
+                    {
+                        var previewImage = firebaseNewsDocument.Fields.PreviewImage?.StringValue != null
+                            ? firebaseNewsDocument.Fields.PreviewImage.StringValue
+                            : "";
+                        
+                        newsList.Add(new News(
+                            firebaseNewsDocument.Fields.Author.StringValue,
+                            firebaseNewsDocument.Fields.Title.StringValue,
+                            firebaseNewsDocument.Fields.Content.StringValue,
+                            previewImage,
+                            firebaseNewsDocument.Fields.Url.StringValue,
+                            (int) firebaseNewsDocument.Fields.Likes.IntegerValue));
+                    }
+                    
+                    callback(newsList);
+                })
+                .Catch(err =>
+                {
+                    Debug.LogErrorFormat($"Firebase.DatabaseHandler: Exception when trying to get the news: {err}");
+                    callback(null);
+                });
+        }
     }
 }

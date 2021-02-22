@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.UI.HUD.DisplayControllers.Abilities
+namespace UI.HUD.DisplayControllers.Abilities
 {
     public class DashDisplay : MonoBehaviour
     {

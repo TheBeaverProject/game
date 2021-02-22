@@ -15,7 +15,7 @@ namespace Firebase.Data
         public string Name { get; set; }
 
         [JsonProperty("fields")]
-        public Fields Fields { get; set; }
+        public UserFields Fields { get; set; }
 
         [JsonProperty("createTime")]
         public DateTimeOffset CreateTime { get; set; }
@@ -24,7 +24,7 @@ namespace Firebase.Data
         public DateTimeOffset UpdateTime { get; set; }
     }
 
-    public partial class Fields
+    public class UserFields
     {
         [JsonProperty("level")]
         public Elo Level { get; set; }
@@ -57,42 +57,42 @@ namespace Firebase.Data
         public Elo Status { get; set; }
     }
 
-    public partial class Date
+    public class Date
     {
         [JsonProperty("timestampValue")]
         public DateTimeOffset TimestampValue { get; set; }
     }
 
-    public partial class Elo
+    public class Elo
     {
         [JsonProperty("integerValue")]
         [JsonConverter(typeof(ParseStringConverter))]
         public long IntegerValue { get; set; }
     }
 
-    public partial class Email
+    public class Email
     {
         [JsonProperty("stringValue")]
         public string StringValue { get; set; }
     }
 
-    public partial class Items
+    public class Items
     {
         [JsonProperty("arrayValue")]
         public ItemsArrayValue ArrayValue { get; set; }
     }
 
-    public partial class ItemsArrayValue
+    public class ItemsArrayValue
     {
     }
 
-    public partial class LikedNews
+    public class LikedNews
     {
         [JsonProperty("arrayValue")]
         public LikedNewsArrayValue ArrayValue { get; set; }
     }
 
-    public partial class LikedNewsArrayValue
+    public class LikedNewsArrayValue
     {
         [JsonProperty("values")]
         public List<Email> Values { get; set; }

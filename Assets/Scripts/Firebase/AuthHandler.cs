@@ -186,7 +186,7 @@ namespace Firebase
             }
             else
             {
-                Debug.Log($"Firebase.AuthHandler: not authenticated anymore");
+                Debug.Log($"Firebase.AuthHandler: Not authenticated anymore");
                 loggedinUser = null;
                 callback(false);
             }

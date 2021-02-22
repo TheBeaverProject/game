@@ -20,7 +20,7 @@ namespace UI.MainMenu.Tabs.MultiplayerTab
         {
             string defaultName;
             
-            defaultName = AuthHandler.loggedinUser.Username;
+            defaultName = AuthHandler.loggedinUser?.Username;
 
             if (PlayerPrefs.HasKey(PlayerPrefKeys.PlayerName))
             {

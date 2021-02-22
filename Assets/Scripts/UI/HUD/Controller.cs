@@ -1,5 +1,6 @@
 using System;
 using Scripts.UI.HUD.DisplayControllers;
+using UI.HUD.DisplayControllers;
 using UnityEngine;
 
 namespace Scripts.UI.HUD

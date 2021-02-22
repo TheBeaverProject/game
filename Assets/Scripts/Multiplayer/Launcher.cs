@@ -44,7 +44,13 @@ namespace Multiplayer
             // Makes sure the PhotonNetwork.LoadLevel() can be called and all the clients in the same room can sync their level automatically
             PhotonNetwork.AutomaticallySyncScene = true;
         }
-        
+
+        /// <summary>
+        /// Kepp track of the current process to properly adjust behavior
+        /// when receiving callbacks.
+        /// Typically used for the OnConnectedToMaster() callback
+        /// </summary>
+        private bool isConnecting;
 
         public void Connect()
         {
@@ -58,7 +64,8 @@ namespace Multiplayer
             }
             else
             {
-                PhotonNetwork.ConnectUsingSettings();
+                // keep track of the will to join a room
+                isConnecting = PhotonNetwork.ConnectUsingSettings();
                 PhotonNetwork.GameVersion = gameVersion;
             }
         }
@@ -68,13 +75,19 @@ namespace Multiplayer
             Debug.Log("Multiplayer/Launcher: OnConnectedToMaster was called by PUN");
             
             // #Critical: The first we try to do is join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
-            PhotonNetwork.JoinRandomRoom();
+            // We join the room only if we are in the process of a connection
+            if (isConnecting)
+            {
+                PhotonNetwork.JoinRandomRoom();
+                isConnecting = false;
+            }
         }
 
         public override void OnDisconnected(DisconnectCause cause)
         {
             progressLabel.SetActive(false);
             controlPanel.SetActive(true);
+            isConnecting = false;
             Debug.LogWarningFormat("Multiplayer/Launcher: OnDisconnected was called by PUN with reason {0}", cause);
         }
 
@@ -89,6 +102,11 @@ namespace Multiplayer
         public override void OnJoinedRoom()
         {
             Debug.Log($"Multiplayer/Launcher: OnJoinedRoom called by PUN.");
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.LoadLevel("UITestScene");
+            }
         }
     }
 }

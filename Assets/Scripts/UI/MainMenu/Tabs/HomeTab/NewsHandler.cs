@@ -13,23 +13,19 @@ namespace UI.MainMenu.Tabs.HomeTab
             Firebase.DatabaseHandler.GetAllNews(list =>
             {
                 list.Reverse();
-                
+
                 int count = 0;
                 foreach (var news in list)
                 {
                     var container = Instantiate(newsPrefab);
-                    var handler = container.GetComponent<NewsContainerHandler>();
-                    handler.SetContent(news.Title, news.Content);
+                    container.transform.SetParent(newsContainer.transform);
+ 
+                    container.transform.position = newsContainer.transform.position;
+                    container.transform.Translate(10, -10 + -220 * count, 0);
                     
-                    UnityEditor.GameObjectUtility.SetParentAndAlign(container, newsContainer);
-                    container.transform.Translate(0, -10 + -220 * count, 0);
+                    container.GetComponent<NewsContainerHandler>().SetContent(news.Title, news.Content);
+                    
                     count++;
-                }
-                
-                RectTransform contTransform = newsContainer.transform as RectTransform;
-                if (contTransform != null)
-                {
-                    contTransform.sizeDelta = new Vector2(contTransform.sizeDelta.x, 230 * count);
                 }
             });
         }

@@ -10,18 +10,29 @@ namespace UI.EscapeMenu
         public void ResumeButtonHandler()
         {
             EscapeMenuContainer.SetActive(false);
+            //Locks the cursor in the center of the screen
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void Start()
         {
-            EscapeMenuContainer.SetActive(false);
+            ResumeButtonHandler();
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                EscapeMenuContainer.SetActive(!EscapeMenuContainer.activeInHierarchy);
+                if (EscapeMenuContainer.activeInHierarchy)
+                {
+                    ResumeButtonHandler();
+                }
+                else
+                {
+                    EscapeMenuContainer.SetActive(true);
+                    //Unlocks the cursor for interaction with the menus
+                    Cursor.lockState = CursorLockMode.None;
+                }
             }
         }
     }

@@ -17,7 +17,7 @@ namespace Multiplayer
         /// <summary>
         /// The maximum number of player that can be in a single room
         /// </summary>
-        [Tooltip("he maximum number of player that can be in a single room")]
+        [Tooltip("The maximum number of player that can be in a single room")]
         [SerializeField]
         private byte maxPlayersPerRoom = 10;
 
@@ -105,7 +105,7 @@ namespace Multiplayer
 
             if (PhotonNetwork.IsMasterClient)
             {
-                PhotonNetwork.LoadLevel("UITestScene");
+                PhotonNetwork.LoadLevel("Demo");
             }
         }
     }

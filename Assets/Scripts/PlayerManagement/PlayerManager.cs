@@ -1,7 +1,7 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 
-namespace Player
+namespace PlayerManagement
 {
     public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
@@ -31,23 +31,15 @@ namespace Player
         private void Awake()
         {
             var instancePlayer = this.gameObject;
-            if (photonView.IsMine)
+            if (PhotonNetwork.IsConnected && photonView.IsMine)
             {
                 PlayerManager.LocalPlayerInstance = instancePlayer;
             }
-            
-            // #Critical
-            // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
-            DontDestroyOnLoad(instancePlayer);
         }
         
 
         private void Start()
         {
-            if (PhotonNetwork.IsConnected && photonView.IsMine)
-            {
-                HUD.playerName.text = PhotonNetwork.NickName;
-            }
         }
 
         private void Update()
@@ -73,7 +65,7 @@ namespace Player
         #endregion
         
         #region Player Control
-        
+
         #endregion
     }
 }

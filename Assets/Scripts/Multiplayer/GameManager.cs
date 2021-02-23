@@ -1,5 +1,7 @@
-﻿using Photon.Pun;
+﻿using System;
+using Photon.Pun;
 using Photon.Realtime;
+using PlayerManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +9,15 @@ namespace Multiplayer
 {
     public class GameManager : MonoBehaviourPunCallbacks
     {
+        [Tooltip("The prefab to use for representing the player")]
+        public GameObject playerPrefab;
+        
+        [Tooltip("Camera used for the view of the client")]
+        public Camera cameraPrefab;
+        
+        [Tooltip("HUD of the client")]
+        public GameObject hudPrefab;
+        
         #region Photon Callbacks
 
         /// <summary>
@@ -25,7 +36,6 @@ namespace Multiplayer
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.Log($"PhotonNetwork: Client is MasterClient");
-                LoadArena();
             }
         }
 
@@ -36,26 +46,50 @@ namespace Multiplayer
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.Log($"PhotonNetwork: Client is MasterClient");
-                LoadArena();
             }
         }
 
         #endregion
 
+        private void Start()
+        {
+            if (playerPrefab == null)
+            {
+                Debug.LogError("Missing PlayerPrefab Reference.");   
+            }
+            else
+            {
+                if (PlayerManager.LocalPlayerInstance == null)
+                {
+                    Debug.Log($"Instantiating LocalPlayer from {SceneManagerHelper.ActiveSceneName}");
+                    InstantiateLocalPlayer();
+                }
+                else
+                {
+                    Debug.LogFormat($"Ignoring scene load for {SceneManagerHelper.ActiveSceneName}");
+                }
+            }
+        }
+
+        private void InstantiateLocalPlayer()
+        {
+            // Instantiate the Object of the localPlayer
+            // Using PhotonNetwork to make it present on the network
+            var clientPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f,5f,0f), Quaternion.identity, 0);
+            var initPos = clientPlayer.transform.position;
+            
+            // Add a camera and a HUD only on the player representing the client to have a single camera/hud per game scene and avoid confusion
+            var clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            var clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity,
+                clientPlayer.transform);
+            
+            clientCamera.GetComponent<MouseLook>().playerBody = clientPlayer.transform;
+            clientCamera.transform.position += new Vector3(0, 0.8f);
+        }
+
         public void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();
-            SceneManager.LoadScene(0);
-        }
-
-        public void LoadArena()
-        {
-            if (!PhotonNetwork.IsMasterClient)
-            {
-                Debug.LogError("PhotonNetwork: Trying to load a level while not being the Master Client");
-            }
-            Debug.Log("PhotonNetwork: Loading Level");
-            PhotonNetwork.LoadLevel("UITestScene");
         }
     }
 }

@@ -3666,17 +3666,17 @@ Canvas:
   m_GameObject: {fileID: 3411205111892341334}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: -1
+  m_AdditionalShaderChannelsFlag: 7
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &3411205111892341336
 MonoBehaviour:
@@ -3737,6 +3737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 737d113f64214fecbd1b90f84b6ccf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerName: {fileID: 0}
   ammoDisplay: {fileID: 3411205111147764952}
   healthDisplay: {fileID: 3411205110670907933}
   roundDisplay: {fileID: 3411205110592563317}

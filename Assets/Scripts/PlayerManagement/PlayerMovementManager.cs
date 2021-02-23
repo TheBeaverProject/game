@@ -1,7 +1,7 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 
-namespace Player
+namespace PlayerManagement
 {
     public class PlayerMovementManager : MonoBehaviourPun
     {
@@ -32,7 +32,7 @@ namespace Player
         void Update()
         {
             // Returns is this is not instancied by the controlled player
-            if (photonView.IsMine == false && PhotonNetwork.IsConnected)
+            if (PhotonNetwork.IsConnected && photonView.IsMine == false)
             {
                 return;
             }

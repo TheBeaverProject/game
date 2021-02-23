@@ -1,7 +1,7 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 
-namespace PlayerManager
+namespace PlayerManagement
 {
     public class MouseLook : MonoBehaviourPun
     {
@@ -16,7 +16,7 @@ namespace PlayerManager
         void Start()
         {
             // Returns is this is not instancied by the controlled player
-            if (photonView.IsMine == false && PhotonNetwork.IsConnected)
+            if (PhotonNetwork.IsConnected && photonView.IsMine == false)
             {
                 return;
             }
@@ -28,7 +28,7 @@ namespace PlayerManager
         void Update()
         {
             // Returns is this is not instancied by the controlled player
-            if (photonView.IsMine == false && PhotonNetwork.IsConnected)
+            if (PhotonNetwork.IsConnected && photonView.IsMine == false)
             {
                 return;
             }

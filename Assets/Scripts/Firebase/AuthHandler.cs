@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using Firebase.Data;
-using FullSerializer;
 using Proyecto26;
-using RSG;
 using UnityEngine;
 
 namespace Firebase
 {
     public class AuthHandler : MonoBehaviour
-    {
-        private static readonly fsSerializer Serializer = new fsSerializer();
-        
+    { 
         private const string APIKey = "AIzaSyDVEizX_DZkdCWYht3c7i83z6WbMBgewdU";
+
+        public static User loggedinUser = null;
 
         private void OnApplicationQuit()
         {
@@ -38,8 +35,7 @@ namespace Firebase
             PlayerPrefs.SetString(PlayerPrefKeys.LoggedUserRefreshToken, refreshToken);
             PlayerPrefs.SetInt(PlayerPrefKeys.SaveCredentials, saveCredentials ? 1 : 0);
 
-            if (saveCredentials)
-                PlayerPrefs.Save();
+            PlayerPrefs.Save();
         }
         
         /// <summary>
@@ -47,6 +43,8 @@ namespace Firebase
         /// </summary>
         public static void LogOut()
         {
+            Debug.Log("Successfully logged out");
+            
             PlayerPrefs.DeleteKey(PlayerPrefKeys.LoggedUserId);
             PlayerPrefs.DeleteKey(PlayerPrefKeys.LoggedUserToken);
             PlayerPrefs.DeleteKey(PlayerPrefKeys.LoggedUserExpiration);
@@ -86,12 +84,14 @@ namespace Firebase
 
                     DatabaseHandler.GetUserById(authResponse.LocalId, user =>
                     {
+                        loggedinUser = user;
                         callback(user);
                     });
                 })
                 .Catch(err =>
                 {
                     Debug.LogErrorFormat($"Firebase.AuthHandler: Exception when trying to authenticate the user: {err}");
+                    loggedinUser = null;
                     callback(null);
                 });
         }
@@ -126,6 +126,7 @@ namespace Firebase
                 .Catch(err =>
                 {
                     Debug.LogErrorFormat($"Firebase.AuthHandler: Exception when trying to authenticate the user: {err}");
+                    loggedinUser = null;
                     callback(null);
                 });
         }
@@ -152,17 +153,41 @@ namespace Firebase
                 {
                     var loggedRefreshToken = PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserRefreshToken);
                     
-                    GetNewIdToken(loggedRefreshToken, response => { callback(response != null); });
+                    GetNewIdToken(loggedRefreshToken, response =>
+                    {
+                        if (response != null && loggedinUser == null)
+                        {
+                            DatabaseHandler.GetUserById(response.UserId, user =>
+                            {
+                                loggedinUser = user;
+                                
+                                callback(true);
+                            });
+                        }
+                        
+                        callback(response != null);
+                    });
                 }
                 else
                 {
                     Debug.Log($"Firebase.AuthHandler: User still authenticated");
-                    callback(true);
+                    
+                    if (loggedinUser == null)
+                    {
+                        DatabaseHandler.GetUserById(PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserId), user =>
+                        {
+                            loggedinUser = user;
+                            callback(true);
+                        });
+                    }
+                    else
+                        callback(true);
                 }
             }
             else
             {
-                Debug.Log($"Firebase.AuthHandler: not authenticated anymore");
+                Debug.Log($"Firebase.AuthHandler: Not authenticated anymore");
+                loggedinUser = null;
                 callback(false);
             }
         }

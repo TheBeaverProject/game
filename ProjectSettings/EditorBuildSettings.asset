@@ -7,11 +7,17 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/UI/Authentication.unity
-    guid: e1209f6b200a21340acacd1bd1d7270b
+    guid: efc71a2602cdfcf47b8cd9b2c45dbbc1
   - enabled: 1
     path: Assets/Scenes/UI/MainMenu.unity
-    guid: 3f6e14fa81f8e724898e086e0acb4825
+    guid: 7f13b4a505342284d8308c98b170c2c3
   - enabled: 1
     path: Assets/Scenes/TestZone.unity
     guid: f5c5cb15ddf4bce4889d560f4c32c8c4
+  - enabled: 1
+    path: Assets/Scenes/UITestScene.unity
+    guid: a3ca039d2af9f4b4b9d275d1080d1c10
+  - enabled: 1
+    path: Assets/Scenes/Demo.unity
+    guid: 666db1b8ee837784e8e5d89421d908ca
   m_configObjects: {}

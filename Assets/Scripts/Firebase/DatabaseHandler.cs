@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Firebase.Data;
-using FullSerializer;
 using Proyecto26;
 using UnityEngine;
 
@@ -8,8 +7,6 @@ namespace Firebase
 {
     public class DatabaseHandler : MonoBehaviour
     {
-        private static readonly fsSerializer Serializer = new fsSerializer();
-        
         private const string ProjectId = "beaver-ea0ea";
         private const string DatabaseId = "(default)";
         
@@ -27,12 +24,8 @@ namespace Firebase
                 .Then(userRes =>
                 {
                     var userResponseJson = userRes.Text;
-                    
-                    Debug.Log(userResponseJson);
-                    
+
                     var firebaseUserDocument = FirebaseUserDocument.FromJson(userResponseJson);
-                    
-                    Debug.Log(firebaseUserDocument.Fields.Email.StringValue);
 
                     callback(new User(
                         firebaseUserDocument.Fields.Username.StringValue,
@@ -50,6 +43,44 @@ namespace Firebase
                 .Catch(err =>
                 {
                     Debug.LogErrorFormat($"Firebase.DatabaseHandler: Exception when trying to retrieve the user {userId} from the database: {err}");
+                    callback(null);
+                });
+        }
+
+        public delegate void GetAllNewsCallback(List<News> newsList);
+
+        public static void GetAllNews(GetAllNewsCallback callback)
+        {
+            
+            RestClient.Get($"https://firestore.googleapis.com/v1/projects/{ProjectId}/databases/{DatabaseId}/documents/news")
+                .Then(userRes =>
+                {
+                    var userResponseJson = userRes.Text;
+
+                    var firebaseNewsDocumentAll = FirebaseNewsDocumentAll.FromJson(userResponseJson);
+
+                    var newsList = new List<News>();
+
+                    foreach (var firebaseNewsDocument in firebaseNewsDocumentAll.Documents)
+                    {
+                        var previewImage = firebaseNewsDocument.Fields.PreviewImage?.StringValue != null
+                            ? firebaseNewsDocument.Fields.PreviewImage.StringValue
+                            : "";
+                        
+                        newsList.Add(new News(
+                            firebaseNewsDocument.Fields.Author.StringValue,
+                            firebaseNewsDocument.Fields.Title.StringValue,
+                            firebaseNewsDocument.Fields.Content.StringValue,
+                            previewImage,
+                            firebaseNewsDocument.Fields.Url.StringValue,
+                            (int) firebaseNewsDocument.Fields.Likes.IntegerValue));
+                    }
+                    
+                    callback(newsList);
+                })
+                .Catch(err =>
+                {
+                    Debug.LogErrorFormat($"Firebase.DatabaseHandler: Exception when trying to get the news: {err}");
                     callback(null);
                 });
         }

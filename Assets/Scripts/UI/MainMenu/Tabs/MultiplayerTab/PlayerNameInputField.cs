@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Firebase;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
@@ -17,18 +18,22 @@ namespace UI.MainMenu.Tabs.MultiplayerTab
     { 
         private void OnEnable()
         {
-            string defaultName = "";
+            string defaultName;
+            
+            defaultName = AuthHandler.loggedinUser?.Username;
+
+            if (PlayerPrefs.HasKey(PlayerPrefKeys.PlayerName))
+            {
+                defaultName = PlayerPrefs.GetString(PlayerPrefKeys.PlayerName);
+            }
+                
             TMP_InputField inputField = this.GetComponent<TMP_InputField>();
 
             if (inputField != null)
             {
-                if (PlayerPrefs.HasKey(PlayerPrefKeys.PlayerName))
-                {
-                    defaultName = PlayerPrefs.GetString(PlayerPrefKeys.PlayerName);
-                    inputField.text = defaultName;
-                }
+                inputField.text = defaultName;
             }
-
+            
             PhotonNetwork.NickName = defaultName;
         }
 

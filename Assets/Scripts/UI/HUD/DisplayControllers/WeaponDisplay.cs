@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace Scripts.UI.HUD.DisplayControllers
+namespace UI.HUD.DisplayControllers
 {
     public class WeaponDisplay : MonoBehaviour
     {

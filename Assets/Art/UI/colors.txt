@@ -1,0 +1,8 @@
+Background 1:
+	3C3C3C, 200
+Buttons, Scrollbars, Ect:
+	Normal: 3C3C3C
+	Highlighted: 646464
+	Pressed: 969696
+	Selected: 505050
+	Disabled: B4B4B4

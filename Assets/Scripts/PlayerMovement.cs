@@ -26,6 +26,9 @@ public class PlayerMovement : MonoBehaviour
     public float movementSpeed = 16f;
     public float jumpHeight = 3f;
 
+    private bool canDoubleJump;
+    private bool hasJumped;
+
     void Update()
     {
         // Check if player is grounded
@@ -56,11 +59,40 @@ public class PlayerMovement : MonoBehaviour
             jump();
         }
 
+        if (isGrounded)
+            hasJumped = false;
+
         velocity.y += gravitationalConstant * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
     protected void jump()
     {
+        if (isGrounded)
+        {
+            //Simple Jump like the old code
+            velocity.y = 0;
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravitationalConstant);
+            canDoubleJump = true;
+            hasJumped = true;
+        }
+        else
+        { //!hasJumped in case the player is falling from a high place
+            if (canDoubleJump || !hasJumped)
+            {
+                if (!hasJumped)
+                    hasJumped = true;
+                canDoubleJump = false;
+                velocity.y = 0;
+                //double jump
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravitationalConstant);
+            }
+        }
+    }
+
+    //Setter for gravity for later bonuses
+    public void SetGravity(float grav)
+    {
+        gravitationalConstant = grav;
     }
 }

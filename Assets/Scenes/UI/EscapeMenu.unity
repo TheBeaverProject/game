@@ -187,12 +187,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &602463828 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 15722286035558953, guid: f1cc10daf87359a4c83de582d4c4626d,
-    type: 3}
-  m_PrefabInstance: {fileID: 2042058563102813396}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1147120951
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,6 +369,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2042058562877148256, guid: f1cc10daf87359a4c83de582d4c4626d,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.19607843
+      objectReference: {fileID: 0}
     - target: {fileID: 2042058564050211915, guid: f1cc10daf87359a4c83de582d4c4626d,
         type: 3}
       propertyPath: m_Name
@@ -485,10 +484,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4564099875381342978, guid: f1cc10daf87359a4c83de582d4c4626d,
-        type: 3}
-      propertyPath: EscapeMenuContainer
-      value: 
-      objectReference: {fileID: 602463828}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1cc10daf87359a4c83de582d4c4626d, type: 3}

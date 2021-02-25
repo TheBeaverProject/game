@@ -6,12 +6,20 @@ namespace UI.EscapeMenu
     public class EscapeMenuHandler : MonoBehaviour
     {
         public GameObject EscapeMenuContainer;
+        public GameObject SettingsMenu;
 
         public void ResumeButtonHandler()
         {
             EscapeMenuContainer.SetActive(false);
+            SettingsMenu.SetActive(false);
+            
             //Locks the cursor in the center of the screen
             Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        public void SettingsButtonHandler()
+        {
+            SettingsMenu.SetActive(!SettingsMenu.activeInHierarchy);
         }
 
         private void Start()

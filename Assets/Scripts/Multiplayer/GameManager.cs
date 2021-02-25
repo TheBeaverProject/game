@@ -82,9 +82,13 @@ namespace Multiplayer
             var clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
             var clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity,
                 clientPlayer.transform);
-            
+
             clientCamera.GetComponent<MouseLook>().playerBody = clientPlayer.transform;
             clientCamera.transform.position += new Vector3(0, 0.8f);
+
+            clientHUD.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+            clientHUD.GetComponent<Canvas>().worldCamera = clientCamera;
+            clientHUD.GetComponent<Canvas>().planeDistance = 1f;
         }
 
         public void LeaveRoom()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Firebase;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -115,6 +116,10 @@ namespace UI.MainMenu.Tabs.SettingsTab
 
         public void OnLogoutClick()
         {
+            if (PhotonNetwork.IsConnected)
+            {
+                PhotonNetwork.LeaveRoom();
+            }
             AuthHandler.LogOut();
             SceneManager.LoadScene("Authentication");
         }

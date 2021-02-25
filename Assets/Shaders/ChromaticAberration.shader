@@ -34,9 +34,9 @@
             //Red Channel
             float4 red = tex2D(_MainTex , float2(coords.x - _AberrationOffsetX, coords.y + _AberrationOffsetY));
             //Green Channel
-            float4 green = tex2D(_MainTex, coords.xy);
+            float4 green = tex2D(_MainTex, float2(coords.x + _AberrationOffsetX, coords.y - _AberrationOffsetY));
             //Blue Channel
-            float4 blue = tex2D(_MainTex, float2(coords.x + _AberrationOffsetX, coords.y - _AberrationOffsetY));
+            float4 blue = tex2D(_MainTex, coords.xy);
            
             float4 finalColor = float4(red.r, green.g, blue.b, 1.0f);
             return finalColor;

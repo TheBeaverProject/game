@@ -49,3 +49,5 @@ MonoBehaviour:
     type: 3}
   hudPrefab: {fileID: 3411205111892341334, guid: 3e6590e2453c41e439b9e14a07a9e00f,
     type: 3}
+  ESCPrefab: {fileID: 2042058564050211915, guid: f1cc10daf87359a4c83de582d4c4626d,
+    type: 3}

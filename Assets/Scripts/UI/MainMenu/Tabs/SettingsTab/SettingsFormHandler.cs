@@ -5,6 +5,7 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace UI.MainMenu.Tabs.SettingsTab
 {
@@ -14,6 +15,11 @@ namespace UI.MainMenu.Tabs.SettingsTab
         
         public TMP_Dropdown ResDropdownMenu;
         public TMP_Dropdown FullScreenDropdownMenu;
+        public Slider FOVSlider;
+        public TextMeshProUGUI FOVText;
+        public TMP_Dropdown QualityDropdown;
+
+        public GameObject EscapeMenu;
 
         #endregion
 
@@ -21,8 +27,13 @@ namespace UI.MainMenu.Tabs.SettingsTab
         {
             InitFSDropdown();
             InitResDropdown();
+            
             selectedRes = Screen.currentResolution;
             selectedFSMode = Screen.fullScreenMode;
+            
+            FOVSlider.value = PlayerPrefs.HasKey(PlayerPrefKeys.FOV) ? PlayerPrefs.GetInt(PlayerPrefKeys.FOV) : 70;
+
+            InitQualityDropdown();
         }
 
         #region Screen
@@ -112,7 +123,52 @@ namespace UI.MainMenu.Tabs.SettingsTab
         }
 
         #endregion
+        
 
+        #region Game
+
+        #region FOV
+
+        public void FOVSliderUpdate()
+        {
+            FOVText.text = Convert.ToString((int) FOVSlider.value);
+        }
+
+        #endregion
+
+        #region Quality
+
+        private void InitQualityDropdown()
+        {
+            string[] names = QualitySettings.names;
+            for (int i = 0; i < names.Length; i++)
+            {
+                QualityDropdown.options.Add(new TMP_Dropdown.OptionData(names[i]));
+            }
+
+            QualityDropdown.value = QualitySettings.GetQualityLevel();
+        }
+
+        #endregion
+
+        public void GameSettingsSave()
+        {
+            PlayerPrefs.SetInt(PlayerPrefKeys.FOV, (int) FOVSlider.value);
+
+            QualitySettings.SetQualityLevel(QualityDropdown.value, true);
+            
+            PlayerPrefs.Save();
+
+            if (EscapeMenu != null)
+            {
+                EscapeMenu.GetComponent<Canvas>().worldCamera.fieldOfView = FOVSlider.value;
+            }
+        }
+
+        #endregion
+        
+
+        #region Account
 
         public void OnLogoutClick()
         {
@@ -123,5 +179,7 @@ namespace UI.MainMenu.Tabs.SettingsTab
             AuthHandler.LogOut();
             SceneManager.LoadScene("Authentication");
         }
+
+        #endregion
     }
 }

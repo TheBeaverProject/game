@@ -4,6 +4,11 @@
     /// Contains the player name used for multiplayer
     /// </summary>
     public static string PlayerName = "PlayerName";
+
+    /// <summary>
+    /// Contains the FOV value wanted by the user
+    /// </summary>
+    public static string FOV = "FOV";
     
     /// <summary>
     /// Contains the firebase userId of the connected user

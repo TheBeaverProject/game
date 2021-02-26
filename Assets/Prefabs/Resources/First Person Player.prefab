@@ -140,7 +140,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4419865850928438867}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5993331ea8fc49f698f0bde78fb24e43, type: 3}
+  m_Script: {fileID: 11500000, guid: bf52d1a2e77f5df4faf402942257306c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 4419865850928438866}
@@ -148,10 +148,10 @@ MonoBehaviour:
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   roofCheck: {fileID: 4419865849789244982}
-  movementSpeed: 9
-  jumpHeight: 2
+  movementSpeed: 16
+  jumpHeight: 3
 --- !u!114 &7261727423731255463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4419865850928438867}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bce299293d7244148b13cfdd6b8cb70d, type: 3}
+  m_Script: {fileID: 11500000, guid: 146f64a3e2118294f9d5575c1968d09b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   HUD: {fileID: 0}

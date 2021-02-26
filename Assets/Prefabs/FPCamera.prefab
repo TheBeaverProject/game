@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4683654419636010165}
   - component: {fileID: 4683654419636010162}
   - component: {fileID: 559707831751221630}
-  - component: {fileID: 5178495544759481781}
   m_Layer: 0
   m_Name: FPCamera
   m_TagString: Untagged
@@ -94,22 +93,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4683654419636010163}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34abb5bc9d003e441a46a754c703a3d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c49cda3f5802e0458d1ccf81b2fbce3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 100
   playerBody: {fileID: 0}
---- !u!114 &5178495544759481781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4683654419636010163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e995d492955c4aa89e376cd17744aa52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  curShader: {fileID: 4800000, guid: 931cbd4d3ed741f5a7839be357d6f878, type: 3}
-  ChromaticAbberation: 0
+  followCursor: 1

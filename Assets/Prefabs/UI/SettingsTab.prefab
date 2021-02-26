@@ -238,7 +238,7 @@ RectTransform:
   - {fileID: 992495572275574627}
   - {fileID: 3264481802803558840}
   m_Father: {fileID: 8577236417441531311}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -1414,9 +1414,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 5938119251640546228}
   - {fileID: 5532376902273818003}
   - {fileID: 5938119251244652071}
-  - {fileID: 5938119251640546228}
   m_Father: {fileID: 3269489802446925227}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4889,7 +4889,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5938119251225320199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33fafa09de7d4332be64f8c446471ab5, type: 3}
+  m_Script: {fileID: 11500000, guid: 03d2835ce1116b54d8f52a4898b63b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ResDropdownMenu: {fileID: 5938119251053815830}
@@ -4898,7 +4898,7 @@ MonoBehaviour:
   FOVText: {fileID: 4515403694884588327}
   QualityDropdown: {fileID: 2155846329299470354}
   FpsSlider: {fileID: 1189730814717726438}
-  FpsText: {fileID: 5206677493945675217}
+  FpsText: {fileID: 2486743997754210893}
   SettingsLoggedInText: {fileID: 3638261100905902057}
   EscapeMenu: {fileID: 0}
 --- !u!1 &5938119251244652070
@@ -4934,7 +4934,7 @@ RectTransform:
   - {fileID: 6666208671889056939}
   - {fileID: 5938119251756062706}
   m_Father: {fileID: 8577236417441531311}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -5893,7 +5893,7 @@ RectTransform:
   - {fileID: 5938119251053815825}
   - {fileID: 5938119249724179032}
   m_Father: {fileID: 8577236417441531311}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}

@@ -24,7 +24,7 @@ namespace Jumps
     {
         public Vector3 Jump()
         {
-            throw new System.NotImplementedException();
+            return new Vector3(0, (float) Math.Sqrt(2f * -2f * -9.81f), 0);
         }
     }
 

@@ -33,6 +33,9 @@ public class PlayerMovement : MonoBehaviour
     // How does our player jump ?
     private IJumpable jump;
 
+    public hasDoubleJumped;
+    
+
     void Start()
     {
         // Assign default movement(s)
@@ -53,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded && velocity.y < 0 || isHittingCeiling)
         {
             isJumping = false;
+            hasDoubleJumped = false;
             velocity.y = -0.5f;                             // not 0 because gravity goes brrrr
         }
 
@@ -68,6 +72,13 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = jump.Jump().y;
             controller.Move(velocity * Time.deltaTime);
             isJumping = true;
+        }
+
+        if (Input.GetButtonDown("Jump") && isJumping && !hasDoubleJumped)
+        {
+            velocity.y = jump.Jump().y;
+            controller.Move(Velocity * Time.deltaTime)
+            hasDoubleJumped = true;
         }
 
         // Apply gravity

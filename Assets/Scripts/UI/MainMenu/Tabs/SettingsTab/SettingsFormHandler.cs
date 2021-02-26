@@ -14,10 +14,18 @@ namespace UI.MainMenu.Tabs.SettingsTab
         #region Serialized Fields
         
         public TMP_Dropdown ResDropdownMenu;
+        
         public TMP_Dropdown FullScreenDropdownMenu;
+        
         public Slider FOVSlider;
         public TextMeshProUGUI FOVText;
+        
         public TMP_Dropdown QualityDropdown;
+
+        public Slider FpsSlider;
+        public TextMeshProUGUI FpsText;
+        
+        public TextMeshProUGUI SettingsLoggedInText;
 
         public GameObject EscapeMenu;
 
@@ -32,6 +40,9 @@ namespace UI.MainMenu.Tabs.SettingsTab
             selectedFSMode = Screen.fullScreenMode;
             
             FOVSlider.value = PlayerPrefs.HasKey(PlayerPrefKeys.FOV) ? PlayerPrefs.GetInt(PlayerPrefKeys.FOV) : 70;
+            FpsSlider.value = Application.targetFrameRate;
+
+            SettingsLoggedInText.text += Firebase.AuthHandler.loggedinUser.Email;
 
             InitQualityDropdown();
         }
@@ -151,18 +162,27 @@ namespace UI.MainMenu.Tabs.SettingsTab
 
         #endregion
 
+        #region FpsLimit
+
+        public void FpsLimitSliderUpdate()
+        {
+            FpsText.text = Convert.ToString((int) FpsSlider.value);
+        }
+
+        #endregion
+
         public void GameSettingsSave()
         {
             PlayerPrefs.SetInt(PlayerPrefKeys.FOV, (int) FOVSlider.value);
+
+            Application.targetFrameRate = (int) FpsSlider.value;
 
             QualitySettings.SetQualityLevel(QualityDropdown.value, true);
             
             PlayerPrefs.Save();
 
             if (EscapeMenu != null)
-            {
                 EscapeMenu.GetComponent<Canvas>().worldCamera.fieldOfView = FOVSlider.value;
-            }
         }
 
         #endregion

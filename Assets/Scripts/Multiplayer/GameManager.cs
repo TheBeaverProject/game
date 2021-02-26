@@ -93,7 +93,7 @@ namespace Multiplayer
 
             // Associate the HUD to the Render Camera
             InitCameraOnUIElement(clientHUD, clientCamera);
-            InitCameraOnUIElement(clientESCMenu, clientCamera);
+            clientESCMenu.GetComponent<Canvas>().worldCamera = clientCamera;
         }
 
         private void InitCameraOnUIElement(GameObject uiEl, Camera ccam)

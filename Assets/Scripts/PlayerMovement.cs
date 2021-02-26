@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Jumps;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -20,14 +22,23 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded;
     // Roof collision check
     public Transform roofCheck;
-    bool isHittingRoof;
+    bool isHittingCeiling;
 
     // [TMP DEV]Set the player movement speed
     public float movementSpeed = 16f;
     public float jumpHeight = 3f;
 
-    private bool canDoubleJump;
-    private bool hasJumped;
+    private bool isJumping;
+
+    // How does our player jump ?
+    private IJumpable jump;
+
+    void Start()
+    {
+        // Assign default movement(s)
+        jump = new JumpBase();
+        // e.g Assign default spell here
+    }
 
     void Update()
     {
@@ -36,58 +47,32 @@ public class PlayerMovement : MonoBehaviour
         // if sphere collide then the player is grounded
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         // Same for ceiling
-        isHittingRoof = Physics.CheckSphere(roofCheck.position, groundDistance, groundMask);
+        isHittingCeiling = Physics.CheckSphere(roofCheck.position, groundDistance, groundMask);
 
         // If player is grounded then we reset his velocity
-        if (isGrounded && velocity.y < 0 || isHittingRoof)
-            velocity.y = -0.5f;           // not 0 because gravity goes brrrr
+        if (isGrounded && velocity.y < 0 || isHittingCeiling)
+        {
+            isJumping = false;
+            velocity.y = -0.5f;                             // not 0 because gravity goes brrrr
+        }
 
-        // Gets w a s d inputs
-        // Vertical:
-        //      W: Vertical = 1, S: Vertical = -1
-        // Horizontal:
-        //      A: Horizontal = -1, D: Horizontal = 1
+        // RTFM
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-
-        //multiply the inputs by the unit vector
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * movementSpeed * Time.deltaTime);
 
-        if (Input.GetButtonDown("Jump"))
+
+        if (Input.GetButtonDown("Jump") && !isJumping)
         {
-            jump();
+            velocity.y = jump.Jump().y;
+            controller.Move(velocity * Time.deltaTime);
+            isJumping = true;
         }
 
-        if (isGrounded)
-            hasJumped = false;
-
+        // Apply gravity
         velocity.y += gravitationalConstant * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
-    }
-
-    protected void jump()
-    {
-        if (isGrounded)
-        {
-            //Simple Jump like the old code
-            velocity.y = 0;
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravitationalConstant);
-            canDoubleJump = true;
-            hasJumped = true;
-        }
-        else
-        { //!hasJumped in case the player is falling from a high place
-            if (canDoubleJump || !hasJumped)
-            {
-                if (!hasJumped)
-                    hasJumped = true;
-                canDoubleJump = false;
-                velocity.y = 0;
-                //double jump
-                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravitationalConstant);
-            }
-        }
     }
 
     //Setter for gravity for later bonuses

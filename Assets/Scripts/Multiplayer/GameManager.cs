@@ -18,6 +18,9 @@ namespace Multiplayer
         [Tooltip("HUD of the client")]
         public GameObject hudPrefab;
         
+        [Tooltip("Escape Menu of the client")]
+        public GameObject ESCPrefab;
+        
         #region Photon Callbacks
 
         /// <summary>
@@ -80,11 +83,24 @@ namespace Multiplayer
             
             // Add a camera and a HUD only on the player representing the client to have a single camera/hud per game scene and avoid confusion
             var clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
-            var clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity,
-                clientPlayer.transform);
-            
+            var clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            var clientESCMenu = Instantiate(ESCPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+
+            // Place the camera correctly and set the FOV according to the Player's settings
             clientCamera.GetComponent<MouseLook>().playerBody = clientPlayer.transform;
             clientCamera.transform.position += new Vector3(0, 0.8f);
+            clientCamera.fieldOfView = PlayerPrefs.HasKey(PlayerPrefKeys.FOV) ? PlayerPrefs.GetInt(PlayerPrefKeys.FOV) : 70;
+
+            // Associate the HUD to the Render Camera
+            InitCameraOnUIElement(clientHUD, clientCamera);
+            clientESCMenu.GetComponent<Canvas>().worldCamera = clientCamera;
+        }
+
+        private void InitCameraOnUIElement(GameObject uiEl, Camera ccam)
+        {
+            uiEl.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+            uiEl.GetComponent<Canvas>().worldCamera = ccam;
+            uiEl.GetComponent<Canvas>().planeDistance = 1f;
         }
 
         public void LeaveRoom()

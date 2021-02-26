@@ -11,7 +11,8 @@ namespace PlayerManagement
         public UI.HUD.Controller HUD;
         
         [Tooltip("The current Health of our player")]
-        public int Health = 100;
+        [SerializeField]
+        private int Health = 100;
         
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
@@ -64,7 +65,7 @@ namespace PlayerManagement
         
         #endregion
         
-        #region Player Control
+        #region Player Methods
 
         #endregion
     }

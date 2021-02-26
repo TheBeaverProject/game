@@ -11,6 +11,9 @@ namespace PlayerManagement
         public Transform playerBody;
         //Dragged the character controller from unity
 
+        // Alows the MouseLook to be disabled when the Player is in UI menus
+        public bool followCursor = true;
+
         private float xRotation = 0f;
     
         void Start()
@@ -31,6 +34,11 @@ namespace PlayerManagement
             if (PhotonNetwork.IsConnected && photonView.IsMine == false)
             {
                 return;
+            }
+
+            if (!followCursor)
+            {
+                return; // Return if the Mouselook is disabled
             }
             
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;

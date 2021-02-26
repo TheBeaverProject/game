@@ -28,6 +28,9 @@ namespace PlayerManagement
         // [TMP DEV]Set the player movement speed
         public float movementSpeed = 16f;
         public float jumpHeight = 3f;
+
+        private bool canDoubleJump;
+        private bool hasJumped;
         
         void Update()
         {
@@ -62,16 +65,38 @@ namespace PlayerManagement
 
             if (Input.GetButtonDown("Jump"))
             {
-                Jump();
+                jump();
             }
+            
+            if (isGrounded)
+                hasJumped = false;
 
             velocity.y += gravitationalConstant * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
         }
         
-        protected void Jump()
+        protected void jump()
         {
-            
+            if (isGrounded)
+            {
+                //Simple Jump like the old code
+                velocity.y = 0;
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravitationalConstant);
+                canDoubleJump = true;
+                hasJumped = true;
+            }
+            else
+            {   //!hasJumped in case the player is falling from a high place
+                if (canDoubleJump || !hasJumped)
+                {  
+                    if (!hasJumped)
+                        hasJumped = true;
+                    canDoubleJump = false;
+                    velocity.y = 0;
+                    //double jump
+                    velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravitationalConstant);
+                }
+            }
         }
 
     }

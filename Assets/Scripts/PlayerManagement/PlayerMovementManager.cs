@@ -24,7 +24,7 @@ namespace PlayerManagement
 
         // Roof collision check
         public Transform roofCheck;
-        bool isHittingRoof;
+        bool isHittingCeiling;
 
         // [TMP DEV]Set the player movement speed
         public float movementSpeed = 16f;
@@ -53,10 +53,10 @@ namespace PlayerManagement
             // if sphere collide then the player is grounded
             isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
             // Same for ceiling
-            isHittingRoof = Physics.CheckSphere(roofCheck.position, groundDistance, groundMask);
+            isHittingCeling = Physics.CheckSphere(roofCheck.position, groundDistance, groundMask);
 
             // If player is grounded then we reset his velocity
-            if (isGrounded && velocity.y < 0 || isHittingRoof)
+            if (isJumping && velocity.y < 0 || isHittingCeiling)
             {
                 isJumping = false;
                 velocity.y = -0.5f; // not 0 because gravity goes brrrr

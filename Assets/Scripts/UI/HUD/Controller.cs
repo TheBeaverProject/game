@@ -1,11 +1,15 @@
 using System;
 using Scripts.UI.HUD.DisplayControllers;
+using TMPro;
+using UI.HUD.DisplayControllers;
 using UnityEngine;
 
-namespace Scripts.UI.HUD
+namespace UI.HUD
 {
     public class Controller : MonoBehaviour
     {
+        public TextMeshProUGUI playerName;
+        
         public AmmoDisplay ammoDisplay;
         public HealthDisplay healthDisplay;
         public RoundDisplay roundDisplay;

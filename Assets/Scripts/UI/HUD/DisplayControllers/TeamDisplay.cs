@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.UI.HUD.DisplayControllers
+namespace UI.HUD.DisplayControllers
 {
     public class TeamDisplay : MonoBehaviour
     {
@@ -15,7 +13,7 @@ namespace Scripts.UI.HUD.DisplayControllers
             if (id < 1 || id > playerContainers.Length)
                 return;
             Slider slider = playerContainers[id - 1].GetComponentInChildren<Slider>();
-            Methods.Healthbar.UpdateHealth(slider, newHealth);
+            Scripts.UI.HUD.Methods.Healthbar.UpdateHealth(slider, newHealth);
         }
         
         public void UpdatePlayerName(int id, string newName)

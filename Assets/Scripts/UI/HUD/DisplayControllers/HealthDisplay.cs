@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.UI.HUD.DisplayControllers
+namespace UI.HUD.DisplayControllers
 {
     public class HealthDisplay : MonoBehaviour
     {
@@ -20,7 +18,7 @@ namespace Scripts.UI.HUD.DisplayControllers
          */
         public void SetHUDHealth(int displayHealth)
         {
-            Methods.Healthbar.UpdateHealth(healthSlider, displayHealth);
+            Scripts.UI.HUD.Methods.Healthbar.UpdateHealth(healthSlider, displayHealth);
             healthText.text = $"{displayHealth}";
         }
     }

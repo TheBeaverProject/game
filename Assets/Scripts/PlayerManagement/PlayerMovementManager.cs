@@ -1,5 +1,6 @@
 ﻿using Photon.Pun;
 using UnityEngine;
+using Movement;
 
 namespace PlayerManagement
 {
@@ -30,7 +31,14 @@ namespace PlayerManagement
         public float jumpHeight = 3f;
 
         private bool canDoubleJump;
-        private bool hasJumped;
+        private bool isJumping;
+        private IJumpable jump; 
+        
+        void Start()
+        {
+            // Assign default movement(s)
+            jump = new Jumpbase();
+        }
         
         void Update()
         {
@@ -49,55 +57,28 @@ namespace PlayerManagement
 
             // If player is grounded then we reset his velocity
             if (isGrounded && velocity.y < 0 || isHittingRoof)
+            {
+                isJumping = false;
                 velocity.y = -0.5f; // not 0 because gravity goes brrrr
-
-            // Gets w a s d inputs
-            // Vertical:
-            //      W: Vertical = 1, S: Vertical = -1
-            // Horizontal:
-            //      A: Horizontal = -1, D: Horizontal = 1
+            }
+            
+            // RTFM
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
 
             //multiply the inputs by the unit vector
             Vector3 move = transform.right * x + transform.forward * z;
             controller.Move(move * movementSpeed * Time.deltaTime);
-
-            if (Input.GetButtonDown("Jump"))
+            
+            if (Input.GetButtonDown("Jump") && !isJumping)
             {
-                jump();
+                velocity.y = jump.Jump().y;
+                controller.Move(velocity * Time.deltaTime);
+                isJumping = true;
             }
             
-            if (isGrounded)
-                hasJumped = false;
-
+            // Apply gravity
             velocity.y += gravitationalConstant * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
-        }
-        
-        protected void jump()
-        {
-            if (isGrounded)
-            {
-                //Simple Jump like the old code
-                velocity.y = 0;
-                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravitationalConstant);
-                canDoubleJump = true;
-                hasJumped = true;
-            }
-            else
-            {   //!hasJumped in case the player is falling from a high place
-                if (canDoubleJump || !hasJumped)
-                {  
-                    if (!hasJumped)
-                        hasJumped = true;
-                    canDoubleJump = false;
-                    velocity.y = 0;
-                    //double jump
-                    velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravitationalConstant);
-                }
-            }
-        }
-
     }
 }

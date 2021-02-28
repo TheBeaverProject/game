@@ -42,6 +42,8 @@ namespace PlayerManagement
             // Assign default movement(s)
             jump = new JumpBase();
             // e.g Assign default spell here
+            //Assign Ground Layer for isGrounded
+            groundMask = LayerMask.GetMask("Ground");
         }
 
         void Update()
@@ -66,6 +68,7 @@ namespace PlayerManagement
                 hasDoubleJumped = false;
                 velocity.y = -0.5f; // not 0 because gravity goes brrrr
             }
+            
 
             // RTFM
             float x = Input.GetAxis("Horizontal");
@@ -79,12 +82,14 @@ namespace PlayerManagement
                 controller.Move(velocity * Time.deltaTime);
                 isJumping = true;
             }
-
-            if (Input.GetButtonDown("Jump") && isJumping && !hasDoubleJumped)
+            else
             {
-                velocity.y = jump.Jump().y;
-                controller.Move(velocity * Time.deltaTime);
-                hasDoubleJumped = true;
+                if (Input.GetButtonDown("Jump") && isJumping && !hasDoubleJumped)
+                {
+                    velocity.y = jump.Jump().y;
+                    controller.Move(velocity * Time.deltaTime);
+                    hasDoubleJumped = true;
+                }
             }
 
             // Apply gravity

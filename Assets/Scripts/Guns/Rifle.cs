@@ -44,7 +44,9 @@ namespace Guns
                             // Sets the parent if the gun is not ours
                             transform.SetParent(holder.transform);
                             transform.position = holder.transform.position;
-                            transform.localPosition = new Vector3(0.206f, 0.7f);
+                            transform.rotation = holder.transform.rotation;
+                            transform.localPosition = new Vector3(0.206f, 0.4f);
+                            transform.Rotate(-90, -90, 0);
                         }
                     }
                 }

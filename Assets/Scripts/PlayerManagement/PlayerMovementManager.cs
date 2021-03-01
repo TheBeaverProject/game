@@ -34,9 +34,7 @@ namespace PlayerManagement
 
         // How does our player jump ?
         private IJumpable jump;
-
-        public bool hasDoubleJumped;
-
+        
         void Start()
         {
             // Assign default movement(s)
@@ -65,7 +63,6 @@ namespace PlayerManagement
             if (isGrounded && velocity.y < 0 || isHittingCeiling)
             {
                 isJumping = false;
-                hasDoubleJumped = false;
                 velocity.y = -0.5f; // not 0 because gravity goes brrrr
             }
             
@@ -81,15 +78,6 @@ namespace PlayerManagement
                 velocity.y = jump.Jump().y;
                 controller.Move(velocity * Time.deltaTime);
                 isJumping = true;
-            }
-            else
-            {
-                if (Input.GetButtonDown("Jump") && isJumping && !hasDoubleJumped)
-                {
-                    velocity.y = jump.Jump().y;
-                    controller.Move(velocity * Time.deltaTime);
-                    hasDoubleJumped = true;
-                }
             }
 
             // Apply gravity

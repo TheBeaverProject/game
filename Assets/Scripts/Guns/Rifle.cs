@@ -16,14 +16,15 @@ namespace Guns
             magazineSize = 20;
             bulletsPerTap = 1;
             allowButtonHold = false;
-            timeBetweenShooting = 0.5f;
+            timeBetweenShooting = 0.3f;
             spread = 0.01f;
             range = 100;
             reloadTime = 3;
-            timeBetweenShots = 0;
-
             bulletsLeft = magazineSize;
             readyToShoot = true;
+            
+            // Update the HUD
+            holder.HUD.UpdateWeaponDisplay(this);
         }
 
         private void Update()
@@ -53,25 +54,10 @@ namespace Guns
             }
         }
 
-        protected override void Reload()
-        {
-            Debug.Log("Reloading");
-            reloading = true;
-            Invoke("ReloadFinished", reloadTime);
-        }
-
-        protected override void ReloadFinished()
-        {
-            bulletsLeft = magazineSize;
-            reloading = false;
-            
-            // Update the HUD
-            holder.HUD.UpdateWeaponDisplay(this);
-        }
-
         protected override void Shoot()
         {
             Debug.Log("Shooting");
+            weaponAudioSource.PlayOneShot(singleShotSoundEffect);
             
             readyToShoot = false;
             
@@ -84,7 +70,7 @@ namespace Guns
             if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range))
             {
                 Debug.Log($"Raycast hit: {rayHit.collider.name}");
-                Debug.DrawRay(transform.position, direction * rayHit.distance, Color.yellow);
+                Debug.DrawRay(holder.playerCamera.transform.position, direction * rayHit.distance, Color.yellow);
                 
                 if (rayHit.collider.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayerManager))
                 {
@@ -94,7 +80,7 @@ namespace Guns
             }
             else
             {
-                Debug.DrawRay(transform.position, direction * 1000, Color.red);
+                Debug.DrawRay(holder.playerCamera.transform.position, direction * 1000, Color.red);
             }
             
             bulletsLeft--;
@@ -103,15 +89,10 @@ namespace Guns
             // Update the HUD
             holder.HUD.UpdateWeaponDisplay(this);
             
-            Invoke("ResetShot",timeBetweenShooting);
+            Invoke("ResetShot", timeBetweenShooting);
             
             if (bulletsShot > 0 && bulletsLeft > 0)
                 Invoke("Shoot",timeBetweenShots);
-        }
-
-        protected override void ResetShot()
-        {
-            readyToShoot = true;
         }
     }
 }

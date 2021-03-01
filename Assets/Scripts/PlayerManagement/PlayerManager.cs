@@ -96,10 +96,13 @@ namespace PlayerManagement
         
         [PunRPC] void AddGunPrefabToPlayer()
         {
-            playerGun = Instantiate(gunPrefab, this.transform.position, this.transform.rotation, this.gameObject.transform);
-            playerGun.transform.position += new Vector3(0.2f, 0.55f);
-            playerGun.transform.Rotate(-81f, -90f, -0.5f);
-            playerGun.transform.SetParent(playerCamera.transform);
+            var transform = playerCamera.transform;
+            playerGun = Instantiate(gunPrefab, transform.position, transform.rotation, transform);
+            
+            playerGun.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
+            playerGun.transform.localPosition = gunPrefab.transform.position;
+            playerGun.transform.RotateAround(playerGun.transform.position, Vector3.up, -3);
+            
             playerGun.GetComponent<Gunnable>().holder = this;
         }
 

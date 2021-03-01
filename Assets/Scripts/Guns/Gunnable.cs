@@ -14,6 +14,10 @@ namespace Guns
         [SerializeField]
         public string weaponName;
         
+        // Sound Effects
+        public AudioSource weaponAudioSource;
+        public AudioClip singleShotSoundEffect;
+        
         public int GetDamage => damage;
         
         //Gun behavior
@@ -21,6 +25,7 @@ namespace Guns
         protected float timeBetweenShooting, spread, range, reloadTime, timeBetweenShots;
         
         // Magazine size
+        // TODO: Implement magazine number
         protected int bulletsLeft, bulletsShot;
         protected int magazineSize, bulletsPerTap;
         public int GetMagSize => magazineSize;
@@ -37,9 +42,26 @@ namespace Guns
         protected RaycastHit rayHit;
         
         protected abstract void MyInput();
-        protected abstract void Reload();
-        protected abstract void ReloadFinished();
+        protected void Reload()
+        {
+            Debug.Log("Reloading");
+            reloading = true;
+            Invoke("ReloadFinished", reloadTime);
+        }
+
+        protected void ReloadFinished()
+        {
+            bulletsLeft = magazineSize;
+            reloading = false;
+            
+            // Update the HUD
+            holder.HUD.UpdateWeaponDisplay(this);
+        }
+        
         protected abstract void Shoot();
-        protected abstract void ResetShot();
+        protected void ResetShot()
+        {
+            readyToShoot = true;
+        }
     }
 }

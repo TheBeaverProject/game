@@ -20,7 +20,7 @@ namespace PlayerManagement
 
         // Temporary
         [Tooltip("Prefab used by the gun TEMPORARY")] [SerializeField]
-        private GameObject gunPrefab;
+        GameObject gunPrefab;
 
         public int Health
         {
@@ -97,7 +97,7 @@ namespace PlayerManagement
             
             // Sets the gun as the children of the camera
             playerGun.transform.SetParent(transform);
-            
+
             // Position correctly the gun
             playerGun.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
             playerGun.transform.localPosition = gunPrefab.transform.position;
@@ -107,7 +107,6 @@ namespace PlayerManagement
             playerGun.GetComponent<Gunnable>().holder = this;
         }
 
-        
         public void TakeDamage(double weaponDamage, LayerMask bodyZone)
         {
             Debug.Log("TakeDamage called");
@@ -127,14 +126,12 @@ namespace PlayerManagement
 
             int newHealth =  Health - ((int) weaponDamage);
             
-            photonView.RPC("UpdateHealth", this.photonView.Controller, newHealth);
+            photonView.RPC("UpdateHealth", RpcTarget.All, newHealth);
         }
 
         [PunRPC] 
         void UpdateHealth(int newHealth)
         {
-            Debug.Log(newHealth);
-            
             Health = newHealth;
             
             if (PhotonNetwork.IsConnected && photonView.IsMine)

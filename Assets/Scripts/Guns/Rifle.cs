@@ -23,8 +23,32 @@ namespace Guns
             bulletsLeft = magazineSize;
             readyToShoot = true;
             
-            // Update the HUD
-            holder.HUD.UpdateWeaponDisplay(this);
+            if (PhotonNetwork.IsConnected)
+            {
+                Debug.Log("Weapon instancied");
+                if (photonView.IsMine)
+                {
+                    Debug.Log("photonView.IsMine");
+                    // Update the HUD
+                    holder.HUD.UpdateWeaponDisplay(this);
+                }
+                else // View is not ours, we need to find the parent
+                {
+                    Debug.Log("photonView.IsNotMine");
+                    
+                    foreach (var view in PhotonNetwork.PhotonViewCollection)
+                    {
+                        // Looks for a player object with the same controller => the parent of the gun
+                        if (view.Controller.Equals(photonView.Controller) && view.TryGetComponent<PlayerManager>(out holder))
+                        {
+                            // Sets the parent if the gun is not ours
+                            transform.SetParent(holder.transform);
+                            transform.position = holder.transform.position;
+                            transform.localPosition = new Vector3(0.206f, 0.7f);
+                        }
+                    }
+                }
+            }
         }
 
         private void Update()

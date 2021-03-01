@@ -14,6 +14,10 @@ namespace Guns
         private float force = 400f;
         //private GameObject effect;
 
+        // Sound Effects
+        public AudioSource grenadeAudioSource;
+        public AudioClip explosionSound;
+        
         private void Start()
         {
             countDown = delay;
@@ -32,7 +36,7 @@ namespace Guns
         private void Explode()
         {
             //Instantiate(effect, transform.position, transform.rotation);
-
+            grenadeAudioSource.PlayOneShot(explosionSound);
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
 
             foreach (Collider hit in colliders)

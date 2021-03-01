@@ -81,6 +81,12 @@ namespace PlayerManagement
             else // Network Player
             {
                 this.Health = (int) stream.ReceiveNext();
+
+                if (photonView.IsMine)
+                {
+                    Debug.Log("Updating health on the HUD");
+                    HUD.healthDisplay.SetHUDHealth(Health);
+                }
             }
         }
         
@@ -90,7 +96,9 @@ namespace PlayerManagement
         
         [PunRPC] void AddGunPrefabToPlayer()
         {
-            playerGun = Instantiate(gunPrefab, this.transform.position, Quaternion.identity, this.gameObject.transform);
+            playerGun = Instantiate(gunPrefab, this.transform.position, this.transform.rotation, this.playerCamera.transform);
+            playerGun.transform.position += new Vector3(0.2f, 0.55f);
+            playerGun.transform.Rotate(-81f, -90f, -0.5f);
             playerGun.GetComponent<Gunnable>().holder = this;
         }
 
@@ -110,7 +118,11 @@ namespace PlayerManagement
             }
 
             Health -= (int) weaponDamage;
-            HUD.healthDisplay.SetHUDHealth(Health);
+            
+            if (PhotonNetwork.IsConnected && photonView.IsMine)
+            {
+                HUD.healthDisplay.SetHUDHealth(Health);
+            }
         }
         
         #endregion

@@ -20,7 +20,7 @@ namespace Guns
             spread = 0.01f;
             range = 100;
             reloadTime = 3;
-            timeBetweenShots = 0.5f;
+            timeBetweenShots = 0;
 
             bulletsLeft = magazineSize;
             readyToShoot = true;
@@ -28,10 +28,6 @@ namespace Guns
 
         private void Update()
         {
-            if (PhotonNetwork.IsConnected && photonView.IsMine == false)
-            {
-                return;
-            }
             MyInput();
         }
 
@@ -79,22 +75,26 @@ namespace Guns
             
             readyToShoot = false;
             
-            //Spread
+            // Spread
             float x = Random.Range(-spread, spread);
             float y = Random.Range(-spread, spread);
             Vector3 direction = holder.playerCamera.transform.forward + new Vector3(x, y, 0);
             
-            //RayCast
-            if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range, ennemy))
+            // RayCast
+            if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range))
             {
                 Debug.Log($"Raycast hit: {rayHit.collider.name}");
-
-                PlayerManager damagedPlayerManager;
-                if (rayHit.collider.TryGetComponent<PlayerManager>(out damagedPlayerManager))
+                Debug.DrawRay(transform.position, direction * rayHit.distance, Color.yellow);
+                
+                if (rayHit.collider.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayerManager))
                 {
                     Debug.Log($"Took Damage: {damagedPlayerManager.GetInstanceID()} - Health: {damagedPlayerManager.Health}");
                     damagedPlayerManager.TakeDamage(damage, rayHit.collider.gameObject.layer);
                 }
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, direction * 1000, Color.red);
             }
             
             bulletsLeft--;

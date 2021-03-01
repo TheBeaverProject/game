@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using Guns;
+using Photon.Pun;
 using UnityEngine;
 
 namespace PlayerManagement
@@ -9,10 +10,17 @@ namespace PlayerManagement
 
         [Tooltip("HUD of the player")]
         public UI.HUD.Controller HUD;
+
+        [Tooltip("Camera follwing the player")]
+        public Camera playerCamera;
         
         [Tooltip("The current Health of our player")]
         [SerializeField]
         private int health = 100;
+
+        // Temporary
+        [Tooltip("Prefab used by the gun TEMPORARY")] [SerializeField]
+        private GameObject gunPrefab;
 
         public int Health
         {
@@ -51,6 +59,15 @@ namespace PlayerManagement
 
         private void Update()
         {
+            if (PhotonNetwork.IsConnected && photonView.IsMine == false)
+            {
+                return;
+            }
+            
+            if (Input.GetKeyDown(KeyCode.B) && playerGun == null)
+            {
+                photonView.RPC("AddGunPrefabToPlayer", RpcTarget.All);
+            }
         }
 
         #endregion
@@ -67,7 +84,15 @@ namespace PlayerManagement
             }
         }
         
-        #region Player Methods
+        #region Player
+
+        private GameObject playerGun;
+        
+        [PunRPC] void AddGunPrefabToPlayer()
+        {
+            playerGun = Instantiate(gunPrefab, this.transform.position, Quaternion.identity, this.gameObject.transform);
+            playerGun.GetComponent<Gunnable>().holder = this;
+        }
 
         public void TakeDamage(double weaponDamage, LayerMask bodyZone)
         {

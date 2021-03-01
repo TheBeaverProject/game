@@ -166,7 +166,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HUD: {fileID: 0}
+  playerCamera: {fileID: 0}
   health: 100
+  gunPrefab: {fileID: 38073863872829768, guid: 8c54ae4e9cdc93c4aa67cfa8053df8dc, type: 3}
 --- !u!114 &7256758337403257194
 MonoBehaviour:
   m_ObjectHideFlags: 0

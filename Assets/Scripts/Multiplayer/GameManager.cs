@@ -75,17 +75,25 @@ namespace Multiplayer
             }
         }
 
+        private GameObject clientPlayer;
+        private Camera clientCamera;
+        private GameObject clientHUD;
+        private GameObject clientESCMenu;
+
         private void InstantiateLocalPlayer()
         {
             // Instantiate the Object of the localPlayer
             // Using PhotonNetwork to make it present on the network
-            var clientPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f,5f,0f), Quaternion.identity, 0);
+            clientPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f,5f,0f), Quaternion.identity, 0);
             var initPos = clientPlayer.transform.position;
-            
+
             // Add a camera and a HUD only on the player representing the client to have a single camera/hud per game scene and avoid confusion
-            var clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
-            var clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity, clientPlayer.transform);
-            var clientESCMenu = Instantiate(ESCPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            clientESCMenu = Instantiate(ESCPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            
+            // Assing the camera to the player object
+            clientPlayer.GetComponent<PlayerManager>().playerCamera = clientCamera;
             
             // Assign the HUD to the playerManager
             clientPlayer.GetComponent<PlayerManager>().HUD = clientHUD.GetComponent<Controller>();
@@ -98,11 +106,6 @@ namespace Multiplayer
             // Associate the HUD to the Render Camera
             InitCameraOnUIElement(clientHUD, clientCamera);
             clientESCMenu.GetComponent<Canvas>().worldCamera = clientCamera;
-        }
-
-        public void AddGunToPlayer(GameObject gun)
-        {
-            
         }
 
         private void InitCameraOnUIElement(GameObject uiEl, Camera ccam)

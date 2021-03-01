@@ -11,7 +11,17 @@ namespace Guns
     {
         private void Start()
         {
-            cam = GetComponentInParent<GameObject>().GetComponent<Camera>();
+            // Initialize Rifle attributes
+            weaponName = "Rifle";
+            magazineSize = 20;
+            bulletsPerTap = 1;
+            allowButtonHold = false;
+            timeBetweenShooting = 0.5f;
+            spread = 0.01f;
+            range = 100;
+            reloadTime = 3;
+            timeBetweenShots = 0.5f;
+
             bulletsLeft = magazineSize;
             readyToShoot = true;
         }
@@ -27,23 +37,29 @@ namespace Guns
 
         protected override void MyInput()
         {
+            if (holder == null) // Process inputs only if the weapon is bound to a player
+                return;
+            
             if (allowButtonHold)
                 shooting = Input.GetKey(KeyCode.Mouse0);
             else
                 shooting = Input.GetKeyDown(KeyCode.Mouse0);
 
-            if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !reloading) ;
+            if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !reloading)
                 Reload();
+
             //Shooting mechanic
             if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
             {
                 bulletsShot = bulletsPerTap;
+                Debug.Log("Ready to shoot");
                 Shoot();
             }
         }
 
         protected override void Reload()
         {
+            Debug.Log("Reloading");
             reloading = true;
             Invoke("ReloadFinished", reloadTime);
         }
@@ -52,19 +68,24 @@ namespace Guns
         {
             bulletsLeft = magazineSize;
             reloading = false;
+            
+            // Update the HUD
+            holder.HUD.UpdateWeaponDisplay(this);
         }
 
         protected override void Shoot()
         {
+            Debug.Log("Shooting");
+            
             readyToShoot = false;
             
             //Spread
             float x = Random.Range(-spread, spread);
             float y = Random.Range(-spread, spread);
-            Vector3 direction = cam.transform.forward + new Vector3(x, y, 0);
+            Vector3 direction = holder.playerCamera.transform.forward + new Vector3(x, y, 0);
             
             //RayCast
-            if (Physics.Raycast(cam.transform.position, direction, out rayHit, range, ennemy))
+            if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range, ennemy))
             {
                 Debug.Log($"Raycast hit: {rayHit.collider.name}");
 
@@ -78,6 +99,10 @@ namespace Guns
             
             bulletsLeft--;
             bulletsShot--;
+            
+            // Update the HUD
+            holder.HUD.UpdateWeaponDisplay(this);
+            
             Invoke("ResetShot",timeBetweenShooting);
             
             if (bulletsShot > 0 && bulletsLeft > 0)

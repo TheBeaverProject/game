@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using PlayerManagement;
 using UnityEngine;
 
 namespace Guns
@@ -8,6 +9,10 @@ namespace Guns
         [Tooltip("Weapon Damage")]
         [SerializeField]
         protected int damage;
+
+        [Tooltip("Weapon Name")]
+        [SerializeField]
+        public string weaponName;
         
         public int GetDamage => damage;
         
@@ -18,10 +23,14 @@ namespace Guns
         // Magazine size
         protected int bulletsLeft, bulletsShot;
         protected int magazineSize, bulletsPerTap;
-        protected int GetMagSize => magazineSize;
-        protected int GetMagLeft => bulletsLeft;
-
-        public Camera cam;
+        public int GetMagSize => magazineSize;
+        public int GetMagLeft => bulletsLeft;
+    
+        /// <summary>
+        /// PlayerManager which the gun belongs to.
+        /// </summary>
+        public PlayerManager holder;
+        
         public LayerMask ennemy;
         
         //Raycast hit

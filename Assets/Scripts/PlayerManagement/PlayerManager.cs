@@ -12,7 +12,13 @@ namespace PlayerManagement
         
         [Tooltip("The current Health of our player")]
         [SerializeField]
-        private int Health = 100;
+        private int health = 100;
+
+        public int Health
+        {
+            get => health;
+            set => health = value < 0 ? 0 : value;
+        }
         
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
@@ -49,8 +55,6 @@ namespace PlayerManagement
 
         #endregion
 
-        #region IPunObservable implementation
-        
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting) // Local Player
@@ -63,10 +67,27 @@ namespace PlayerManagement
             }
         }
         
-        #endregion
-        
         #region Player Methods
 
+        public void TakeDamage(double weaponDamage, LayerMask bodyZone)
+        {
+            switch (bodyZone)
+            {
+                case 9: // playerHead
+                    weaponDamage *= 2;
+                    break;
+                case 10: // playerBody
+                    weaponDamage *= 1;
+                    break;
+                case 11: // playerLegs
+                    weaponDamage *= 0.75;
+                    break;
+            }
+
+            Health -= (int) weaponDamage;
+            HUD.healthDisplay.SetHUDHealth(Health);
+        }
+        
         #endregion
     }
 }

@@ -2,6 +2,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using PlayerManagement;
+using UI.HUD;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,7 +21,7 @@ namespace Multiplayer
         
         [Tooltip("Escape Menu of the client")]
         public GameObject ESCPrefab;
-        
+
         #region Photon Callbacks
 
         /// <summary>
@@ -85,6 +86,9 @@ namespace Multiplayer
             var clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
             var clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity, clientPlayer.transform);
             var clientESCMenu = Instantiate(ESCPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            
+            // Assign the HUD to the playerManager
+            clientPlayer.GetComponent<PlayerManager>().HUD = clientHUD.GetComponent<Controller>();
 
             // Place the camera correctly and set the FOV according to the Player's settings
             clientCamera.GetComponent<MouseLook>().playerBody = clientPlayer.transform;
@@ -94,6 +98,11 @@ namespace Multiplayer
             // Associate the HUD to the Render Camera
             InitCameraOnUIElement(clientHUD, clientCamera);
             clientESCMenu.GetComponent<Canvas>().worldCamera = clientCamera;
+        }
+
+        public void AddGunToPlayer(GameObject gun)
+        {
+            
         }
 
         private void InitCameraOnUIElement(GameObject uiEl, Camera ccam)

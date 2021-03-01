@@ -1,33 +1,14 @@
 ﻿using System;
 using System.Security.Cryptography;
 using Photon.Pun;
+using PlayerManagement;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Guns
 {
-    public class HandGun : MonoBehaviourPun , IGunnable
-
+    public class Rifle : Gunnable 
     {
-        int damage;
-        public int GetDamage => damage;
-        float timeBetweenShooting, spread, range, reloadTime, timeBetweenShots;
-        int GetMagSize => magazineSize;
-        int magazineSize, bulletsPerTap;
-        bool allowButtonHold;
-        int bulletsLeft, bulletsShot;
-        int GetMagLeft => bulletsLeft;
-        public Camera cam;
-        public LayerMask ennemy;
-        
-        //Gun behavior
-        bool shooting, readyToShoot, reloading;
-        
-        //Raycast hit
-        RaycastHit rayHit;
-        
-        
-
         private void Start()
         {
             cam = GetComponentInParent<GameObject>().GetComponent<Camera>();
@@ -44,7 +25,7 @@ namespace Guns
             MyInput();
         }
 
-        public void MyInput()
+        protected override void MyInput()
         {
             if (allowButtonHold)
                 shooting = Input.GetKey(KeyCode.Mouse0);
@@ -52,7 +33,7 @@ namespace Guns
                 shooting = Input.GetKeyDown(KeyCode.Mouse0);
 
             if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !reloading) ;
-            Reload();
+                Reload();
             //Shooting mechanic
             if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
             {
@@ -61,19 +42,19 @@ namespace Guns
             }
         }
 
-        public void Reload()
+        protected override void Reload()
         {
             reloading = true;
             Invoke("ReloadFinished", reloadTime);
         }
 
-        public void ReloadFinished()
+        protected override void ReloadFinished()
         {
             bulletsLeft = magazineSize;
             reloading = false;
         }
 
-        public void Shoot()
+        protected override void Shoot()
         {
             readyToShoot = false;
             
@@ -81,15 +62,20 @@ namespace Guns
             float x = Random.Range(-spread, spread);
             float y = Random.Range(-spread, spread);
             Vector3 direction = cam.transform.forward + new Vector3(x, y, 0);
+            
             //RayCast
             if (Physics.Raycast(cam.transform.position, direction, out rayHit, range, ennemy))
             {
-                Debug.Log(rayHit.collider.name);
-                
-                //TODO when player has health and can take damage (implement TakeDamage method)
-                //if (rayHit.collider.CompareTag("Enemy"))
-                //    rayHit.collider.GetComponent<ShootingAI>().TakeDamage(damage);
+                Debug.Log($"Raycast hit: {rayHit.collider.name}");
+
+                PlayerManager damagedPlayerManager;
+                if (rayHit.collider.TryGetComponent<PlayerManager>(out damagedPlayerManager))
+                {
+                    Debug.Log($"Took Damage: {damagedPlayerManager.GetInstanceID()} - Health: {damagedPlayerManager.Health}");
+                    damagedPlayerManager.TakeDamage(damage, rayHit.collider.gameObject.layer);
+                }
             }
+            
             bulletsLeft--;
             bulletsShot--;
             Invoke("ResetShot",timeBetweenShooting);
@@ -98,10 +84,9 @@ namespace Guns
                 Invoke("Shoot",timeBetweenShots);
         }
 
-        public void ResetShot()
+        protected override void ResetShot()
         {
             readyToShoot = true;
         }
-        
     }
 }

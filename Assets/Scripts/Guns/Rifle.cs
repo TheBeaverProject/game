@@ -55,6 +55,7 @@ namespace Guns
 
         private void Update()
         {
+            //MyInput dictates weapon beahvior
             MyInput();
         }
 
@@ -64,10 +65,12 @@ namespace Guns
                 return;
             
             if (allowButtonHold)
+                //Difference between automatic and non automatic weapons
                 shooting = Input.GetKey(KeyCode.Mouse0);
             else
                 shooting = Input.GetKeyDown(KeyCode.Mouse0);
-
+            
+            //Calls Reload 
             if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !reloading)
                 Reload();
 
@@ -83,6 +86,7 @@ namespace Guns
         protected override void Shoot()
         {
             Debug.Log("Shooting");
+            //Plays shoot sound
             weaponAudioSource.PlayOneShot(singleShotSoundEffect);
             
             readyToShoot = false;
@@ -92,16 +96,16 @@ namespace Guns
             float y = Random.Range(-spread, spread);
             Vector3 direction = holder.playerCamera.transform.forward + new Vector3(x, y, 0);
             
-            // RayCast
+            // The raycast starting from the camera with the spread added
             if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range))
             {
                 Debug.Log($"Raycast hit: {rayHit.collider.name}");
                 Debug.DrawRay(holder.playerCamera.transform.position, direction * rayHit.distance, Color.yellow);
-                
+                //Damages the player if raycast catch a player
                 if (rayHit.collider.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayerManager))
                 {
                     Debug.Log($"Took Damage: {damagedPlayerManager.GetInstanceID()} - Health: {damagedPlayerManager.Health}");
-                    
+                    //Damages the player
                     damagedPlayerManager.TakeDamage(damage, rayHit.collider.gameObject.layer);
                 }
             }
@@ -116,6 +120,7 @@ namespace Guns
             // Update the HUD
             holder.HUD.UpdateWeaponDisplay(this);
             
+            //Calls ResetShot method after timeBetweenShooting time
             Invoke("ResetShot", timeBetweenShooting);
             
             if (bulletsShot > 0 && bulletsLeft > 0)

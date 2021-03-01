@@ -6,10 +6,11 @@ namespace Guns
 {
     public abstract class Gunnable: MonoBehaviourPun
     {
+        //Weapon Damage
         [Tooltip("Weapon Damage")]
         [SerializeField]
         protected int damage;
-
+        //Weapon Name
         [Tooltip("Weapon Name")]
         [SerializeField]
         public string weaponName;
@@ -18,6 +19,7 @@ namespace Guns
         public AudioSource weaponAudioSource;
         public AudioClip singleShotSoundEffect;
         
+        //Damage Getter
         public int GetDamage => damage;
         
         //Gun behavior
@@ -36,21 +38,22 @@ namespace Guns
         /// </summary>
         public PlayerManager holder;
         
-        public LayerMask ennemy;
-        
         //Raycast hit
         protected RaycastHit rayHit;
         
+        //Gets Player Input
         protected abstract void MyInput();
         protected void Reload()
         {
             Debug.Log("Reloading");
             reloading = true;
+            //Calls ReloadFinished Method after reloadTime
             Invoke("ReloadFinished", reloadTime);
         }
 
         protected void ReloadFinished()
         {
+            //Finishes the reload
             bulletsLeft = magazineSize;
             reloading = false;
             

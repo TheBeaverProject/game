@@ -15,8 +15,8 @@ namespace Guns
             weaponName = "Rifle";
             magazineSize = 20;
             bulletsPerTap = 1;
-            allowButtonHold = false;
-            timeBetweenShooting = 0.3f;
+            allowButtonHold = true;
+            timeBetweenShooting = 0.1f;
             spread = 0.01f;
             range = 100;
             reloadTime = 3;

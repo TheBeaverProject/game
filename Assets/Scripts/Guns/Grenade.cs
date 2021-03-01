@@ -11,7 +11,7 @@ namespace Guns
         private float countDown;
         private bool hasExploded;
         private float radius = 5f;
-        private float force = 5f;
+        private float force = 400f;
         //private GameObject effect;
 
         private void Start()
@@ -31,21 +31,22 @@ namespace Guns
 
         private void Explode()
         {
-            Debug.Log("Grenade Explosion");
             //Instantiate(effect, transform.position, transform.rotation);
 
-            Collider[] colliders =Physics.OverlapSphere(transform.position, radius);
+            Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
 
             foreach (Collider hit in colliders)
             {
-                Rigidbody rb = hit.GetComponent<Rigidbody>();
                 if (hit.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayer))
                 {
-                    rb.AddExplosionForce(force,transform.position,radius);
+                    Rigidbody rb = hit.GetComponent<Rigidbody>();
+                    Debug.Log($"Grenade Explosion On Player - RigidBody: {rb.gameObject.name}");
+                    rb.AddExplosionForce(force,transform.position,radius); //TODO: Explosion force not working
+                    //TODO: Grenade Damages
                 }
             }
             
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }

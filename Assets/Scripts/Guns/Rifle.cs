@@ -75,6 +75,7 @@ namespace Guns
                 if (rayHit.collider.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayerManager))
                 {
                     Debug.Log($"Took Damage: {damagedPlayerManager.GetInstanceID()} - Health: {damagedPlayerManager.Health}");
+                    
                     damagedPlayerManager.TakeDamage(damage, rayHit.collider.gameObject.layer);
                 }
             }

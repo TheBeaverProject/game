@@ -66,7 +66,7 @@ namespace PlayerManagement
             
             if (Input.GetKeyDown(KeyCode.B) && playerGun == null)
             {
-                photonView.RPC("AddGunPrefabToPlayer", RpcTarget.All);
+                AddGunPrefabToPlayer();
             }
         }
 
@@ -77,37 +77,41 @@ namespace PlayerManagement
             if (stream.IsWriting) // Local Player
             {
                 stream.SendNext(Health);
+                //Debug.Log($"Sent Health for {this.gameObject.name}: {Health}");
             }
-            else // Network Player
+            else if (stream.IsReading) // Network Player
             {
-                this.Health = (int) stream.ReceiveNext();
-
-                if (photonView.IsMine)
-                {
-                    Debug.Log("Updating health on the HUD");
-                    HUD.healthDisplay.SetHUDHealth(Health);
-                }
+                Health = (int) stream.ReceiveNext();
+                //Debug.Log($"Received Health for {this.gameObject.name}: {tempHealth}");
             }
         }
-        
+
         #region Player
 
         private GameObject playerGun;
         
-        [PunRPC] void AddGunPrefabToPlayer()
+        public void AddGunPrefabToPlayer()
         {
             var transform = playerCamera.transform;
-            playerGun = Instantiate(gunPrefab, transform.position, transform.rotation, transform);
+            playerGun = PhotonNetwork.Instantiate(gunPrefab.name, transform.position, transform.rotation, 0);
             
+            // Sets the gun as the children of the camera
+            playerGun.transform.SetParent(transform);
+            
+            // Position correctly the gun
             playerGun.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
             playerGun.transform.localPosition = gunPrefab.transform.position;
             playerGun.transform.RotateAround(playerGun.transform.position, Vector3.up, -3);
-            
+
+            // Sets the holder of the gun
             playerGun.GetComponent<Gunnable>().holder = this;
         }
 
+        
         public void TakeDamage(double weaponDamage, LayerMask bodyZone)
         {
+            Debug.Log("TakeDamage called");
+            
             switch (bodyZone)
             {
                 case 9: // playerHead
@@ -121,7 +125,17 @@ namespace PlayerManagement
                     break;
             }
 
-            Health -= (int) weaponDamage;
+            int newHealth =  Health - ((int) weaponDamage);
+            
+            photonView.RPC("UpdateHealth", this.photonView.Controller, newHealth);
+        }
+
+        [PunRPC] 
+        void UpdateHealth(int newHealth)
+        {
+            Debug.Log(newHealth);
+            
+            Health = newHealth;
             
             if (PhotonNetwork.IsConnected && photonView.IsMine)
             {

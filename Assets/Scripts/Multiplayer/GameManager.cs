@@ -85,6 +85,8 @@ namespace Multiplayer
             // Instantiate the Object of the localPlayer
             // Using PhotonNetwork to make it present on the network
             clientPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f,5f,0f), Quaternion.identity, 0);
+            clientPlayer.name = PhotonNetwork.NickName;
+            
             var initPos = clientPlayer.transform.position;
 
             // Add a camera and a HUD only on the player representing the client to have a single camera/hud per game scene and avoid confusion

@@ -1,0 +1,166 @@
+fileFormatVersion: 2
+guid: 8ad3e0a85a0ebca4293e1b33319beb91
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Bullet_5_45
+    100002: Bullet_5_45_2
+    100004: Bullet_5_56
+    100006: Bullet_5_56_2
+    100008: Bullet_7_62
+    100010: Bullet_7_62_2
+    100012: Bullet_9
+    100014: //RootNode
+    100016: Case_5_45
+    100018: Case_5_45_T
+    100020: Case_5_56
+    100022: Case_5_56_T
+    100024: Case_7_62
+    100026: Case_7_62_T
+    100028: Case_9
+    400000: Bullet_5_45
+    400002: Bullet_5_45_2
+    400004: Bullet_5_56
+    400006: Bullet_5_56_2
+    400008: Bullet_7_62
+    400010: Bullet_7_62_2
+    400012: Bullet_9
+    400014: //RootNode
+    400016: Case_5_45
+    400018: Case_5_45_T
+    400020: Case_5_56
+    400022: Case_5_56_T
+    400024: Case_7_62
+    400026: Case_7_62_T
+    400028: Case_9
+    2100000: Gun_MAT
+    2300000: Bullet_5_45
+    2300002: Bullet_5_45_2
+    2300004: Bullet_5_56
+    2300006: Bullet_5_56_2
+    2300008: Bullet_7_62
+    2300010: Bullet_7_62_2
+    2300012: Bullet_9
+    2300014: Case_5_45
+    2300016: Case_5_45_T
+    2300018: Case_5_56
+    2300020: Case_5_56_T
+    2300022: Case_7_62
+    2300024: Case_7_62_T
+    2300026: Case_9
+    3300000: Bullet_5_45
+    3300002: Bullet_5_45_2
+    3300004: Bullet_5_56
+    3300006: Bullet_5_56_2
+    3300008: Bullet_7_62
+    3300010: Bullet_7_62_2
+    3300012: Bullet_9
+    3300014: Case_5_45
+    3300016: Case_5_45_T
+    3300018: Case_5_56
+    3300020: Case_5_56_T
+    3300022: Case_7_62
+    3300024: Case_7_62_T
+    3300026: Case_9
+    4300000: Case_5_45_T
+    4300002: Bullet_5_45
+    4300004: Case_5_56_T
+    4300006: Bullet_5_56
+    4300008: Case_7_62_T
+    4300010: Bullet_7_62
+    4300012: Case_5_45
+    4300014: Bullet_5_45_2
+    4300016: Case_5_56
+    4300018: Bullet_5_56_2
+    4300020: Case_7_62
+    4300022: Bullet_7_62_2
+    4300024: Case_9
+    4300026: Bullet_9
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gun_MAT
+    second: {fileID: 2100000, guid: 8d858f0eba4f06746b8e655966671815, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 0
+    normalImportMode: 1
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

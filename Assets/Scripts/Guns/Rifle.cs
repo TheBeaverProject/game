@@ -13,15 +13,17 @@ namespace Guns
         {
             // Initialize Rifle attributes
             weaponName = "Rifle";
-            magazineSize = 20;
+            magazineSize = 30;
             bulletsPerTap = 1;
-            allowButtonHold = true;
-            timeBetweenShooting = 0.1f;
+            allowButtonHold = false;
+            timeBetweenShooting = 0.2f;
             spread = 0.01f;
             range = 100;
             reloadTime = 3;
             bulletsLeft = magazineSize;
             readyToShoot = true;
+
+            weaponAudioSource.volume = 0.5f;
             
             if (PhotonNetwork.IsConnected)
             {
@@ -43,10 +45,13 @@ namespace Guns
                         {
                             // Sets the parent if the gun is not ours
                             transform.SetParent(holder.transform);
+                            
                             transform.position = holder.transform.position;
                             transform.rotation = holder.transform.rotation;
-                            transform.localPosition = new Vector3(0.206f, 0.4f);
-                            transform.Rotate(-90, -90, 0);
+                            transform.Rotate(0, 180, 0);
+                            transform.localPosition = new Vector3(0.23f, 0.33f, 0.4f);
+                            transform.RotateAround(transform.position, Vector3.up, -2);
+                            transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
                         }
                     }
                 }

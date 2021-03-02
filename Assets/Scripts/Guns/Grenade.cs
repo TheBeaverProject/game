@@ -15,7 +15,6 @@ namespace Guns
         //private GameObject effect;
 
         // Sound Effects
-        public AudioSource grenadeAudioSource;
         public AudioClip explosionSound;
         
         private void Start()
@@ -40,7 +39,7 @@ namespace Guns
         {
             //Instantiate(effect, transform.position, transform.rotation);
             //Plays Sound
-            grenadeAudioSource.PlayOneShot(explosionSound);
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position);
             //Gets all collider in radius range
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
 

@@ -26,6 +26,7 @@ namespace PlayerManagement
             
             //Locks the cursor in the center of the screen
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     
         void Update()
@@ -38,6 +39,7 @@ namespace PlayerManagement
 
             if (!followCursor)
             {
+                Cursor.visible = true;
                 return; // Return if the Mouselook is disabled
             }
             

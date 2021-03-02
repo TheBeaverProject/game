@@ -19,7 +19,7 @@ namespace UI.EscapeMenu
             //Locks the cursor in the center of the screen
             Cursor.lockState = CursorLockMode.Locked;
             //Reenable the mouse look
-            GetComponent<Canvas>().worldCamera.GetComponent<MouseLook>().enabled = true;
+            GetComponent<Canvas>().worldCamera.GetComponent<MouseLook>().followCursor = true;
         }
 
         public void SettingsButtonHandler()
@@ -47,7 +47,7 @@ namespace UI.EscapeMenu
                     //Unlocks the cursor for interaction with the menus
                     Cursor.lockState = CursorLockMode.None;
                     //Disable the mouse look script to fix the camera
-                    GetComponent<Canvas>().worldCamera.GetComponent<MouseLook>().enabled = false;
+                    GetComponent<Canvas>().worldCamera.GetComponent<MouseLook>().followCursor = false;
                 }
             }
         }

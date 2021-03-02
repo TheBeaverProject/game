@@ -169,7 +169,8 @@ MonoBehaviour:
   HUD: {fileID: 0}
   playerCamera: {fileID: 0}
   health: 100
-  gunPrefab: {fileID: 38073863872829768, guid: 8c54ae4e9cdc93c4aa67cfa8053df8dc, type: 3}
+  gunPrefab: {fileID: 8733454776496846757, guid: d83ce67c6122e314d8a8eba47e3d6b3b,
+    type: 3}
 --- !u!114 &7256758337403257194
 MonoBehaviour:
   m_ObjectHideFlags: 0

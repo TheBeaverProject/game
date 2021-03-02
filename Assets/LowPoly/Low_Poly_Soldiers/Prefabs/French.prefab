@@ -559,7 +559,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4653184309212738}
   - component: {fileID: 137973054802656882}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: French_Soldier
   m_TagString: Untagged
   m_Icon: {fileID: 0}

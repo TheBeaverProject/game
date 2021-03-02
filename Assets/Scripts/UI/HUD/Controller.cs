@@ -1,4 +1,5 @@
 using System;
+using Guns;
 using Scripts.UI.HUD.DisplayControllers;
 using TMPro;
 using UI.HUD.DisplayControllers;
@@ -19,6 +20,12 @@ namespace UI.HUD
         public static void Init()
         {
             throw new NotImplementedException();
+        }
+
+        public void UpdateWeaponDisplay(Gunnable gun)
+        {
+            ammoDisplay.SetHUDAmmo(gun.GetMagLeft, gun.GetMagSize, 3);
+            weaponDisplay.weaponNameText.text = gun.weaponName;
         }
     }
 }

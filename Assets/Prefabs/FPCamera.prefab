@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4683654419636010165}
   - component: {fileID: 4683654419636010162}
   - component: {fileID: 559707831751221630}
+  - component: {fileID: 8688418439075791793}
   m_Layer: 0
   m_Name: FPCamera
   m_TagString: Untagged
@@ -99,3 +100,18 @@ MonoBehaviour:
   mouseSensitivity: 100
   playerBody: {fileID: 0}
   followCursor: 1
+--- !u!114 &8688418439075791793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683654419636010163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c25a4487410b4c268f4447ca76345e1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwForce: 20
+  grenadePrefab: {fileID: 1430369683734204, guid: 57fe622edf4aa51418f3d8df63b06a15,
+    type: 3}

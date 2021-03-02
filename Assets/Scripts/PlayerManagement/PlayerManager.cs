@@ -127,7 +127,7 @@ namespace PlayerManagement
             }
 
             int newHealth =  Health - ((int) weaponDamage);
-            
+
             photonView.RPC("UpdateHealth", RpcTarget.All, newHealth);
         }
 

@@ -10,10 +10,12 @@ namespace UI
     {
         public GameObject EscapeMenu;
         public GameObject BuyMenu;
+        public GameObject HUD;
         public Camera playerCamera;
 
         private EscapeMenuHandler EscapeMenuController;
         private BuyMenuController BuyMenuController;
+        private PlayerManager _playerManager;
         private MouseLook _mouseLook;
 
         private void Start()
@@ -21,6 +23,7 @@ namespace UI
             EscapeMenuController = EscapeMenu.GetComponent<EscapeMenuHandler>();
             BuyMenuController = BuyMenu.GetComponent<BuyMenuController>();
             _mouseLook = playerCamera.GetComponent<MouseLook>();
+            _playerManager = GetComponent<PlayerManager>();
             
             BuyMenuController.Container.SetActive(false);
             EscapeMenuController.EscapeMenuContainer.SetActive(false);
@@ -28,7 +31,7 @@ namespace UI
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.B))
+            if (Input.GetKeyDown(KeyCode.B) && !EscapeMenuController.EscapeMenuContainer.activeInHierarchy)
             {
                 BuyMenuController.Container.SetActive(true);
                 UnLockCursor();
@@ -62,6 +65,8 @@ namespace UI
             Cursor.lockState = CursorLockMode.Locked;
             //Reenable the mouse look
             _mouseLook.followCursor = true;
+            _playerManager.EnableShooting();
+            HUD.SetActive(true);
         }
 
         private void UnLockCursor()
@@ -70,6 +75,8 @@ namespace UI
             Cursor.lockState = CursorLockMode.None;
             //Disable the mouse look script to fix the camera
             _mouseLook.followCursor = false;
+            _playerManager.DisableShooting();
+            HUD.SetActive(false);
         }
     }
 }

@@ -56,6 +56,8 @@ namespace Guns
         public int GetMagSize => magazineSize;
         public int GetMagLeft => magazineNumber - magazineUsed;
         public int GetBulletsLeft => bulletsLeft;
+
+        public bool AllowShooting = true;
         
 
         // Weapon placement
@@ -83,6 +85,9 @@ namespace Guns
         {
             readyToShoot = true;
             bulletsLeft = magazineSize;
+
+            if (holder == null)
+                return;
 
             if (!PhotonNetwork.IsConnected) return;
             
@@ -118,6 +123,9 @@ namespace Guns
         
         private void Update()
         {
+            if (!AllowShooting)
+                return;
+
             //MyInput dictates weapon beahvior
             MyInput();
         }

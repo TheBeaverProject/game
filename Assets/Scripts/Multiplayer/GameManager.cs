@@ -148,6 +148,7 @@ namespace Multiplayer
             playerMenusHandler.BuyMenu = clientBuyMenu;
             playerMenusHandler.EscapeMenu = clientESCMenu;
             playerMenusHandler.playerCamera = clientCamera;
+            playerMenusHandler.HUD = clientHUD;
         }
 
         private void InitCameraOnUIElement(GameObject uiEl, Camera ccam)

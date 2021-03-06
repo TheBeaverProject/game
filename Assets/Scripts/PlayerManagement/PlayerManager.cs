@@ -98,6 +98,22 @@ namespace PlayerManagement
             playerGun.GetComponent<Gunnable>().holder = this;
         }
 
+        public void DisableShooting()
+        {
+            if (playerGun == null)
+                return;
+            
+            playerGun.GetComponent<Gunnable>().AllowShooting = false;
+        }
+
+        public void EnableShooting()
+        {
+            if (playerGun == null)
+                return;
+            
+            playerGun.GetComponent<Gunnable>().AllowShooting = true;
+        }
+
         public void TakeDamage(double weaponDamage, LayerMask bodyZone)
         {
             Debug.Log("TakeDamage called");

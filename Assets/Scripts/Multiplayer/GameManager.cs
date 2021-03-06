@@ -2,6 +2,8 @@
 using Photon.Pun;
 using Photon.Realtime;
 using PlayerManagement;
+using UI;
+using UI.BuyMenu;
 using UI.HUD;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,6 +23,9 @@ namespace Multiplayer
         
         [Tooltip("Escape Menu of the client")]
         public GameObject ESCPrefab;
+        
+        [Tooltip("Buy Menu")]
+        public GameObject BuyMenuPrefab;
 
         public Vector3 playerStartPos;
 
@@ -103,6 +108,7 @@ namespace Multiplayer
         private Camera clientCamera;
         private GameObject clientHUD;
         private GameObject clientESCMenu;
+        private GameObject clientBuyMenu;
 
         private void InstantiateLocalPlayer()
         {
@@ -117,6 +123,10 @@ namespace Multiplayer
             clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
             clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity, clientPlayer.transform);
             clientESCMenu = Instantiate(ESCPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            clientBuyMenu = Instantiate(BuyMenuPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            
+            // Assing the PlayerManager on the Buy Menu
+            clientBuyMenu.GetComponent<BuyMenuController>().playerManager = clientPlayer.GetComponent<PlayerManager>();
             
             // Assing the camera to the player object
             clientPlayer.GetComponent<PlayerManager>().playerCamera = clientCamera;
@@ -132,6 +142,12 @@ namespace Multiplayer
             // Associate the HUD to the Render Camera
             InitCameraOnUIElement(clientHUD, clientCamera);
             clientESCMenu.GetComponent<Canvas>().worldCamera = clientCamera;
+            
+            // Assign the menus to control to the player's controller
+            var playerMenusHandler = clientPlayer.GetComponent<PlayerMenusHandler>();
+            playerMenusHandler.BuyMenu = clientBuyMenu;
+            playerMenusHandler.EscapeMenu = clientESCMenu;
+            playerMenusHandler.playerCamera = clientCamera;
         }
 
         private void InitCameraOnUIElement(GameObject uiEl, Camera ccam)

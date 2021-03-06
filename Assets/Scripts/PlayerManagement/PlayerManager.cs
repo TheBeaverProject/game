@@ -18,10 +18,6 @@ namespace PlayerManagement
         [SerializeField]
         private int health = 100;
 
-        // Temporary
-        [Tooltip("Prefab used by the gun TEMPORARY")] [SerializeField]
-        GameObject gunPrefab;
-
         public int Health
         {
             get => health;
@@ -58,19 +54,6 @@ namespace PlayerManagement
             HUD.playerName.text = PhotonNetwork.NickName;
         }
 
-        private void Update()
-        {
-            if (PhotonNetwork.IsConnected && photonView.IsMine == false)
-            {
-                return;
-            }
-            
-            if (Input.GetKeyDown(KeyCode.B) && playerGun == null)
-            {
-                AddGunPrefabToPlayer();
-            }
-        }
-
         #endregion
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -91,8 +74,13 @@ namespace PlayerManagement
 
         private GameObject playerGun;
         
-        public void AddGunPrefabToPlayer()
+        public void AddGunPrefabToPlayer(GameObject gunPrefab)
         {
+            if (playerGun != null)
+            {
+                PhotonNetwork.Destroy(playerGun);
+            }
+            
             var transform = playerCamera.transform;
             playerGun = PhotonNetwork.Instantiate(gunPrefab.name, transform.position, transform.rotation, 0);
             

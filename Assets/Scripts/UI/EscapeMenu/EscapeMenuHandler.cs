@@ -14,12 +14,6 @@ namespace UI.EscapeMenu
         {
             EscapeMenuContainer.SetActive(false);
             SettingsMenu.SetActive(false);
-            
-            
-            //Locks the cursor in the center of the screen
-            Cursor.lockState = CursorLockMode.Locked;
-            //Reenable the mouse look
-            GetComponent<Canvas>().worldCamera.GetComponent<MouseLook>().followCursor = true;
         }
 
         public void SettingsButtonHandler()
@@ -31,25 +25,6 @@ namespace UI.EscapeMenu
         {
             ResumeButtonHandler();
             SettingsMenu.GetComponent<SettingsFormHandler>().EscapeMenu = gameObject;
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (EscapeMenuContainer.activeInHierarchy)
-                {
-                    ResumeButtonHandler();
-                }
-                else
-                {
-                    EscapeMenuContainer.SetActive(true);
-                    //Unlocks the cursor for interaction with the menus
-                    Cursor.lockState = CursorLockMode.None;
-                    //Disable the mouse look script to fix the camera
-                    GetComponent<Canvas>().worldCamera.GetComponent<MouseLook>().followCursor = false;
-                }
-            }
         }
     }
 }

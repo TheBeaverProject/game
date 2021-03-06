@@ -21,7 +21,7 @@ namespace Guns
         // Weapon Behavior
         [Tooltip("Allow automatic Firing")]
         [SerializeField]
-        protected bool allowButtonHold;
+        public bool allowButtonHold;
         
         [Tooltip("Firing cadence (in seconds)")]
         [SerializeField]
@@ -32,14 +32,14 @@ namespace Guns
         protected float reloadTime;
         
         [SerializeField]
-        protected float spread;
+        public float spread;
         [SerializeField]
-        protected float range;
+        public float range;
 
         // Gun behavior
         [Tooltip("Burst fire bullets (set to 1 to disable burst)")]
         [SerializeField]
-        protected int bulletsPerTap;
+        public int bulletsPerTap;
         
         [Tooltip("Burst Fire time between shots")]
         [SerializeField]

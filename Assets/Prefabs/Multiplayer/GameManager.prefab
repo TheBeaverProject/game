@@ -51,3 +51,6 @@ MonoBehaviour:
     type: 3}
   ESCPrefab: {fileID: 2042058564050211915, guid: 5526555b13614b24ea7b6d4f6bf731e7,
     type: 3}
+  BuyMenuPrefab: {fileID: 5410824785811266618, guid: 0a8e3679b88bbf44da030643a8ab8405,
+    type: 3}
+  playerStartPos: {x: 0, y: 0, z: 0}

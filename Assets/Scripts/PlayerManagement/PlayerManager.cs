@@ -102,7 +102,7 @@ namespace PlayerManagement
             // Position correctly the gun
             // Local values so it looks good on camera
             playerGun.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
-            playerGun.transform.localPosition = new Vector3(0.175f, -0.224f, 0.52f);
+            playerGun.transform.localPosition = playerGun.GetComponent<HitScanWeapon>().weaponCameraPlacement;
             playerGun.transform.RotateAround(playerGun.transform.position, Vector3.up, -2);
             playerGun.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 

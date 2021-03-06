@@ -24,7 +24,7 @@ namespace UI.HUD
 
         public void UpdateWeaponDisplay(Gunnable gun)
         {
-            ammoDisplay.SetHUDAmmo(gun.GetMagLeft, gun.GetMagSize, 3);
+            ammoDisplay.SetHUDAmmo(gun.GetBulletsLeft, gun.GetMagSize, gun.GetMagLeft);
             weaponDisplay.weaponNameText.text = gun.weaponName;
         }
     }

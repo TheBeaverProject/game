@@ -55,6 +55,7 @@ namespace PlayerManagement
 
         private void Start()
         {
+            HUD.playerName.text = PhotonNetwork.NickName;
         }
 
         private void Update()

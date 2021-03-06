@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 4419865850928438879}
   - component: {fileID: 2603002752958827622}
   - component: {fileID: 7261727423731255463}
+  - component: {fileID: 5542504120066630004}
   - component: {fileID: 7256758337403257194}
   - component: {fileID: 3974186435257617311}
   - component: {fileID: 3149669970216012546}
@@ -168,8 +169,21 @@ MonoBehaviour:
   HUD: {fileID: 0}
   playerCamera: {fileID: 0}
   health: 100
-  gunPrefab: {fileID: 924397973067062058, guid: 35dcd41215d31b0418f071c29d93683b,
-    type: 3}
+--- !u!114 &5542504120066630004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4419865850928438867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d784cbbf6c18472eb5b4bf29df52b6da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EscapeMenu: {fileID: 0}
+  BuyMenu: {fileID: 0}
+  playerCamera: {fileID: 0}
 --- !u!114 &7256758337403257194
 MonoBehaviour:
   m_ObjectHideFlags: 0

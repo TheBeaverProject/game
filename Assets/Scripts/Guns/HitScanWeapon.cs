@@ -39,7 +39,7 @@ namespace Guns
         protected override void Shoot()
         {
             var lineRenderer = GetComponent<LineRenderer>();
-            
+
             //Plays shoot sound
             photonView.RPC("PlayShotSound", RpcTarget.All);
             
@@ -53,10 +53,8 @@ namespace Guns
             // The raycast starting from the camera with the spread added
             if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range))
             {
-                Debug.Log($"Raycast hit: {rayHit.collider.name}");
-                Debug.DrawRay(holder.playerCamera.transform.position, direction * rayHit.distance);
                 lineRenderer.positionCount = 2;
-                lineRenderer.SetPosition(0, holder.playerCamera.transform.position);
+                lineRenderer.SetPosition(0, barrelTip.transform.position);
                 lineRenderer.SetPosition(1, rayHit.point);
 
                 //Damages the player if raycast catch a player

@@ -65,6 +65,9 @@ namespace Guns
         [Tooltip("Weapon placement relative to the camera")]
         public Vector3 weaponCameraPlacement;
 
+        [Tooltip("Position of extremity of the barrel")]
+        public GameObject barrelTip;
+
         // Sound Effects
         public AudioSource weaponAudioSource;
         public AudioClip singleShotSoundEffect;

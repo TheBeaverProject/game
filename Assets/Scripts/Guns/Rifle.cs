@@ -33,6 +33,7 @@ namespace Guns
                     Debug.Log("photonView.IsMine");
                     // Update the HUD
                     holder.HUD.UpdateWeaponDisplay(this);
+                    weaponAudioSource.name = PhotonNetwork.NickName;
                 }
                 else // View is not ours, we need to find the parent
                 {
@@ -91,8 +92,9 @@ namespace Guns
         protected override void Shoot()
         {
             Debug.Log("Shooting");
+            
             //Plays shoot sound
-            weaponAudioSource.PlayOneShot(singleShotSoundEffect);
+            photonView.RPC("PlayShotSound", RpcTarget.All);
             
             readyToShoot = false;
             
@@ -131,5 +133,16 @@ namespace Guns
             if (bulletsShot > 0 && bulletsLeft > 0)
                 Invoke("Shoot",timeBetweenShots);
         }
+        
+        #region RPC Methods
+
+        [PunRPC]
+        void PlayShotSound()
+        {
+            Debug.Log($"Playing sound on {weaponAudioSource.name}");
+            weaponAudioSource.PlayOneShot(singleShotSoundEffect);
+        }
+        
+        #endregion
     }
 }

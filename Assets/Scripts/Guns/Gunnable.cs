@@ -43,6 +43,7 @@ namespace Guns
         
         //Gets Player Input
         protected abstract void MyInput();
+        
         protected void Reload()
         {
             Debug.Log("Reloading");
@@ -62,6 +63,7 @@ namespace Guns
         }
         
         protected abstract void Shoot();
+        
         protected void ResetShot()
         {
             readyToShoot = true;

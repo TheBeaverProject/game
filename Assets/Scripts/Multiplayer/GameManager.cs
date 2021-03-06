@@ -22,6 +22,8 @@ namespace Multiplayer
         [Tooltip("Escape Menu of the client")]
         public GameObject ESCPrefab;
 
+        public Vector3 playerStartPos;
+
         #region Photon Callbacks
 
         /// <summary>
@@ -57,6 +59,8 @@ namespace Multiplayer
 
         private void Start()
         {
+            playerStartPos = new Vector3(0f, 5f, 0f);
+            
             if (playerPrefab == null)
             {
                 Debug.LogError("Missing PlayerPrefab Reference.");   
@@ -75,6 +79,26 @@ namespace Multiplayer
             }
         }
 
+        private void Update()
+        {
+            // TEMP: Respawn player if he is dead
+            if (PlayerManager.LocalPlayerInstance == null) return;
+            
+            var playerManager = PlayerManager.LocalPlayerInstance.GetComponent<PlayerManager>();
+            if (playerManager.Health > 0) return;
+
+            RespawnPlayer();
+        }
+
+        private void RespawnPlayer()
+        {
+            var playerManager = PlayerManager.LocalPlayerInstance.GetComponent<PlayerManager>();
+            
+            PhotonNetwork.Destroy(PlayerManager.LocalPlayerInstance);
+            
+            InstantiateLocalPlayer();
+        }
+
         private GameObject clientPlayer;
         private Camera clientCamera;
         private GameObject clientHUD;
@@ -84,7 +108,7 @@ namespace Multiplayer
         {
             // Instantiate the Object of the localPlayer
             // Using PhotonNetwork to make it present on the network
-            clientPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f,5f,0f), Quaternion.identity, 0);
+            clientPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, playerStartPos, Quaternion.identity, 0);
             clientPlayer.name = PhotonNetwork.NickName;
             
             var initPos = clientPlayer.transform.position;

@@ -12,6 +12,8 @@ namespace Multiplayer
 {
     public class GameManager : MonoBehaviourPunCallbacks
     {
+        #region Serialized Fields
+
         [Tooltip("The prefab to use for representing the player")]
         public GameObject playerPrefab;
         
@@ -28,6 +30,8 @@ namespace Multiplayer
         public GameObject BuyMenuPrefab;
 
         public Vector3 playerStartPos;
+
+        #endregion
 
         #region Photon Callbacks
 
@@ -62,6 +66,8 @@ namespace Multiplayer
 
         #endregion
 
+        #region MonoBehaviours callbacks
+
         private void Start()
         {
             playerStartPos = new Vector3(0f, 5f, 0f);
@@ -95,10 +101,12 @@ namespace Multiplayer
             RespawnPlayer();
         }
 
+        #endregion
+
+        #region Private Methods
+
         private void RespawnPlayer()
         {
-            var playerManager = PlayerManager.LocalPlayerInstance.GetComponent<PlayerManager>();
-            
             PhotonNetwork.Destroy(PlayerManager.LocalPlayerInstance);
             
             InstantiateLocalPlayer();
@@ -151,12 +159,14 @@ namespace Multiplayer
             playerMenusHandler.HUD = clientHUD;
         }
 
-        private void InitCameraOnUIElement(GameObject uiEl, Camera ccam)
+        private static void InitCameraOnUIElement(GameObject uiEl, Camera ccam)
         {
             uiEl.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
             uiEl.GetComponent<Canvas>().worldCamera = ccam;
             uiEl.GetComponent<Canvas>().planeDistance = 1f;
         }
+
+        #endregion
 
         public void LeaveRoom()
         {

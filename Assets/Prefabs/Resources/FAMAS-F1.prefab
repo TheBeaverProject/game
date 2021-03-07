@@ -114,6 +114,7 @@ MonoBehaviour:
   timeBetweenShots: 0.1
   magazineSize: 30
   magazineNumber: 3
+  AllowShooting: 0
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   barrelTip: {fileID: 3280520065385204901}

@@ -51,6 +51,11 @@ namespace PlayerManagement
 
         private void Start()
         {
+            if (PhotonNetwork.IsConnected && !photonView.IsMine)
+            {
+                return;
+            }
+            
             HUD.playerName.text = PhotonNetwork.NickName;
         }
 

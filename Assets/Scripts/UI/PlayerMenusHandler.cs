@@ -1,4 +1,5 @@
 ﻿using System;
+using Photon.Pun;
 using PlayerManagement;
 using UI.BuyMenu;
 using UI.EscapeMenu;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace UI
 {
-    public class PlayerMenusHandler : MonoBehaviour
+    public class PlayerMenusHandler : MonoBehaviourPun
     {
         public GameObject EscapeMenu;
         public GameObject BuyMenu;
@@ -20,6 +21,11 @@ namespace UI
 
         private void Start()
         {
+            if (PhotonNetwork.IsConnected && !photonView.IsMine)
+            {
+                return;
+            }
+            
             EscapeMenuController = EscapeMenu.GetComponent<EscapeMenuHandler>();
             BuyMenuController = BuyMenu.GetComponent<BuyMenuController>();
             _mouseLook = playerCamera.GetComponent<MouseLook>();
@@ -31,6 +37,11 @@ namespace UI
 
         private void Update()
         {
+            if (PhotonNetwork.IsConnected && !photonView.IsMine)
+            {
+                return;
+            }
+            
             if (Input.GetKeyDown(KeyCode.B) && !EscapeMenuController.EscapeMenuContainer.activeInHierarchy)
             {
                 BuyMenuController.Container.SetActive(true);
@@ -50,7 +61,6 @@ namespace UI
                 if (EscapeMenuController.EscapeMenuContainer.activeInHierarchy)
                 {
                     EscapeMenuController.ResumeButtonHandler();
-                    LockCursor();
                 }
                 else
                 {
@@ -60,7 +70,7 @@ namespace UI
             }
         }
 
-        private void LockCursor()
+        public void LockCursor()
         {
             Cursor.lockState = CursorLockMode.Locked;
             //Reenable the mouse look
@@ -69,7 +79,7 @@ namespace UI
             HUD.SetActive(true);
         }
 
-        private void UnLockCursor()
+        public void UnLockCursor()
         {
             //Unlocks the cursor for interaction with the menus
             Cursor.lockState = CursorLockMode.None;

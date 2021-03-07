@@ -183,6 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EscapeMenu: {fileID: 0}
   BuyMenu: {fileID: 0}
+  HUD: {fileID: 0}
   playerCamera: {fileID: 0}
 --- !u!114 &7256758337403257194
 MonoBehaviour:

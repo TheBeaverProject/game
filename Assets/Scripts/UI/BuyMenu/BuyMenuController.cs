@@ -104,15 +104,14 @@ namespace UI.BuyMenu
             // Add every button
             foreach (var weapon in categoriesAssociation[step])
             {
-                // Do this to handle the case where weapons will use different scripts
-                Gunnable weaponScript = null;
-                if (weapon.TryGetComponent(out HitScanWeapon hitScanWeaponScript))
-                    weaponScript = hitScanWeaponScript;
+                weapon.TryGetComponent(out Gunnable weaponScript);
                 if (weaponScript == null) // Continue if no script on the prefab
                     continue;
                 
                 GameObject newObj = Instantiate(Step2Button.gameObject, Step2Container.transform);
+                
                 // Initialize preview on hover Script
+                PreviewContainer.GetComponent<WeaponPreview>().worldCamera = playerManager.playerCamera;
                 var weaponPreview = newObj.AddComponent<WeaponPreviewHandler>();
                 weaponPreview.weaponPrefab = weapon;
                 weaponPreview.weaponScript = weaponScript;

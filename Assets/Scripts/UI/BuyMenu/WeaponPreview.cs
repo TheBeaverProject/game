@@ -12,6 +12,8 @@ namespace UI.BuyMenu
         public Slider spreadSlider;
         public TextMeshProUGUI ammoText;
         public TextMeshProUGUI modeText;
+
+        public Camera worldCamera;
         
         private GameObject instancied;
 
@@ -25,7 +27,7 @@ namespace UI.BuyMenu
                 Destroy(instancied);
             }
             
-            instancied = Instantiate(weaponPrefab, Camera.current.transform);
+            instancied = Instantiate(weaponPrefab, worldCamera.transform);
             instancied.transform.localPosition = new Vector3(0, 0, 2);
             instancied.transform.localScale = new Vector3(2, 2, 2);
             instancied.transform.rotation = rotation;

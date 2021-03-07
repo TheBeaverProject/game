@@ -113,5 +113,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 20
-  grenadePrefab: {fileID: 1430369683734204, guid: 57fe622edf4aa51418f3d8df63b06a15,
+  grenadePrefab: {fileID: 3640159830457496505, guid: 1fdada0efd4a6f8468e0aa764f17aa23,
     type: 3}

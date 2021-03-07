@@ -19,7 +19,7 @@ namespace Guns
 
         private void ThrowGrenade()
         {
-            GameObject grenade = PhotonNetwork.Instantiate(grenadePrefab.name, transform.position + new Vector3(0.1f, -0.3f), transform.rotation);
+            GameObject grenade = PhotonNetwork.Instantiate(grenadePrefab.name, transform.position, transform.rotation);
             Rigidbody rb = grenade.GetComponent<Rigidbody>();
             rb.AddForce(transform.forward * throwForce, ForceMode.VelocityChange);
         }

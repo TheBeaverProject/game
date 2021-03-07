@@ -14,6 +14,7 @@ namespace UI.EscapeMenu
         {
             EscapeMenuContainer.SetActive(false);
             SettingsMenu.SetActive(false);
+            GetComponentInParent<PlayerMenusHandler>().LockCursor();
         }
 
         public void SettingsButtonHandler()

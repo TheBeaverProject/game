@@ -86,11 +86,11 @@ namespace Guns
             readyToShoot = true;
             bulletsLeft = magazineSize;
 
-            if (holder == null)
-                return;
-
             if (!PhotonNetwork.IsConnected) return;
             
+            if (photonView.Owner == null)
+                return;
+
             if (photonView.IsMine)
             {
                 // Update the HUD
@@ -104,18 +104,15 @@ namespace Guns
                     // Looks for a player object with the same controller => the parent of the gun
                     if (view.Controller.Equals(photonView.Controller) && view.TryGetComponent(out holder))
                     {
-                        var t = transform;
-                        var ht = holder.transform;
-                        
                         // Sets the parent if the gun is not ours
-                        t.SetParent(ht);
+                        transform.SetParent(holder.transform);
 
-                        t.position = ht.position;
-                        t.rotation = ht.rotation;
-                        t.Rotate(0, 180, 0);
-                        t.localPosition = weaponBodyPlacement;
-                        t.RotateAround(t.position, Vector3.up, -2);
-                        t.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+                        transform.position = holder.transform.position;
+                        transform.rotation = holder.transform.rotation;
+                        transform.Rotate(0, 180, 0);
+                        transform.localPosition = weaponBodyPlacement;
+                        transform.RotateAround(transform.position, Vector3.up, -2);
+                        transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
                     }
                 }
             }

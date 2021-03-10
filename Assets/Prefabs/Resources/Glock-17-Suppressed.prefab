@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2320483996497264793}
   - component: {fileID: 2328777738061767037}
   - component: {fileID: 2339201272956547905}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 5587326232665882696}
   - component: {fileID: 7690331294080028014}
   - component: {fileID: 1439858730137891323}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Glock-17-Suppressed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,6 +205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Glock 17 Suppressed
   damage: 13
+  allowScope: 0
   allowButtonHold: 0
   timeBetweenShooting: 0.2
   reloadTime: 2
@@ -214,6 +215,7 @@ MonoBehaviour:
   timeBetweenShots: 0
   magazineSize: 16
   magazineNumber: 4
+  aiming: 0
   AllowShooting: 0
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
@@ -328,7 +330,7 @@ GameObject:
   - component: {fileID: 2320494188236417649}
   - component: {fileID: 2329428979052049927}
   - component: {fileID: 2337681942730017619}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Slide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +409,7 @@ GameObject:
   - component: {fileID: 2318166192671615639}
   - component: {fileID: 2331796867722207055}
   - component: {fileID: 2337603455496718309}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -486,7 +488,7 @@ GameObject:
   - component: {fileID: 2320597347061806757}
   - component: {fileID: 2328846886656443493}
   - component: {fileID: 2339242533763506795}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Magazin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,7 +567,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3472236306935598274}
   - component: {fileID: 3293267076768699719}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -727,7 +729,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6805888594588601405}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BarrelTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -758,6 +760,10 @@ PrefabInstance:
     - target: {fileID: 1168537430613544, guid: 79d5f3b5b656a7c4aa880bce1288dddc, type: 3}
       propertyPath: m_Name
       value: Suppressor_00
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168537430613544, guid: 79d5f3b5b656a7c4aa880bce1288dddc, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4495709015096794, guid: 79d5f3b5b656a7c4aa880bce1288dddc, type: 3}
       propertyPath: m_RootOrder
@@ -821,6 +827,10 @@ PrefabInstance:
     - target: {fileID: 1801690528035100, guid: 5b32e8eb0f2724d4ebeabdfdb3ae0feb, type: 3}
       propertyPath: m_Name
       value: Delta_Point
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801690528035100, guid: 5b32e8eb0f2724d4ebeabdfdb3ae0feb, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4775704063739042, guid: 5b32e8eb0f2724d4ebeabdfdb3ae0feb, type: 3}
       propertyPath: m_RootOrder

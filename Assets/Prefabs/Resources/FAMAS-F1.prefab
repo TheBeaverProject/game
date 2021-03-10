@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4303828788619142597}
   - component: {fileID: 6572731500929136242}
   - component: {fileID: -5511006702040960062}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: FAMAS-F1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: FAMAS F1
   damage: 18
+  allowScope: 0
   allowButtonHold: 0
   timeBetweenShooting: 0.5
   reloadTime: 2.3
@@ -114,6 +115,7 @@ MonoBehaviour:
   timeBetweenShots: 0.1
   magazineSize: 30
   magazineNumber: 3
+  aiming: 0
   AllowShooting: 0
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
@@ -250,7 +252,7 @@ GameObject:
   - component: {fileID: 927018452129192166}
   - component: {fileID: 911012749447211928}
   - component: {fileID: 900919430069373254}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +331,7 @@ GameObject:
   - component: {fileID: 926711164244135656}
   - component: {fileID: 910934312125993046}
   - component: {fileID: 902871770191446418}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bipod_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,7 +410,7 @@ GameObject:
   - component: {fileID: 927155227521731970}
   - component: {fileID: 911108794048584694}
   - component: {fileID: 902494867782224204}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bipod_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -487,7 +489,7 @@ GameObject:
   - component: {fileID: 926725326463518498}
   - component: {fileID: 911930912051744310}
   - component: {fileID: 900897672563628284}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Magazin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -567,7 +569,7 @@ GameObject:
   - component: {fileID: 926751315477674518}
   - component: {fileID: 911335103561297310}
   - component: {fileID: 902674242371644172}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,7 +648,7 @@ GameObject:
   - component: {fileID: 926893065644914582}
   - component: {fileID: 911409560681620034}
   - component: {fileID: 900756363428903410}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -724,7 +726,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5112626234816196471}
   - component: {fileID: 5690187898053073501}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Tagueo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -886,7 +888,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4639429395346795048}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BarrelTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -917,6 +919,10 @@ PrefabInstance:
     - target: {fileID: 1688879638031654, guid: 0e19f1d5f5fe0ca4a8e3542b99e39a10, type: 3}
       propertyPath: m_Name
       value: vertical_Grip
+      objectReference: {fileID: 0}
+    - target: {fileID: 1688879638031654, guid: 0e19f1d5f5fe0ca4a8e3542b99e39a10, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4093648858189020, guid: 0e19f1d5f5fe0ca4a8e3542b99e39a10, type: 3}
       propertyPath: m_RootOrder
@@ -980,6 +986,10 @@ PrefabInstance:
     - target: {fileID: 1435722872398050, guid: 0681e240d1592964ca5442e364027b74, type: 3}
       propertyPath: m_Name
       value: SR_Scope_00
+      objectReference: {fileID: 0}
+    - target: {fileID: 1435722872398050, guid: 0681e240d1592964ca5442e364027b74, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4871524241523714, guid: 0681e240d1592964ca5442e364027b74, type: 3}
       propertyPath: m_RootOrder

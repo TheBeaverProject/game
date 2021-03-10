@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using PlayerManagement;
 using UnityEngine;
+using UnityEngine.Animations;
 
 namespace Guns
 {
@@ -18,6 +19,9 @@ namespace Guns
         //Damage Getter
         public int GetDamage => damage;
 
+        [Tooltip("Has a scope")]
+        [SerializeField]
+        public bool allowScope;
         // Weapon Behavior
         [Tooltip("Allow automatic Firing")]
         [SerializeField]
@@ -56,6 +60,8 @@ namespace Guns
         public int GetMagSize => magazineSize;
         public int GetMagLeft => magazineNumber - magazineUsed;
         public int GetBulletsLeft => bulletsLeft;
+
+        public bool aiming;
 
         public bool AllowShooting = true;
         
@@ -171,6 +177,12 @@ namespace Guns
             // Update the HUD
             holder.HUD.UpdateWeaponDisplay(this);
         }
+
+        #endregion
+
+        #region Scope
+
+        protected abstract void Aim();
 
         #endregion
     }

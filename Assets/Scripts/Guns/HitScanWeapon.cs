@@ -34,6 +34,12 @@ namespace Guns
                 bulletsShot = bulletsPerTap;
                 Shoot();
             }
+            
+            //Aim Mechanic
+            if (allowScope && Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                Aim();
+            }
         }
 
         protected override void Shoot()
@@ -44,10 +50,21 @@ namespace Guns
             photonView.RPC("PlayShotSound", RpcTarget.All);
             
             readyToShoot = false;
-            
+
+            float x;
+            float y;
             // Spread
-            float x = Random.Range(-spread, spread);
-            float y = Random.Range(-spread, spread);
+            if (aiming)
+            {
+                x = Random.Range(-spread/2, spread/2);
+                y = Random.Range(-spread/2, spread/2);
+            }
+            else
+            {
+                x = Random.Range(-spread, spread);
+                y = Random.Range(-spread, spread);
+            }
+
             Vector3 direction = holder.playerCamera.transform.forward + new Vector3(x, y, 0);
             
             // The raycast starting from the camera with the spread added
@@ -82,7 +99,16 @@ namespace Guns
             if (bulletsShot > 0 && bulletsLeft > 0)
                 Invoke("Shoot",timeBetweenShots);
         }
-        
+
+        protected override void Aim()
+        {
+            Debug.Log("aiming");
+            while (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                aiming = true;
+            }
+        }
+
         #region RPC Methods
 
         [PunRPC]

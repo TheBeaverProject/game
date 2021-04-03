@@ -533,6 +533,7 @@ MonoBehaviour:
   weaponName: Barret M107A1
   damage: 200
   allowScope: 1
+  scopedFOV: 15
   allowButtonHold: 0
   timeBetweenShooting: 1.5
   reloadTime: 4
@@ -544,6 +545,7 @@ MonoBehaviour:
   magazineNumber: 2
   aiming: 0
   AllowShooting: 0
+  weaponCamera: {fileID: 0}
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   barrelTip: {fileID: 721178284704720545}

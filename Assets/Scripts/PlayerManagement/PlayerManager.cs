@@ -13,6 +13,9 @@ namespace PlayerManagement
 
         [Tooltip("Camera follwing the player")]
         public Camera playerCamera;
+
+        [Tooltip("Camera used to display the weapon")]
+        public Camera weaponCamera;
         
         [Tooltip("The current Health of our player")]
         [SerializeField]

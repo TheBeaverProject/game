@@ -206,6 +206,7 @@ MonoBehaviour:
   weaponName: Glock 17 Suppressed
   damage: 13
   allowScope: 1
+  scopedFOV: 50
   allowButtonHold: 0
   timeBetweenShooting: 0.2
   reloadTime: 2

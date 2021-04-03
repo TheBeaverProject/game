@@ -182,7 +182,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: KRISS Vector
   damage: 13
-  allowScope: 0
+  allowScope: 1
+  scopedFOV: 50
   allowButtonHold: 1
   timeBetweenShooting: 0.05
   reloadTime: 2

@@ -100,13 +100,6 @@ namespace Guns
                 Invoke("Shoot",timeBetweenShots);
         }
 
-        protected override void Aim()
-        {
-            Debug.Log("aiming");
-            
-            aiming = true;
-        }
-
         #region RPC Methods
 
         [PunRPC]

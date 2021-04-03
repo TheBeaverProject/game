@@ -1,7 +1,7 @@
 ﻿using Photon.Pun;
 using PlayerManagement;
+using UI;
 using UnityEngine;
-using UnityEngine.Animations;
 
 namespace Guns
 {
@@ -19,9 +19,15 @@ namespace Guns
         //Damage Getter
         public int GetDamage => damage;
 
+        // Weapon Scope
         [Tooltip("Has a scope")]
         [SerializeField]
         public bool allowScope;
+
+        [Tooltip("Scoped FOV")]
+        [SerializeField]
+        public float scopedFOV = 30f;
+
         // Weapon Behavior
         [Tooltip("Allow automatic Firing")]
         [SerializeField]
@@ -135,7 +141,6 @@ namespace Guns
 
         #endregion
         
-
         #region Input Mechanics
         
         protected abstract void MyInput();
@@ -182,7 +187,26 @@ namespace Guns
 
         #region Scope
 
-        protected abstract void Aim();
+        private float baseFov;
+        
+        public void Aim()
+        {
+            holder.GetComponentInChildren<ScopeHUDController>().Toggle();
+
+            if (aiming)
+            {
+                holder.playerCamera.fieldOfView = baseFov;
+                aiming = false;
+                holder.weaponCamera.gameObject.SetActive(true);
+            }
+            else
+            {
+                aiming = true;
+                baseFov = holder.playerCamera.fieldOfView;
+                holder.playerCamera.fieldOfView = scopedFOV;
+                holder.weaponCamera.gameObject.SetActive(false);
+            }
+        }
 
         #endregion
     }

@@ -106,6 +106,7 @@ MonoBehaviour:
   weaponName: FAMAS F1
   damage: 27
   allowScope: 1
+  scopedFOV: 30
   allowButtonHold: 0
   timeBetweenShooting: 0.5
   reloadTime: 2.3

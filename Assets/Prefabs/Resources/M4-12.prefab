@@ -634,8 +634,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: M4-12
-  damage: 30
+  damage: 35
   allowScope: 1
+  scopedFOV: 20
   allowButtonHold: 0
   timeBetweenShooting: 0.2
   reloadTime: 2.5

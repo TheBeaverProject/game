@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 280414213823712975}
   - component: {fileID: 280414213823712972}
   - component: {fileID: 280414213823712973}
+  - component: {fileID: 2837439099681347716}
   m_Layer: 5
   m_Name: ScopeHUD
   m_TagString: Untagged
@@ -99,6 +100,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2837439099681347716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280414213823712970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d3ac077425145759c1d062867afdb40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LRImg: {fileID: 3418118112866933502}
 --- !u!1 &3418118112866933502
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +126,7 @@ GameObject:
   - component: {fileID: 7521366729832937571}
   - component: {fileID: 3702177388900467841}
   m_Layer: 5
-  m_Name: Image
+  m_Name: LR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

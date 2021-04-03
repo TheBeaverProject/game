@@ -20,6 +20,9 @@ namespace Multiplayer
         [Tooltip("Camera used for the view of the client")]
         public Camera cameraPrefab;
         
+        [Tooltip("Camera used for the view of the client's weapon")]
+        public Camera weaponCameraPrefab;
+        
         [Tooltip("HUD of the client")]
         public GameObject hudPrefab;
         
@@ -28,6 +31,9 @@ namespace Multiplayer
         
         [Tooltip("Buy Menu")]
         public GameObject BuyMenuPrefab;
+
+        [Tooltip("GameObject used to display scopes when aiming")]
+        public GameObject ScopePrefab;
 
         public Vector3 playerStartPos;
 
@@ -117,6 +123,8 @@ namespace Multiplayer
         private GameObject clientHUD;
         private GameObject clientESCMenu;
         private GameObject clientBuyMenu;
+        private GameObject clientScopeHUD;
+        private Camera clientWeaponCamera;
 
         private void InstantiateLocalPlayer()
         {
@@ -129,15 +137,18 @@ namespace Multiplayer
 
             // Add a camera and a HUD only on the player representing the client to have a single camera/hud per game scene and avoid confusion
             clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            clientWeaponCamera = Instantiate(weaponCameraPrefab, clientCamera.transform.position, Quaternion.identity, clientCamera.transform);
             clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity, clientPlayer.transform);
             clientESCMenu = Instantiate(ESCPrefab, initPos, Quaternion.identity, clientPlayer.transform);
             clientBuyMenu = Instantiate(BuyMenuPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            clientScopeHUD = Instantiate(ScopePrefab, initPos, Quaternion.identity, clientPlayer.transform);
             
             // Assing the PlayerManager on the Buy Menu
             clientBuyMenu.GetComponent<BuyMenuController>().playerManager = clientPlayer.GetComponent<PlayerManager>();
             
             // Assing the camera to the player object
             clientPlayer.GetComponent<PlayerManager>().playerCamera = clientCamera;
+            clientPlayer.GetComponent<PlayerManager>().weaponCamera = clientWeaponCamera;
             
             // Assign the HUD to the playerManager
             clientPlayer.GetComponent<PlayerManager>().HUD = clientHUD.GetComponent<Controller>();

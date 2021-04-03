@@ -205,11 +205,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Glock 17 Suppressed
   damage: 13
-  allowScope: 0
+  allowScope: 1
   allowButtonHold: 0
   timeBetweenShooting: 0.2
   reloadTime: 2
-  spread: 0.05
+  spread: 0.02
   range: 100
   bulletsPerTap: 1
   timeBetweenShots: 0

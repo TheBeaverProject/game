@@ -104,8 +104,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: FAMAS F1
-  damage: 18
-  allowScope: 0
+  damage: 27
+  allowScope: 1
   allowButtonHold: 0
   timeBetweenShooting: 0.5
   reloadTime: 2.3
@@ -727,7 +727,7 @@ GameObject:
   - component: {fileID: 5112626234816196471}
   - component: {fileID: 5690187898053073501}
   m_Layer: 12
-  m_Name: Tagueo
+  m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

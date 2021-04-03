@@ -161,7 +161,7 @@ namespace Multiplayer
 
         private static void InitCameraOnUIElement(GameObject uiEl, Camera ccam)
         {
-            uiEl.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+            uiEl.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay; // TODO: Switch back to ScreenSpaceCamera if needed to reenable glitch effects
             uiEl.GetComponent<Canvas>().worldCamera = ccam;
             uiEl.GetComponent<Canvas>().planeDistance = 1f;
         }

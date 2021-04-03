@@ -186,7 +186,7 @@ MonoBehaviour:
   allowButtonHold: 1
   timeBetweenShooting: 0.05
   reloadTime: 2
-  spread: 0.04
+  spread: 0.03
   range: 100
   bulletsPerTap: 1
   timeBetweenShots: 0

@@ -103,10 +103,8 @@ namespace Guns
         protected override void Aim()
         {
             Debug.Log("aiming");
-            while (Input.GetKeyDown(KeyCode.Mouse1))
-            {
-                aiming = true;
-            }
+            
+            aiming = true;
         }
 
         #region RPC Methods

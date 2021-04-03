@@ -634,10 +634,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: M4-12
-  damage: 20
-  allowScope: 0
+  damage: 30
+  allowScope: 1
   allowButtonHold: 0
-  timeBetweenShooting: 0.4
+  timeBetweenShooting: 0.2
   reloadTime: 2.5
   spread: 0.01
   range: 300

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Photon.Pun;
 using PlayerManagement;
 using UI;
@@ -192,41 +193,46 @@ namespace Guns
         
         public void Aim()
         {
-            holder.GetComponentInChildren<ScopeHUDController>().Toggle(ScopeType);
-
             if (aiming)
             {
-                holder.playerCamera.fieldOfView = baseFov;
                 aiming = false;
                 holder.HUD.DisplayCrosshair(true);
+                holder.GetComponentInChildren<ScopeHUDController>().Toggle(ScopeType);
                 
                 if (ScopeType != ScopeHUDController.scopeType.RedDot)
                 {
                     holder.weaponCamera.gameObject.SetActive(true);
                 }
-                else
-                {
-                    this.transform.localPosition = weaponCameraPlacement;
-                    this.transform.localRotation = baseRotation;
-                }
+
+                StartCoroutine(SmoothTransition(
+                    f => transform.localPosition = Vector3.Lerp(this.transform.localPosition, weaponCameraPlacement, f)
+                    , 0.1f));
+                
+                StartCoroutine(SmoothTransition(
+                    f => holder.playerCamera.fieldOfView = Mathf.Lerp(scopedFOV, baseFov, f),
+                    0.1f));
             }
             else
             {
                 aiming = true;
                 baseFov = holder.playerCamera.fieldOfView;
-                holder.playerCamera.fieldOfView = scopedFOV;
                 holder.HUD.DisplayCrosshair(false);
                 
                 if (ScopeType != ScopeHUDController.scopeType.RedDot)
                 {
                     holder.weaponCamera.gameObject.SetActive(false);
                 }
-                else
-                {
-                    this.transform.localPosition = weaponAimingPlacement;
-                    baseRotation = this.transform.localRotation;
-                    this.transform.localRotation = new Quaternion(0, 180, 0, 0);
-                }
+
+                StartCoroutine(SmoothTransition(
+                    f => transform.localPosition = Vector3.Lerp(this.transform.localPosition, weaponAimingPlacement, f)
+                    , 0.1f, () =>
+                    {
+                        holder.GetComponentInChildren<ScopeHUDController>().Toggle(ScopeType);
+                    }));
+                
+                StartCoroutine(SmoothTransition(
+                    f => holder.playerCamera.fieldOfView = Mathf.Lerp(baseFov, scopedFOV, f),
+                    0.1f));
             }
         }
 
@@ -252,6 +258,23 @@ namespace Guns
                     transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
                 }
             }
+        }
+
+        private IEnumerator SmoothTransition(Action<float> transition, float time, Action callback = null)
+        {
+            float i = 0.0f;
+            float rate = 1.0f / time;
+
+            while (i < 1f)
+            {
+                i += Time.deltaTime * rate;
+                transition(i);
+                
+                yield return null;
+            }
+
+            if (callback != null)
+                callback();
         }
 
         #endregion

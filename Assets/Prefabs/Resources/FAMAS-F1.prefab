@@ -121,6 +121,7 @@ MonoBehaviour:
   AllowShooting: 0
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
+  weaponAimingPlacement: {x: 0, y: -0.21, z: 0.24}
   barrelTip: {fileID: 3280520065385204901}
   weaponAudioSource: {fileID: 5690187898053073501}
   singleShotSoundEffect: {fileID: 8300000, guid: a5d5be2bf58a66d498ad30e9588ff618,

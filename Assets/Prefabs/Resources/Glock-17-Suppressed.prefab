@@ -207,6 +207,7 @@ MonoBehaviour:
   damage: 13
   allowScope: 1
   scopedFOV: 50
+  ScopeType: 2
   allowButtonHold: 0
   timeBetweenShooting: 0.2
   reloadTime: 2
@@ -220,6 +221,7 @@ MonoBehaviour:
   AllowShooting: 0
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
+  weaponAimingPlacement: {x: 0, y: -0.08, z: 0.1}
   barrelTip: {fileID: 8596133159989045655}
   weaponAudioSource: {fileID: 3293267076768699719}
   singleShotSoundEffect: {fileID: 8300000, guid: 5ac9d7f3dd20b3c4392998f903682b97,

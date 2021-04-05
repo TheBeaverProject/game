@@ -118,30 +118,22 @@ namespace Multiplayer
             InstantiateLocalPlayer();
         }
 
-        private GameObject clientPlayer;
-        private Camera clientCamera;
-        private GameObject clientHUD;
-        private GameObject clientESCMenu;
-        private GameObject clientBuyMenu;
-        private GameObject clientScopeHUD;
-        private Camera clientWeaponCamera;
-
         private void InstantiateLocalPlayer()
         {
             // Instantiate the Object of the localPlayer
             // Using PhotonNetwork to make it present on the network
-            clientPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, playerStartPos, Quaternion.identity, 0);
+            var clientPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, playerStartPos, Quaternion.identity, 0);
             clientPlayer.name = PhotonNetwork.NickName;
             
             var initPos = clientPlayer.transform.position;
 
             // Add a camera and a HUD only on the player representing the client to have a single camera/hud per game scene and avoid confusion
-            clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
-            clientWeaponCamera = Instantiate(weaponCameraPrefab, clientCamera.transform.position, Quaternion.identity, clientCamera.transform);
-            clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity, clientPlayer.transform);
-            clientESCMenu = Instantiate(ESCPrefab, initPos, Quaternion.identity, clientPlayer.transform);
-            clientBuyMenu = Instantiate(BuyMenuPrefab, initPos, Quaternion.identity, clientPlayer.transform);
-            clientScopeHUD = Instantiate(ScopePrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            var clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            var clientWeaponCamera = Instantiate(weaponCameraPrefab, clientCamera.transform.position, Quaternion.identity, clientCamera.transform);
+            var clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            var clientESCMenu = Instantiate(ESCPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            var clientBuyMenu = Instantiate(BuyMenuPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            Instantiate(ScopePrefab, initPos, Quaternion.identity, clientPlayer.transform);
             
             // Assing the PlayerManager on the Buy Menu
             clientBuyMenu.GetComponent<BuyMenuController>().playerManager = clientPlayer.GetComponent<PlayerManager>();

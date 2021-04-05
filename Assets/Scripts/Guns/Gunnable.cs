@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System;
+using Photon.Pun;
 using PlayerManagement;
 using UI;
 using UnityEngine;
@@ -16,8 +17,6 @@ namespace Guns
         [Tooltip("Weapon Damage")]
         [SerializeField]
         public int damage;
-        //Damage Getter
-        public int GetDamage => damage;
 
         // Weapon Scope
         [Tooltip("Has a scope")]
@@ -28,6 +27,10 @@ namespace Guns
         [SerializeField]
         public float scopedFOV = 30f;
 
+        [Tooltip("Type of the weapon's scope")]
+        [SerializeField]
+        public ScopeHUDController.scopeType ScopeType;
+        
         // Weapon Behavior
         [Tooltip("Allow automatic Firing")]
         [SerializeField]
@@ -79,6 +82,9 @@ namespace Guns
         [Tooltip("Weapon placement relative to the camera")]
         public Vector3 weaponCameraPlacement;
 
+        [Tooltip("Weapon position when aiming (used only with reddot weapons)")]
+        public Vector3 weaponAimingPlacement = new Vector3(0, -0.1f, 0.1f);
+
         [Tooltip("Position of extremity of the barrel")]
         public GameObject barrelTip;
 
@@ -111,22 +117,7 @@ namespace Guns
             }
             else // View is not ours, we need to find the parent
             {
-                foreach (var view in PhotonNetwork.PhotonViewCollection)
-                {
-                    // Looks for a player object with the same controller => the parent of the gun
-                    if (view.Controller.Equals(photonView.Controller) && view.TryGetComponent(out holder))
-                    {
-                        // Sets the parent if the gun is not ours
-                        transform.SetParent(holder.transform);
-
-                        transform.position = holder.transform.position;
-                        transform.rotation = holder.transform.rotation;
-                        transform.Rotate(0, 180, 0);
-                        transform.localPosition = weaponBodyPlacement;
-                        transform.RotateAround(transform.position, Vector3.up, -2);
-                        transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
-                    }
-                }
+                FindWeaponParent();
             }
         }
         
@@ -137,6 +128,15 @@ namespace Guns
 
             //MyInput dictates weapon beahvior
             MyInput();
+        }
+
+        private void OnDestroy()
+        {
+            // Set the weapon to not aim before it is destroyed
+            if (aiming)
+            {
+                Aim();
+            }
         }
 
         #endregion
@@ -188,23 +188,69 @@ namespace Guns
         #region Scope
 
         private float baseFov;
+        private Quaternion baseRotation;
         
         public void Aim()
         {
-            holder.GetComponentInChildren<ScopeHUDController>().Toggle();
+            holder.GetComponentInChildren<ScopeHUDController>().Toggle(ScopeType);
 
             if (aiming)
             {
                 holder.playerCamera.fieldOfView = baseFov;
                 aiming = false;
-                holder.weaponCamera.gameObject.SetActive(true);
+                holder.HUD.DisplayCrosshair(true);
+                
+                if (ScopeType != ScopeHUDController.scopeType.RedDot)
+                {
+                    holder.weaponCamera.gameObject.SetActive(true);
+                }
+                else
+                {
+                    this.transform.localPosition = weaponCameraPlacement;
+                    this.transform.localRotation = baseRotation;
+                }
             }
             else
             {
                 aiming = true;
                 baseFov = holder.playerCamera.fieldOfView;
                 holder.playerCamera.fieldOfView = scopedFOV;
-                holder.weaponCamera.gameObject.SetActive(false);
+                holder.HUD.DisplayCrosshair(false);
+                
+                if (ScopeType != ScopeHUDController.scopeType.RedDot)
+                {
+                    holder.weaponCamera.gameObject.SetActive(false);
+                }
+                else
+                {
+                    this.transform.localPosition = weaponAimingPlacement;
+                    baseRotation = this.transform.localRotation;
+                    this.transform.localRotation = new Quaternion(0, 180, 0, 0);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void FindWeaponParent()
+        {
+            foreach (var view in PhotonNetwork.PhotonViewCollection)
+            {
+                // Looks for a player object with the same controller => the parent of the gun
+                if (view.Controller.Equals(photonView.Controller) && view.TryGetComponent(out holder))
+                {
+                    // Sets the parent if the gun is not ours
+                    transform.SetParent(holder.transform);
+
+                    transform.position = holder.transform.position;
+                    transform.rotation = holder.transform.rotation;
+                    transform.Rotate(0, 180, 0);
+                    transform.localPosition = weaponBodyPlacement;
+                    transform.RotateAround(transform.position, Vector3.up, -2);
+                    transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+                }
             }
         }
 

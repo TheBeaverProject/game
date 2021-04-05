@@ -107,6 +107,7 @@ MonoBehaviour:
   damage: 27
   allowScope: 1
   scopedFOV: 30
+  ScopeType: 1
   allowButtonHold: 0
   timeBetweenShooting: 0.5
   reloadTime: 2.3

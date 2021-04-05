@@ -16,6 +16,7 @@ namespace UI.HUD
         public RoundDisplay roundDisplay;
         public TeamDisplay teamDisplay;
         public WeaponDisplay weaponDisplay;
+        public GameObject crossHair;
         
         public static void Init()
         {
@@ -26,6 +27,11 @@ namespace UI.HUD
         {
             ammoDisplay.SetHUDAmmo(gun.GetBulletsLeft, gun.GetMagSize, gun.GetMagLeft);
             weaponDisplay.weaponNameText.text = gun.weaponName;
+        }
+
+        public void DisplayCrosshair(bool display)
+        {
+            crossHair.SetActive(display);
         }
     }
 }

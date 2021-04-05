@@ -3743,6 +3743,7 @@ MonoBehaviour:
   roundDisplay: {fileID: 3411205110592563317}
   teamDisplay: {fileID: 3411205112566764428}
   weaponDisplay: {fileID: 3411205111948920051}
+  crossHair: {fileID: 3411205110877576565}
 --- !u!1 &3411205111931128616
 GameObject:
   m_ObjectHideFlags: 0

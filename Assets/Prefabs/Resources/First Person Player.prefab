@@ -168,6 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HUD: {fileID: 0}
   playerCamera: {fileID: 0}
+  weaponCamera: {fileID: 0}
   health: 100
 --- !u!114 &5542504120066630004
 MonoBehaviour:

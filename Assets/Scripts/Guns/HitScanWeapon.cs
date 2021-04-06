@@ -58,11 +58,21 @@ namespace Guns
             {
                 x = Random.Range(-spread/2, spread/2);
                 y = Random.Range(-spread/2, spread/2);
+                rotationalRecoil += new Vector3(-recoilRotationAim.x,
+                    Random.Range(-recoilRotationAim.y, recoilRotationAim.y),
+                    Random.Range(-recoilRotationAim.z, recoilRotationAim.z));
+                positionalRecoil += new Vector3(Random.Range(-recoilKickBackAim.x, recoilKickBackAim.x),
+                    Random.Range(-recoilKickBackAim.y, recoilKickBackAim.y), recoilKickBackAim.z);
             }
             else
             {
                 x = Random.Range(-spread, spread);
                 y = Random.Range(-spread, spread);
+                rotationalRecoil += new Vector3(-recoilRotation.x,
+                    Random.Range(-recoilRotation.y, recoilRotation.y),
+                    Random.Range(-recoilRotation.z, recoilRotation.z));
+                positionalRecoil += new Vector3(Random.Range(-recoilKickBack.x, recoilKickBack.x),
+                    Random.Range(-recoilKickBack.y, recoilKickBack.y), recoilKickBack.z);
             }
 
             Vector3 direction = holder.playerCamera.transform.forward + new Vector3(x, y, 0);

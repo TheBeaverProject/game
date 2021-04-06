@@ -10,52 +10,53 @@ namespace Guns
     public abstract class Gunnable: MonoBehaviourPun
     {
         //Weapon Name
-        [Tooltip("Weapon Name")]
+        [Header("Weapon Name")]
         [SerializeField]
         public string weaponName;
         
         //Weapon Damage
-        [Tooltip("Weapon Damage")]
+        [Header("Weapon Damage")]
         [SerializeField]
         public int damage;
 
         // Weapon Scope
-        [Tooltip("Has a scope")]
+        [Header("Has a scope")]
         [SerializeField]
         public bool allowScope;
 
-        [Tooltip("Scoped FOV")]
+        [Header("Scoped FOV")]
         [SerializeField]
         public float scopedFOV = 30f;
 
-        [Tooltip("Type of the weapon's scope")]
+        [Header("Type of the weapon's scope")]
         [SerializeField]
         public ScopeHUDController.scopeType ScopeType;
         
         // Weapon Behavior
-        [Tooltip("Allow automatic Firing")]
+        [Header("Allow automatic Firing")]
         [SerializeField]
         public bool allowButtonHold;
         
-        [Tooltip("Firing cadence (in seconds)")]
+        [Header("Firing cadence (in seconds)")]
         [SerializeField]
         protected float timeBetweenShooting;
 
-        [Tooltip("Reloading time (in seconds")]
+        [Header("Reloading time (in seconds")]
         [SerializeField]
         protected float reloadTime;
         
+        [Header("Spread mechanism")]
         [SerializeField]
         public float spread;
         [SerializeField]
         public float range;
 
         // Gun behavior
-        [Tooltip("Burst fire bullets (set to 1 to disable burst)")]
+        [Header("Burst fire bullets (set to 1 to disable burst)")]
         [SerializeField]
         public int bulletsPerTap;
         
-        [Tooltip("Burst Fire time between shots")]
+        [Header("Burst Fire time between shots")]
         [SerializeField]
         protected float timeBetweenShots;
         protected bool shooting, readyToShoot, reloading;
@@ -65,6 +66,42 @@ namespace Guns
         protected int magazineSize;
         [SerializeField]
         protected int magazineNumber;
+
+        #region Recoil
+        
+        //Recoil Mechanic
+        [Header("Reference points")]
+        [SerializeField]
+        protected Transform recoilPosition;
+        [SerializeField]
+        protected Transform rotationPoint;
+
+        [Header("Speed Settings:")]
+        [SerializeField]
+        protected float positionalRecoilSpeed;
+        [SerializeField]
+        protected float rotationalRecoilSpeed;
+        [SerializeField]
+        protected float positionalReturnSpeed;
+        [SerializeField]
+        protected float rotationalReturnSpeed;
+
+        [Header("Amount Settings")] 
+        [SerializeField]
+        protected Vector3 recoilRotation;
+        [SerializeField]
+        protected Vector3 recoilKickBack;
+        [SerializeField]
+        protected Vector3 recoilRotationAim;
+        [SerializeField]
+        protected Vector3 recoilKickBackAim;
+        
+        //Recoil Specific fields
+        protected Vector3 rotationalRecoil;
+        protected Vector3 positionalRecoil;
+        protected Vector3 Rot;
+        
+        #endregion
         
         protected int bulletsLeft, bulletsShot, magazineUsed = 0;
         public int GetMagSize => magazineSize;
@@ -129,6 +166,17 @@ namespace Guns
 
             //MyInput dictates weapon beahvior
             MyInput();
+        }
+
+        private void FixedUpdate()
+        {
+            rotationalRecoil = Vector3.Lerp(rotationalRecoil, Vector3.zero, rotationalReturnSpeed * Time.deltaTime);
+            positionalRecoil = Vector3.Lerp(positionalRecoil,Vector3.zero,positionalReturnSpeed*Time.deltaTime);
+
+            recoilPosition.localPosition = Vector3.Slerp(recoilPosition.localPosition, positionalRecoil,
+                positionalRecoilSpeed * Time.fixedDeltaTime);
+            Rot = Vector3.Slerp(Rot, rotationalRecoil, rotationalRecoilSpeed * Time.fixedDeltaTime);
+            rotationPoint.parent.transform.localRotation = Quaternion.Euler(Rot);
         }
 
         private void OnDestroy()

@@ -2,6 +2,7 @@
 using System.Collections;
 using Photon.Pun;
 using PlayerManagement;
+using Scripts;
 using UI;
 using UnityEngine;
 
@@ -204,11 +205,11 @@ namespace Guns
                     holder.weaponCamera.gameObject.SetActive(true);
                 }
 
-                StartCoroutine(SmoothTransition(
+                StartCoroutine(Utils.SmoothTransition(
                     f => transform.localPosition = Vector3.Lerp(this.transform.localPosition, weaponCameraPlacement, f)
                     , 0.1f));
                 
-                StartCoroutine(SmoothTransition(
+                StartCoroutine(Utils.SmoothTransition(
                     f => holder.playerCamera.fieldOfView = Mathf.Lerp(scopedFOV, baseFov, f),
                     0.1f));
             }
@@ -223,14 +224,14 @@ namespace Guns
                     holder.weaponCamera.gameObject.SetActive(false);
                 }
 
-                StartCoroutine(SmoothTransition(
+                StartCoroutine(Utils.SmoothTransition(
                     f => transform.localPosition = Vector3.Lerp(this.transform.localPosition, weaponAimingPlacement, f)
                     , 0.1f, () =>
                     {
                         holder.GetComponentInChildren<ScopeHUDController>().Toggle(ScopeType);
                     }));
                 
-                StartCoroutine(SmoothTransition(
+                StartCoroutine(Utils.SmoothTransition(
                     f => holder.playerCamera.fieldOfView = Mathf.Lerp(baseFov, scopedFOV, f),
                     0.1f));
             }
@@ -258,23 +259,6 @@ namespace Guns
                     transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
                 }
             }
-        }
-
-        private IEnumerator SmoothTransition(Action<float> transition, float time, Action callback = null)
-        {
-            float i = 0.0f;
-            float rate = 1.0f / time;
-
-            while (i < 1f)
-            {
-                i += Time.deltaTime * rate;
-                transition(i);
-                
-                yield return null;
-            }
-
-            if (callback != null)
-                callback();
         }
 
         #endregion

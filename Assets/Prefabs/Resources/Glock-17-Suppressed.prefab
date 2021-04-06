@@ -221,7 +221,7 @@ MonoBehaviour:
   AllowShooting: 0
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
-  weaponAimingPlacement: {x: 0, y: -0.08, z: 0.1}
+  weaponAimingPlacement: {x: 0, y: -0.08, z: 0.2}
   barrelTip: {fileID: 8596133159989045655}
   weaponAudioSource: {fileID: 3293267076768699719}
   singleShotSoundEffect: {fileID: 8300000, guid: 5ac9d7f3dd20b3c4392998f903682b97,
@@ -849,7 +849,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4775704063739042, guid: 5b32e8eb0f2724d4ebeabdfdb3ae0feb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0776
+      value: 0.0779
       objectReference: {fileID: 0}
     - target: {fileID: 4775704063739042, guid: 5b32e8eb0f2724d4ebeabdfdb3ae0feb, type: 3}
       propertyPath: m_LocalRotation.w

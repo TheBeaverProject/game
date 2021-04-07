@@ -10,6 +10,7 @@ namespace Guns
 {
     public abstract class Gunnable: MonoBehaviourPun
     {
+        #region Weapon Attributes
         //Weapon Name
         [Header("Weapon Name")]
         [SerializeField]
@@ -46,6 +47,15 @@ namespace Guns
         [SerializeField]
         protected float reloadTime;
         
+        // Magazine
+        [SerializeField]
+        protected int magazineSize;
+        [SerializeField]
+        protected int magazineNumber;
+        
+        #endregion
+        
+        
         [Header("Spread mechanism")]
         [SerializeField]
         public float spread;
@@ -62,11 +72,6 @@ namespace Guns
         protected float timeBetweenShots;
         protected bool shooting, readyToShoot, reloading;
         
-        // Magazine
-        [SerializeField]
-        protected int magazineSize;
-        [SerializeField]
-        protected int magazineNumber;
 
         #region Recoil
         
@@ -177,7 +182,7 @@ namespace Guns
             recoilPosition.localPosition = Vector3.Slerp(recoilPosition.localPosition, positionalRecoil,
                 positionalRecoilSpeed * Time.fixedDeltaTime);
             Rot = Vector3.Slerp(Rot, rotationalRecoil, rotationalRecoilSpeed * Time.fixedDeltaTime);
-            rotationPoint.parent.transform.localRotation = Quaternion.Euler(Rot);
+            holder.playerCamera.transform.localRotation = Quaternion.Euler(Rot);
         }
 
         private void OnDestroy()

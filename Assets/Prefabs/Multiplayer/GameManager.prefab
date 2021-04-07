@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4419865850928438867, guid: 8cd203564bb27dc4cae380d3bf51963e,
     type: 3}
-  cameraPrefab: {fileID: 4683654419636010165, guid: 1cdaf4c36e5ee454a86182dd4f5024a1,
+  cameraPrefab: {fileID: 4683654419636010163, guid: 1cdaf4c36e5ee454a86182dd4f5024a1,
     type: 3}
   weaponCameraPrefab: {fileID: 8155402456144932183, guid: 4a42fbd46b86e0341b86fcebd59524c4,
     type: 3}

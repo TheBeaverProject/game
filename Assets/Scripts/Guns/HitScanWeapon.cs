@@ -45,37 +45,19 @@ namespace Guns
         protected override void Shoot()
         {
             var lineRenderer = GetComponent<LineRenderer>();
-
-            //Plays shoot sound
+            
+            // Plays shoot sound
             photonView.RPC("PlayShotSound", RpcTarget.All);
             
             readyToShoot = false;
-
-            float x;
-            float y;
-            // Spread
-            if (aiming)
+            
+            // Apply Recoil to the camera
+            if (holder.playerCameraHolder != null)
             {
-                x = Random.Range(-spread/2, spread/2);
-                y = Random.Range(-spread/2, spread/2);
-                rotationalRecoil += new Vector3(-recoilRotationAim.x,
-                    Random.Range(-recoilRotationAim.y, recoilRotationAim.y),
-                    Random.Range(-recoilRotationAim.z, recoilRotationAim.z));
-                positionalRecoil += new Vector3(Random.Range(-recoilKickBackAim.x, recoilKickBackAim.x),
-                    Random.Range(-recoilKickBackAim.y, recoilKickBackAim.y), recoilKickBackAim.z);
+                holder.playerCameraHolder.GetComponent<CameraRecoil>().Recoil(aiming);
             }
-            else
-            {
-                x = Random.Range(-spread, spread);
-                y = Random.Range(-spread, spread);
-                rotationalRecoil += new Vector3(-recoilRotation.x,
-                    Random.Range(-recoilRotation.y, recoilRotation.y),
-                    Random.Range(-recoilRotation.z, recoilRotation.z));
-                positionalRecoil += new Vector3(Random.Range(-recoilKickBack.x, recoilKickBack.x),
-                    Random.Range(-recoilKickBack.y, recoilKickBack.y), recoilKickBack.z);
-            }
-
-            Vector3 direction = holder.playerCamera.transform.forward + new Vector3(x, y, 0);
+            
+            Vector3 direction = holder.playerCamera.transform.forward;
             
             // The raycast starting from the camera with the spread added
             if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range))

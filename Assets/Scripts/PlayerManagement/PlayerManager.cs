@@ -11,6 +11,9 @@ namespace PlayerManagement
         [Tooltip("HUD of the player")]
         public UI.HUD.Controller HUD;
 
+        [Tooltip("Holder of the camera follwing the player")]
+        public GameObject playerCameraHolder;
+        
         [Tooltip("Camera follwing the player")]
         public Camera playerCamera;
 
@@ -80,45 +83,45 @@ namespace PlayerManagement
 
         #region Player
 
-        private GameObject playerGun;
+        private GameObject playerWeapon;
         
         public void AddGunPrefabToPlayer(GameObject gunPrefab)
         {
-            if (playerGun != null)
+            if (playerWeapon != null)
             {
-                PhotonNetwork.Destroy(playerGun);
+                PhotonNetwork.Destroy(playerWeapon);
             }
             
             var transform = playerCamera.transform;
-            playerGun = PhotonNetwork.Instantiate(gunPrefab.name, transform.position, transform.rotation, 0);
+            playerWeapon = PhotonNetwork.Instantiate(gunPrefab.name, transform.position, transform.rotation, 0);
             
             // Sets the gun as the children of the camera
-            playerGun.transform.SetParent(transform);
+            playerWeapon.transform.SetParent(transform);
 
             // Position correctly the gun
             // Local values so it looks good on camera
-            playerGun.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
-            playerGun.transform.localPosition = playerGun.GetComponent<Gunnable>().weaponCameraPlacement;
-            playerGun.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            playerWeapon.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
+            playerWeapon.transform.localPosition = playerWeapon.GetComponent<Gunnable>().weaponCameraPlacement;
+            playerWeapon.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             // Sets the holder of the gun
-            playerGun.GetComponent<Gunnable>().holder = this;
+            playerWeapon.GetComponent<Gunnable>().holder = this;
         }
 
         public void DisableShooting()
         {
-            if (playerGun == null)
+            if (playerWeapon == null)
                 return;
             
-            playerGun.GetComponent<Gunnable>().AllowShooting = false;
+            playerWeapon.GetComponent<Gunnable>().AllowShooting = false;
         }
 
         public void EnableShooting()
         {
-            if (playerGun == null)
+            if (playerWeapon == null)
                 return;
             
-            playerGun.GetComponent<Gunnable>().AllowShooting = true;
+            playerWeapon.GetComponent<Gunnable>().AllowShooting = true;
         }
 
         public void TakeDamage(double weaponDamage, LayerMask bodyZone)

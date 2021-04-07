@@ -107,30 +107,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: FAMAS F1
   damage: 27
+  magazineSize: 30
+  magazineNumber: 3
   allowScope: 1
   scopedFOV: 30
   ScopeType: 1
   allowButtonHold: 0
   timeBetweenShooting: 0.5
   reloadTime: 2.3
-  spread: 0.02
-  range: 300
   bulletsPerTap: 3
   timeBetweenShots: 0.1
-  magazineSize: 30
-  magazineNumber: 3
-  recoilPosition: {fileID: 7500267571932912020}
-  rotationPoint: {fileID: 5723191931677651764}
-  positionalRecoilSpeed: 8
-  rotationalRecoilSpeed: 8
-  positionalReturnSpeed: 70
-  rotationalReturnSpeed: 38
-  recoilRotation: {x: 10, y: 5, z: 7}
-  recoilKickBack: {x: 0.015, y: 0, z: -0.2}
-  recoilRotationAim: {x: 10, y: 4, z: 6}
-  recoilKickBackAim: {x: 0.015, y: 0, z: -0.2}
-  aiming: 0
-  AllowShooting: 0
+  spread: 0.02
+  range: 300
+  rotationSpeed: 6
+  returnSpeed: 25
+  RecoilRotation: {x: 2, y: 2, z: 2}
+  RecoilRotationAiming: {x: 0.5, y: 0.5, z: 0.5}
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   weaponAimingPlacement: {x: 0, y: -0.21, z: 0.24}
@@ -138,6 +130,8 @@ MonoBehaviour:
   weaponAudioSource: {fileID: 5690187898053073501}
   singleShotSoundEffect: {fileID: 8300000, guid: a5d5be2bf58a66d498ad30e9588ff618,
     type: 3}
+  aiming: 0
+  AllowShooting: 0
   holder: {fileID: 0}
 --- !u!120 &6572731500929136242
 LineRenderer:

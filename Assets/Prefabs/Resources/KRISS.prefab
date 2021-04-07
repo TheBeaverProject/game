@@ -182,20 +182,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: KRISS Vector
   damage: 13
+  magazineSize: 40
+  magazineNumber: 3
   allowScope: 1
   scopedFOV: 50
   ScopeType: 2
   allowButtonHold: 1
   timeBetweenShooting: 0.05
   reloadTime: 2
-  spread: 0.03
-  range: 100
   bulletsPerTap: 1
   timeBetweenShots: 0
-  magazineSize: 40
-  magazineNumber: 3
-  aiming: 0
-  AllowShooting: 0
+  spread: 0.03
+  range: 100
+  rotationSpeed: 6
+  returnSpeed: 25
+  RecoilRotation: {x: 2, y: 2, z: 2}
+  RecoilRotationAiming: {x: 0.5, y: 0.5, z: 0.5}
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   weaponAimingPlacement: {x: 0, y: -0.1, z: 0.1}
@@ -203,6 +205,8 @@ MonoBehaviour:
   weaponAudioSource: {fileID: 95758515374081467}
   singleShotSoundEffect: {fileID: 8300000, guid: cf32c12791a313549af7642f5f8fd998,
     type: 3}
+  aiming: 0
+  AllowShooting: 0
   holder: {fileID: 0}
 --- !u!114 &-239428540629454791
 MonoBehaviour:

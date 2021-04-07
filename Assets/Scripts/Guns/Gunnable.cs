@@ -12,114 +12,63 @@ namespace Guns
     {
         #region Weapon Attributes
         //Weapon Name
-        [Header("Weapon Name")]
+        [Header("Weapon Attributes")]
         [SerializeField]
         public string weaponName;
         
         //Weapon Damage
-        [Header("Weapon Damage")]
         [SerializeField]
         public int damage;
-
-        // Weapon Scope
-        [Header("Has a scope")]
-        [SerializeField]
-        public bool allowScope;
-
-        [Header("Scoped FOV")]
-        [SerializeField]
-        public float scopedFOV = 30f;
-
-        [Header("Type of the weapon's scope")]
-        [SerializeField]
-        public ScopeHUDController.scopeType ScopeType;
-        
-        // Weapon Behavior
-        [Header("Allow automatic Firing")]
-        [SerializeField]
-        public bool allowButtonHold;
-        
-        [Header("Firing cadence (in seconds)")]
-        [SerializeField]
-        protected float timeBetweenShooting;
-
-        [Header("Reloading time (in seconds")]
-        [SerializeField]
-        protected float reloadTime;
         
         // Magazine
         [SerializeField]
         protected int magazineSize;
         [SerializeField]
         protected int magazineNumber;
+
+        // Weapon Scope
+        [Header("Scope settings")]
+        [SerializeField]
+        public bool allowScope;
         
-        #endregion
+        [SerializeField]
+        public float scopedFOV = 30f;
         
+        [SerializeField]
+        public ScopeHUDController.scopeType ScopeType;
+        
+        // Weapon Behavior
+        [Header("Weapon Behavior")]
+        [SerializeField]
+        public bool allowButtonHold;
+        [SerializeField]
+        protected float timeBetweenShooting;
+        [SerializeField]
+        protected float reloadTime;
+        
+        [Tooltip("Burst fire bullets (set to 1 to disable burst)")]
+        [SerializeField]
+        public int bulletsPerTap;
+        
+        [Tooltip("Burst Fire time between shots")]
+        [SerializeField]
+        protected float timeBetweenShots;
+        protected bool shooting, readyToShoot, reloading;
         
         [Header("Spread mechanism")]
         [SerializeField]
         public float spread;
         [SerializeField]
         public float range;
-
-        // Gun behavior
-        [Header("Burst fire bullets (set to 1 to disable burst)")]
-        [SerializeField]
-        public int bulletsPerTap;
         
-        [Header("Burst Fire time between shots")]
-        [SerializeField]
-        protected float timeBetweenShots;
-        protected bool shooting, readyToShoot, reloading;
-        
-
-        #region Recoil
-        
-        //Recoil Mechanic
-        [Header("Reference points")]
-        [SerializeField]
-        protected Transform recoilPosition;
-        [SerializeField]
-        protected Transform rotationPoint;
-
-        [Header("Speed Settings:")]
-        [SerializeField]
-        protected float positionalRecoilSpeed;
-        [SerializeField]
-        protected float rotationalRecoilSpeed;
-        [SerializeField]
-        protected float positionalReturnSpeed;
-        [SerializeField]
-        protected float rotationalReturnSpeed;
-
-        [Header("Amount Settings")] 
-        [SerializeField]
-        protected Vector3 recoilRotation;
-        [SerializeField]
-        protected Vector3 recoilKickBack;
-        [SerializeField]
-        protected Vector3 recoilRotationAim;
-        [SerializeField]
-        protected Vector3 recoilKickBackAim;
-        
-        //Recoil Specific fields
-        protected Vector3 rotationalRecoil;
-        protected Vector3 positionalRecoil;
-        protected Vector3 Rot;
-        
-        #endregion
-        
-        protected int bulletsLeft, bulletsShot, magazineUsed = 0;
-        public int GetMagSize => magazineSize;
-        public int GetMagLeft => magazineNumber - magazineUsed;
-        public int GetBulletsLeft => bulletsLeft;
-
-        public bool aiming;
-
-        public bool AllowShooting = true;
-        
+        [Header("Recoil Settings")]
+        public float rotationSpeed = 6;
+        public float returnSpeed = 25;
+        public Vector3 RecoilRotation = new Vector3(2f, 2f, 2f);
+        public Vector3 RecoilRotationAiming = new Vector3(0.5f, 0.5f, 0.5f);
 
         // Weapon placement
+        [Header("Weapon placement")]
         [Tooltip("Weapon placement relative to the body")]
         public Vector3 weaponBodyPlacement;
         
@@ -133,9 +82,22 @@ namespace Guns
         public GameObject barrelTip;
 
         // Sound Effects
+        [Header("Sound Effects")]
         public AudioSource weaponAudioSource;
         public AudioClip singleShotSoundEffect;
         
+        protected int bulletsLeft, bulletsShot, magazineUsed = 0;
+        public int GetMagSize => magazineSize;
+        public int GetMagLeft => magazineNumber - magazineUsed;
+        public int GetBulletsLeft => bulletsLeft;
+
+        public bool aiming;
+
+        public bool AllowShooting = true;
+        
+        #endregion
+
+
         /// <summary>
         /// PlayerManager which the gun belongs to.
         /// </summary>
@@ -157,7 +119,7 @@ namespace Guns
             {
                 // Update the HUD
                 holder.HUD.UpdateWeaponDisplay(this);
-                weaponAudioSource.name = PhotonNetwork.NickName;
+                holder.playerCameraHolder.GetComponent<CameraRecoil>().SetValues(this);
             }
             else // View is not ours, we need to find the parent
             {
@@ -172,17 +134,6 @@ namespace Guns
 
             //MyInput dictates weapon beahvior
             MyInput();
-        }
-
-        private void FixedUpdate()
-        {
-            rotationalRecoil = Vector3.Lerp(rotationalRecoil, Vector3.zero, rotationalReturnSpeed * Time.deltaTime);
-            positionalRecoil = Vector3.Lerp(positionalRecoil,Vector3.zero,positionalReturnSpeed*Time.deltaTime);
-
-            recoilPosition.localPosition = Vector3.Slerp(recoilPosition.localPosition, positionalRecoil,
-                positionalRecoilSpeed * Time.fixedDeltaTime);
-            Rot = Vector3.Slerp(Rot, rotationalRecoil, rotationalRecoilSpeed * Time.fixedDeltaTime);
-            holder.playerCamera.transform.localRotation = Quaternion.Euler(Rot);
         }
 
         private void OnDestroy()

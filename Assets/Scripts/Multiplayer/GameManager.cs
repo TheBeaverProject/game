@@ -17,8 +17,8 @@ namespace Multiplayer
         [Tooltip("The prefab to use for representing the player")]
         public GameObject playerPrefab;
         
-        [Tooltip("Camera used for the view of the client")]
-        public Camera cameraPrefab;
+        [Tooltip("Camera holder used for the view of the client")]
+        public GameObject cameraPrefab;
         
         [Tooltip("Camera used for the view of the client's weapon")]
         public Camera weaponCameraPrefab;
@@ -128,7 +128,8 @@ namespace Multiplayer
             var initPos = clientPlayer.transform.position;
 
             // Add a camera and a HUD only on the player representing the client to have a single camera/hud per game scene and avoid confusion
-            var clientCamera = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            var clientCameraHolder = Instantiate(cameraPrefab, initPos, Quaternion.identity, clientPlayer.transform);
+            var clientCamera = clientCameraHolder.GetComponentInChildren<Camera>();
             var clientWeaponCamera = Instantiate(weaponCameraPrefab, clientCamera.transform.position, Quaternion.identity, clientCamera.transform);
             var clientHUD = Instantiate(hudPrefab, initPos, Quaternion.identity, clientPlayer.transform);
             var clientESCMenu = Instantiate(ESCPrefab, initPos, Quaternion.identity, clientPlayer.transform);
@@ -139,6 +140,7 @@ namespace Multiplayer
             clientBuyMenu.GetComponent<BuyMenuController>().playerManager = clientPlayer.GetComponent<PlayerManager>();
             
             // Assing the camera to the player object
+            clientPlayer.GetComponent<PlayerManager>().playerCameraHolder = clientCameraHolder;
             clientPlayer.GetComponent<PlayerManager>().playerCamera = clientCamera;
             clientPlayer.GetComponent<PlayerManager>().weaponCamera = clientWeaponCamera;
             
@@ -147,7 +149,7 @@ namespace Multiplayer
 
             // Place the camera correctly and set the FOV according to the Player's settings
             clientCamera.GetComponent<MouseLook>().playerBody = clientPlayer.transform;
-            clientCamera.transform.position += new Vector3(0, 0.8f);
+            clientCameraHolder.transform.position += new Vector3(0, 0.8f);
             clientCamera.fieldOfView = PlayerPrefs.HasKey(PlayerPrefKeys.FOV) ? PlayerPrefs.GetInt(PlayerPrefKeys.FOV) : 70;
 
             // Associate the HUD to the Render Camera

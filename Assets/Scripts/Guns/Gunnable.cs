@@ -119,6 +119,8 @@ namespace Guns
             {
                 // Update the HUD
                 holder.HUD.UpdateWeaponDisplay(this);
+                
+                // Set the recoil values on the camera script
                 holder.playerCameraHolder.GetComponent<CameraRecoil>().SetValues(this);
             }
             else // View is not ours, we need to find the parent

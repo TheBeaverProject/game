@@ -205,20 +205,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Glock 17 Suppressed
   damage: 13
+  magazineSize: 16
+  magazineNumber: 4
   allowScope: 1
   scopedFOV: 50
   ScopeType: 2
   allowButtonHold: 0
   timeBetweenShooting: 0.2
   reloadTime: 2
-  spread: 0.02
-  range: 100
   bulletsPerTap: 1
   timeBetweenShots: 0
-  magazineSize: 16
-  magazineNumber: 4
-  aiming: 0
-  AllowShooting: 0
+  spread: 0.02
+  range: 100
+  rotationSpeed: 8
+  returnSpeed: 30
+  RecoilRotation: {x: 10, y: 8, z: 8}
+  RecoilRotationAiming: {x: 8, y: 6, z: 6}
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   weaponAimingPlacement: {x: 0, y: -0.08, z: 0.2}
@@ -226,6 +228,8 @@ MonoBehaviour:
   weaponAudioSource: {fileID: 3293267076768699719}
   singleShotSoundEffect: {fileID: 8300000, guid: 5ac9d7f3dd20b3c4392998f903682b97,
     type: 3}
+  aiming: 0
+  AllowShooting: 0
   holder: {fileID: 0}
 --- !u!120 &1439858730137891323
 LineRenderer:

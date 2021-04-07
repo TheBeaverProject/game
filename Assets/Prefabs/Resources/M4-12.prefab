@@ -635,20 +635,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: M4-12
   damage: 35
+  magazineSize: 20
+  magazineNumber: 3
   allowScope: 1
   scopedFOV: 20
   ScopeType: 1
   allowButtonHold: 0
   timeBetweenShooting: 0.2
   reloadTime: 2.5
-  spread: 0.01
-  range: 300
   bulletsPerTap: 1
   timeBetweenShots: 0
-  magazineSize: 20
-  magazineNumber: 3
-  aiming: 0
-  AllowShooting: 0
+  spread: 0.01
+  range: 300
+  rotationSpeed: 15
+  returnSpeed: 6
+  RecoilRotation: {x: 6, y: 2, z: 2}
+  RecoilRotationAiming: {x: 2, y: 1, z: 1}
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   weaponAimingPlacement: {x: 0, y: -0.165, z: 0.22}
@@ -656,6 +658,8 @@ MonoBehaviour:
   weaponAudioSource: {fileID: 4640369964523755329}
   singleShotSoundEffect: {fileID: 8300000, guid: 52ebddf3728a76746973aed9c7c0e90d,
     type: 3}
+  aiming: 0
+  AllowShooting: 0
   holder: {fileID: 0}
 --- !u!120 &1075190170595698238
 LineRenderer:

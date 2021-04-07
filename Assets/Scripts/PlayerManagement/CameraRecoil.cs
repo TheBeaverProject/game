@@ -7,10 +7,10 @@ namespace PlayerManagement
 {
     public class CameraRecoil : MonoBehaviour
     {
-        protected float rotationSpeed = 6;
-        protected float returnSpeed = 25;
-        protected Vector3 RecoilRotation = new Vector3(2f, 2f, 2f);
-        protected Vector3 RecoilRotationAiming = new Vector3(0.5f, 0.5f, 0.5f);
+        public float rotationSpeed = 6;
+        public float returnSpeed = 25;
+        public Vector3 RecoilRotation = new Vector3(2f, 2f, 2f);
+        public Vector3 RecoilRotationAiming = new Vector3(0.5f, 0.5f, 0.5f);
 
         private Vector3 currentRotation;
         private Vector3 rotVector;

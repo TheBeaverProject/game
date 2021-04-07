@@ -532,30 +532,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Barret M107A1
   damage: 200
+  magazineSize: 10
+  magazineNumber: 2
   allowScope: 1
   scopedFOV: 15
   ScopeType: 0
   allowButtonHold: 0
   timeBetweenShooting: 1.5
   reloadTime: 4
-  magazineSize: 10
-  magazineNumber: 2
-  spread: 0
-  range: 1000
   bulletsPerTap: 1
   timeBetweenShots: 0
-  recoilPosition: {fileID: 0}
-  rotationPoint: {fileID: 0}
-  positionalRecoilSpeed: 0
-  rotationalRecoilSpeed: 0
-  positionalReturnSpeed: 0
-  rotationalReturnSpeed: 0
-  recoilRotation: {x: 0, y: 0, z: 0}
-  recoilKickBack: {x: 0, y: 0, z: 0}
-  recoilRotationAim: {x: 0, y: 0, z: 0}
-  recoilKickBackAim: {x: 0, y: 0, z: 0}
-  aiming: 0
-  AllowShooting: 0
+  spread: 0
+  range: 1000
+  rotationSpeed: 20
+  returnSpeed: 5
+  RecoilRotation: {x: 20, y: 10, z: 10}
+  RecoilRotationAiming: {x: 8, y: 4, z: 4}
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   weaponAimingPlacement: {x: 0, y: -0.14, z: 0.32}
@@ -563,6 +555,8 @@ MonoBehaviour:
   weaponAudioSource: {fileID: 8108749420827106582}
   singleShotSoundEffect: {fileID: 8300000, guid: 501897e6decdb5e49b5a271c812aac79,
     type: 3}
+  aiming: 0
+  AllowShooting: 0
   holder: {fileID: 0}
 --- !u!114 &127013731846878088
 MonoBehaviour:

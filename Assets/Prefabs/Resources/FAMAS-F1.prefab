@@ -121,7 +121,7 @@ MonoBehaviour:
   range: 300
   rotationSpeed: 6
   returnSpeed: 25
-  RecoilRotation: {x: 2, y: 2, z: 2}
+  RecoilRotation: {x: 10, y: 2, z: 2}
   RecoilRotationAiming: {x: 0.5, y: 0.5, z: 0.5}
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}

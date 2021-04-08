@@ -119,10 +119,10 @@ MonoBehaviour:
   timeBetweenShots: 0.1
   spread: 0.02
   range: 300
-  rotationSpeed: 6
+  rotationSpeed: 8
   returnSpeed: 25
-  RecoilRotation: {x: 10, y: 2, z: 2}
-  RecoilRotationAiming: {x: 0.5, y: 0.5, z: 0.5}
+  RecoilRotation: {x: 12, y: 2, z: 2}
+  RecoilRotationAiming: {x: 6, y: 2, z: 2}
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   weaponAimingPlacement: {x: 0, y: -0.21, z: 0.24}

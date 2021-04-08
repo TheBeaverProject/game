@@ -1,5 +1,7 @@
 ﻿using Guns;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using TMPro;
 using UnityEngine;
 
 namespace PlayerManagement
@@ -19,6 +21,9 @@ namespace PlayerManagement
 
         [Tooltip("Camera used to display the weapon")]
         public Camera weaponCamera;
+
+        [Tooltip("Text used to display infos about the player")]
+        public TextMeshPro playerText;
         
         [Tooltip("The current Health of our player")]
         [SerializeField]
@@ -34,13 +39,8 @@ namespace PlayerManagement
         public static GameObject LocalPlayerInstance;
 
         #endregion
-        
-        
-        #region Private Fields
-        
-        #endregion
 
-        
+
         #region MoboBehaviour Callbacks
 
         // #Important
@@ -63,6 +63,7 @@ namespace PlayerManagement
             }
             
             HUD.playerName.text = PhotonNetwork.NickName;
+            playerText.text = $"{PhotonNetwork.NickName} - {photonView.Controller.GetPhotonTeam()}";
         }
 
         #endregion

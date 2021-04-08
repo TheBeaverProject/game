@@ -11,16 +11,18 @@ namespace PlayerManagement
         [Tooltip("HUD of the player")]
         public UI.HUD.Controller HUD;
 
+        [Tooltip("Holder of the camera follwing the player")]
+        public GameObject playerCameraHolder;
+        
         [Tooltip("Camera follwing the player")]
         public Camera playerCamera;
+
+        [Tooltip("Camera used to display the weapon")]
+        public Camera weaponCamera;
         
         [Tooltip("The current Health of our player")]
         [SerializeField]
         private int health = 100;
-
-        // Temporary
-        [Tooltip("Prefab used by the gun TEMPORARY")] [SerializeField]
-        GameObject gunPrefab;
 
         public int Health
         {
@@ -55,20 +57,12 @@ namespace PlayerManagement
 
         private void Start()
         {
-            HUD.playerName.text = PhotonNetwork.NickName;
-        }
-
-        private void Update()
-        {
-            if (PhotonNetwork.IsConnected && photonView.IsMine == false)
+            if (PhotonNetwork.IsConnected && !photonView.IsMine)
             {
                 return;
             }
             
-            if (Input.GetKeyDown(KeyCode.B) && playerGun == null)
-            {
-                AddGunPrefabToPlayer();
-            }
+            HUD.playerName.text = PhotonNetwork.NickName;
         }
 
         #endregion
@@ -89,25 +83,45 @@ namespace PlayerManagement
 
         #region Player
 
-        private GameObject playerGun;
+        private GameObject playerWeapon;
         
-        public void AddGunPrefabToPlayer()
+        public void AddGunPrefabToPlayer(GameObject gunPrefab)
         {
+            if (playerWeapon != null)
+            {
+                PhotonNetwork.Destroy(playerWeapon);
+            }
+            
             var transform = playerCamera.transform;
-            playerGun = PhotonNetwork.Instantiate(gunPrefab.name, transform.position, transform.rotation, 0);
+            playerWeapon = PhotonNetwork.Instantiate(gunPrefab.name, transform.position, transform.rotation, 0);
             
             // Sets the gun as the children of the camera
-            playerGun.transform.SetParent(transform);
+            playerWeapon.transform.SetParent(transform);
 
             // Position correctly the gun
             // Local values so it looks good on camera
-            playerGun.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
-            playerGun.transform.localPosition = new Vector3(0.175f, -0.224f, 0.52f);
-            playerGun.transform.RotateAround(playerGun.transform.position, Vector3.up, -2);
-            playerGun.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            playerWeapon.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
+            playerWeapon.transform.localPosition = playerWeapon.GetComponent<Gunnable>().weaponCameraPlacement;
+            playerWeapon.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             // Sets the holder of the gun
-            playerGun.GetComponent<Gunnable>().holder = this;
+            playerWeapon.GetComponent<Gunnable>().holder = this;
+        }
+
+        public void DisableShooting()
+        {
+            if (playerWeapon == null)
+                return;
+            
+            playerWeapon.GetComponent<Gunnable>().AllowShooting = false;
+        }
+
+        public void EnableShooting()
+        {
+            if (playerWeapon == null)
+                return;
+            
+            playerWeapon.GetComponent<Gunnable>().AllowShooting = true;
         }
 
         public void TakeDamage(double weaponDamage, LayerMask bodyZone)

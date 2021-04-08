@@ -45,9 +45,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4419865850928438867, guid: 8cd203564bb27dc4cae380d3bf51963e,
     type: 3}
-  cameraPrefab: {fileID: 4683654419636010165, guid: 1cdaf4c36e5ee454a86182dd4f5024a1,
+  cameraPrefab: {fileID: 4683654419636010163, guid: 1cdaf4c36e5ee454a86182dd4f5024a1,
+    type: 3}
+  weaponCameraPrefab: {fileID: 8155402456144932183, guid: 4a42fbd46b86e0341b86fcebd59524c4,
     type: 3}
   hudPrefab: {fileID: 3411205111892341334, guid: 18799e3d9317179468b9385372780847,
     type: 3}
   ESCPrefab: {fileID: 2042058564050211915, guid: 5526555b13614b24ea7b6d4f6bf731e7,
     type: 3}
+  BuyMenuPrefab: {fileID: 5410824785811266618, guid: 0a8e3679b88bbf44da030643a8ab8405,
+    type: 3}
+  ScopePrefab: {fileID: 280414213823712970, guid: 8374ba47168c5814c936e93d8dcaeaa0,
+    type: 3}
+  playerStartPos: {x: 0, y: 0, z: 0}

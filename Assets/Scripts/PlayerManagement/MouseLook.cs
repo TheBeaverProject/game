@@ -42,6 +42,10 @@ namespace PlayerManagement
                 Cursor.visible = true;
                 return; // Return if the Mouselook is disabled
             }
+            else
+            {
+                Cursor.visible = false;
+            }
             
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -61,8 +65,8 @@ namespace PlayerManagement
             */
             xRotation = Mathf.Clamp(xRotation, -90f, 60f);
             //-90 and 90 to not allow the player to move too fast and see behind him
-        
-            transform.localRotation = Quaternion.Euler(xRotation,0f,0f);
+            
+            transform.localRotation = Quaternion.AngleAxis(xRotation, Vector3.right);
             //Rotates the character controller
             playerBody.Rotate(Vector3.up * mouseX);
         }

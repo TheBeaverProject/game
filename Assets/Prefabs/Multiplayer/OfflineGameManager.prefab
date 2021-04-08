@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9160655185963145089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9160655185963145095}
+  - component: {fileID: 9160655185963145088}
+  - component: {fileID: 9160655185963145094}
+  m_Layer: 0
+  m_Name: OfflineGameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9160655185963145095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9160655185963145089}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9160655185963145088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9160655185963145089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 014586792c4f4a83890f4f05b396aa7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 4419865850928438867, guid: 8cd203564bb27dc4cae380d3bf51963e,
+    type: 3}
+  cameraPrefab: {fileID: 4683654419636010163, guid: 1cdaf4c36e5ee454a86182dd4f5024a1,
+    type: 3}
+  weaponCameraPrefab: {fileID: 8155402456144932183, guid: 4a42fbd46b86e0341b86fcebd59524c4,
+    type: 3}
+  hudPrefab: {fileID: 3411205111892341334, guid: 18799e3d9317179468b9385372780847,
+    type: 3}
+  ESCPrefab: {fileID: 2042058564050211915, guid: 5526555b13614b24ea7b6d4f6bf731e7,
+    type: 3}
+  BuyMenuPrefab: {fileID: 5410824785811266618, guid: 0a8e3679b88bbf44da030643a8ab8405,
+    type: 3}
+  ScopePrefab: {fileID: 280414213823712970, guid: 8374ba47168c5814c936e93d8dcaeaa0,
+    type: 3}
+  playerStartPos: {x: 0, y: 2, z: 0}
+  launcher: {fileID: 9160655185963145094}
+--- !u!114 &9160655185963145094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9160655185963145089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f127dfa133b36e4e84a9d6f498e2ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPlayersPerRoom: 10
+  controlPanel: {fileID: 0}
+  progressLabel: {fileID: 0}

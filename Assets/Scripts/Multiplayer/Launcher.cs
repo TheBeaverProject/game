@@ -31,6 +31,11 @@ namespace Multiplayer
 
         private void Start()
         {
+            if (controlPanel == null)
+            {
+                return; // Using in standalone mode
+            }
+            
             progressLabel.SetActive(false);
             controlPanel.SetActive(true);
         }
@@ -54,8 +59,11 @@ namespace Multiplayer
 
         public void Connect()
         {
-            progressLabel.SetActive(true);
-            controlPanel.SetActive(false);
+            if (controlPanel != null)
+            {
+                progressLabel.SetActive(true);
+                controlPanel.SetActive(false);
+            }
             
             // Checks if the client is connected
             if (PhotonNetwork.IsConnected)
@@ -85,8 +93,12 @@ namespace Multiplayer
 
         public override void OnDisconnected(DisconnectCause cause)
         {
-            progressLabel.SetActive(false);
-            controlPanel.SetActive(true);
+            if (controlPanel != null)
+            {
+                progressLabel.SetActive(false);
+                controlPanel.SetActive(true);
+            }
+            
             isConnecting = false;
             Debug.LogWarningFormat("Multiplayer/Launcher: OnDisconnected was called by PUN with reason {0}", cause);
         }
@@ -103,7 +115,7 @@ namespace Multiplayer
         {
             Debug.Log($"Multiplayer/Launcher: OnJoinedRoom called by PUN.");
 
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient && !PhotonNetwork.OfflineMode)
             {
                 PhotonNetwork.LoadLevel("Demo");
             }

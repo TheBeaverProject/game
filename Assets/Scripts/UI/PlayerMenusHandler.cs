@@ -21,7 +21,7 @@ namespace UI
 
         private void Start()
         {
-            if (PhotonNetwork.IsConnected && !photonView.IsMine)
+            if (!PhotonNetwork.OfflineMode && PhotonNetwork.IsConnected && !photonView.IsMine)
             {
                 return;
             }
@@ -37,7 +37,7 @@ namespace UI
 
         private void Update()
         {
-            if (PhotonNetwork.IsConnected && !photonView.IsMine)
+            if (!PhotonNetwork.OfflineMode && PhotonNetwork.IsConnected && !photonView.IsMine)
             {
                 return;
             }

@@ -53,72 +53,22 @@ namespace Multiplayer
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             Debug.Log($"PhotonNetwork: Player {newPlayer.NickName} Entered the room.");
-
-            if (PhotonNetwork.IsMasterClient)
-            {
-                Debug.Log($"PhotonNetwork: Client is MasterClient");
-            }
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             Debug.Log($"PhotonNetwork: Player {otherPlayer.NickName} Left the room.");
-            
-            if (PhotonNetwork.IsMasterClient)
-            {
-                Debug.Log($"PhotonNetwork: Client is MasterClient");
-            }
         }
 
         #endregion
 
         #region MonoBehaviours callbacks
 
-        private void Start()
-        {
-            playerStartPos = new Vector3(0f, 5f, 0f);
-            
-            if (playerPrefab == null)
-            {
-                Debug.LogError("Missing PlayerPrefab Reference.");   
-            }
-            else
-            {
-                if (PlayerManager.LocalPlayerInstance == null)
-                {
-                    Debug.Log($"Instantiating LocalPlayer from {SceneManagerHelper.ActiveSceneName}");
-                    InstantiateLocalPlayer();
-                }
-                else
-                {
-                    Debug.LogFormat($"Ignoring scene load for {SceneManagerHelper.ActiveSceneName}");
-                }
-            }
-        }
-
-        private void Update()
-        {
-            // TEMP: Respawn player if he is dead
-            if (PlayerManager.LocalPlayerInstance == null) return;
-            
-            var playerManager = PlayerManager.LocalPlayerInstance.GetComponent<PlayerManager>();
-            if (playerManager.Health > 0) return;
-
-            RespawnPlayer();
-        }
-
         #endregion
 
         #region Private Methods
 
-        private void RespawnPlayer()
-        {
-            PhotonNetwork.Destroy(PlayerManager.LocalPlayerInstance);
-            
-            InstantiateLocalPlayer();
-        }
-
-        private void InstantiateLocalPlayer()
+        protected void InstantiateLocalPlayer()
         {
             // Instantiate the Object of the localPlayer
             // Using PhotonNetwork to make it present on the network

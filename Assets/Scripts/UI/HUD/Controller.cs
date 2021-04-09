@@ -7,6 +7,12 @@ using UnityEngine;
 
 namespace UI.HUD
 {
+    public enum HUDType
+    {
+        Deathmatch,
+        TeamDeathmatch,
+    }
+    
     public class Controller : MonoBehaviour
     {
         public TextMeshProUGUI playerName;
@@ -14,13 +20,31 @@ namespace UI.HUD
         public AmmoDisplay ammoDisplay;
         public HealthDisplay healthDisplay;
         public RoundDisplay roundDisplay;
+        public CountdownDisplay countdownDisplay;
         public TeamDisplay teamDisplay;
         public WeaponDisplay weaponDisplay;
         public GameObject crossHair;
         
-        public static void Init()
+        public void Init(HUDType type)
         {
-            throw new NotImplementedException();
+            switch (type)
+            {
+                case HUDType.Deathmatch:
+                    teamDisplay.gameObject.SetActive(false);
+                    roundDisplay.gameObject.SetActive(false);
+                    countdownDisplay.gameObject.SetActive(true);
+                    break;
+                case HUDType.TeamDeathmatch:
+                    roundDisplay.gameObject.SetActive(false);
+                    teamDisplay.gameObject.SetActive(true);
+                    countdownDisplay.gameObject.SetActive(true);
+                    break;
+            }
+        }
+
+        public void UpdateCountdown(double timeInSeconds)
+        {
+            countdownDisplay.UpdateTime(timeInSeconds);
         }
 
         public void UpdateWeaponDisplay(Gunnable gun)

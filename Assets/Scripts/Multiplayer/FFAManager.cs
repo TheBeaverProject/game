@@ -19,21 +19,21 @@ namespace Multiplayer
             ReadyToSpawn = true;
         }
 
-        private bool ReadyToSpawn = false;
-        private PlayerManager playerManager;
+        public bool ReadyToSpawn = false;
+        public PlayerManager PlayerManager;
         private void Update()
         {
             if (ReadyToSpawn && PlayerManager.LocalPlayerInstance == null)
             {
                 playerStartPos = SelectSpawnPoint();
-                playerManager = RespawnPlayer();
+                PlayerManager = RespawnPlayer();
             }
 
-            if (playerManager != null)
+            if (PlayerManager != null)
             {
-                if (playerManager.Health <= 0)
+                if (PlayerManager.Health <= 0)
                 {
-                    playerManager = RespawnPlayer();
+                    PlayerManager = RespawnPlayer();
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace Multiplayer
             {
                 PhotonNetwork.Destroy(PlayerManager.LocalPlayerInstance);
                 PlayerManager.LocalPlayerInstance = null;
-                playerManager = null;
+                PlayerManager = null;
             }
 
             // TODO: Buy Menu before respawning

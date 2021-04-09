@@ -62728,6 +62728,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FFADeathMatchGameMode
       objectReference: {fileID: 0}
+    - target: {fileID: 52700164885713005, guid: 642ba23ff8d178341a553e9fbe5eeb20,
+        type: 3}
+      propertyPath: FFAManager
+      value: 
+      objectReference: {fileID: 948287053723839011}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 642ba23ff8d178341a553e9fbe5eeb20, type: 3}
 --- !u!1001 &948287053723839010
@@ -62839,3 +62844,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2b898fd17d597841935eb74dab2e15f, type: 3}
+--- !u!114 &948287053723839011 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 948287055244213022, guid: f2b898fd17d597841935eb74dab2e15f,
+    type: 3}
+  m_PrefabInstance: {fileID: 948287053723839010}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0be6a91ae404b5abc0bd32b9c0441b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

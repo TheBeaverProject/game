@@ -5,6 +5,7 @@ using Multiplayer;
 using Photon.Pun;
 using Photon.Realtime;
 using PlayerManagement;
+using UI.HUD;
 using UnityEngine;
 
 namespace Scripts.Gamemodes
@@ -16,23 +17,66 @@ namespace Scripts.Gamemodes
 
         public int PointsPerAssists = 4;
 
-        public float GameDurationInMinutes = 10;
+        public int GameDurationInMinutes = 10;
+        public double StartTime;
+        public double ElapsedTime;
+        
+        public FFAManager FFAManager;
         
         public Dictionary<Player, DeathmatchPlayerData> DeathmatchData;
+
+        private bool startTimer;
         
         #region MonoBehaviour Callbacks
 
         private void Start()
         {
             SetupDeathmatchData();
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                StartTimer();
+            }
+            else
+            {
+                StartTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
+                startTimer = true;
+            }
         }
-        
-        private void OnEnable()
+
+        private bool playerInitialized = false;
+        private void Update()
+        {
+            if (!playerInitialized)
+            {
+                if (PlayerManager.LocalPlayerInstance)
+                {
+                    FFAManager.PlayerManager.HUD.Init(HUDType.Deathmatch);
+                }
+            }
+            
+            if (startTimer)
+            {
+                ElapsedTime = PhotonNetwork.Time - StartTime;
+
+                if (PlayerManager.LocalPlayerInstance)
+                {
+                    FFAManager.PlayerManager.HUD.UpdateCountdown(GameDurationInMinutes * 60 - ElapsedTime);
+                }
+
+                if (ElapsedTime >= GameDurationInMinutes * 60)
+                {
+                    // TODO: Timer is finished
+                }
+            }
+        }
+
+        public override void OnEnable()
         {
             PhotonNetwork.AddCallbackTarget(this);
         }
 
-        private void OnDisable()
+        public override void OnDisable()
         {
             PhotonNetwork.RemoveCallbackTarget(this);
         }
@@ -64,7 +108,7 @@ namespace Scripts.Gamemodes
             
             if (PhotonNetwork.IsMasterClient)
             {
-                // If we are the Master Client, synchronize data for everyone
+                // If we are the Master Client, synchronize player data for everyone
                 foreach (var deathmatchPlayerData in DeathmatchData)
                 {
                     photonView.RPC("UpdateDeathmatchPlayerData", RpcTarget.Others, 
@@ -84,6 +128,15 @@ namespace Scripts.Gamemodes
             
             base.OnPlayerLeftRoom(otherPlayer);
         }
+        
+        public void OnPhotonCustomRoomPropertiesChanged(Hashtable propertiesThatChanged)
+        {
+            object propsTime;
+            if (propertiesThatChanged.TryGetValue("StartTime", out propsTime))
+            {
+                StartTime = (double) propsTime;
+            }
+        }
 
         #endregion
 
@@ -99,6 +152,19 @@ namespace Scripts.Gamemodes
         #endregion
 
         #region Private Methods
+
+        #region Timer
+
+        void StartTimer()
+        {
+            var CustomValue = new Hashtable();
+            StartTime = PhotonNetwork.Time;
+            startTimer = true;
+            CustomValue.Add("StartTime", StartTime);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(CustomValue);
+        }
+
+        #endregion
 
         void SetupDeathmatchData()
         {

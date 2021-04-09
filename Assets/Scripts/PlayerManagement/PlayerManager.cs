@@ -142,14 +142,14 @@ namespace PlayerManagement
             }
         }
 
-        private int GetAssistActorNum()
+        private int GetAssistActorNum(int killerActorNumber)
         {
             int assistActorNum = -1;
             int assistDamage = 0;
             
             foreach (var kvp in TookDamageFrom)
             {
-                if (assistDamage < kvp.Value)
+                if (assistDamage < kvp.Value && kvp.Key != killerActorNumber)
                 {
                     assistActorNum = kvp.Key;
                 }
@@ -179,7 +179,7 @@ namespace PlayerManagement
 
             if (newHealth <= 0) // Kill -> Raise event
             {
-                Events.SendKillEvent(dealer.ActorNumber, GetAssistActorNum(), photonView.OwnerActorNr);
+                Events.SendKillEvent(dealer.ActorNumber, GetAssistActorNum(dealer.ActorNumber), photonView.OwnerActorNr);
             }
 
             photonView.RPC("UpdateHealth", RpcTarget.All, newHealth, dealer.ActorNumber);

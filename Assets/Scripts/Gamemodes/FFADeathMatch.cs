@@ -47,7 +47,13 @@ namespace Scripts.Gamemodes
             
             if (eventCode == EventCodes.Kill)
             {
-                EventCustomData.Kill eventData = (EventCustomData.Kill) photonEvent.CustomData;
+                Dictionary<string, int> eventData = (Dictionary<string, int>) photonEvent.CustomData;
+                
+                IncrementDataByPlayer(eventData["killerActorNum"], kills: 1);
+                IncrementDataByPlayer(eventData["deadActorNum"], deaths: 1);
+                IncrementDataByPlayer(eventData["assistActorNum"], assists: 1);
+                
+                Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
             }
         }
 
@@ -159,6 +165,34 @@ namespace Scripts.Gamemodes
             playerData.kills = kills == -1 ? toUpdate.Value.kills : kills;
             playerData.deaths = deaths == -1 ? toUpdate.Value.deaths : deaths;
             playerData.assists = assists == -1 ? toUpdate.Value.assists : assists;
+
+            DeathmatchData[toUpdate.Key] = playerData;
+        }
+        
+        void IncrementDataByPlayer(int playerActorNumber, int kills = -1, int assists = -1, int deaths = -1)
+        {
+            if (playerActorNumber == -1)
+            {
+                return;
+            }
+            
+            KeyValuePair<Player, DeathmatchPlayerData> toUpdate;
+
+            foreach (var deathmatchPlayerData in DeathmatchData)
+            {
+                var deathmatchPlayer = deathmatchPlayerData.Key;
+
+                if (deathmatchPlayer.ActorNumber == playerActorNumber)
+                {
+                    toUpdate = deathmatchPlayerData;
+                }
+            }
+            
+            var playerData = new DeathmatchPlayerData();
+            playerData.name = toUpdate.Key.NickName;
+            playerData.kills = kills == -1 ? toUpdate.Value.kills : toUpdate.Value.kills + kills;
+            playerData.deaths = deaths == -1 ? toUpdate.Value.deaths : toUpdate.Value.deaths + deaths;
+            playerData.assists = assists == -1 ? toUpdate.Value.assists : toUpdate.Value.assists + assists;
 
             DeathmatchData[toUpdate.Key] = playerData;
         }

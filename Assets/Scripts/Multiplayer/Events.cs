@@ -1,4 +1,5 @@
-﻿using ExitGames.Client.Photon;
+﻿using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -11,11 +12,14 @@ namespace Multiplayer
 
     public class EventCustomData
     {
-        public struct Kill
+        public static Dictionary<string, int> Kill(int killerActorNum, int assistActorNum, int deadActorNum)
         {
-            public int killerActorNum;
-            public int assistActorNum;
-            public int deadActorNum;
+            return new Dictionary<string, int>
+            {
+                {"killerActorNum", killerActorNum},
+                {"assistActorNum", assistActorNum},
+                {"deadActorNum", deadActorNum}
+            };
         }
     }
 
@@ -27,15 +31,10 @@ namespace Multiplayer
             {
                 Receivers = ReceiverGroup.All
             };
-            
-            EventCustomData.Kill eventData = new EventCustomData.Kill
-            {
-                killerActorNum = killerActorNum,
-                assistActorNum = assistActorNum,
-                deadActorNum = deadActorNum
-            };
 
-            PhotonNetwork.RaiseEvent(EventCodes.Kill, eventData, options, SendOptions.SendReliable);
+            var content = EventCustomData.Kill(killerActorNum, assistActorNum, deadActorNum);
+
+            PhotonNetwork.RaiseEvent(EventCodes.Kill, content, options, SendOptions.SendReliable);
         }
     }
 }

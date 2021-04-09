@@ -1,6 +1,9 @@
-﻿using Guns;
+﻿using System.Collections.Generic;
+using Guns;
+using Multiplayer;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
@@ -28,13 +31,12 @@ namespace PlayerManagement
         [Tooltip("The current Health of our player")]
         [SerializeField]
         private int health = 100;
-
         public int Health
         {
             get => health;
             set => health = value < 0 ? 0 : value;
         }
-        
+
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
 
@@ -124,8 +126,39 @@ namespace PlayerManagement
             
             playerWeapon.GetComponent<Gunnable>().AllowShooting = true;
         }
+        
+        // List to hold the actor number of the players who dealt damage to this player and the dealt damage
+        public Dictionary<int, int> TookDamageFrom = new Dictionary<int, int>();
 
-        public void TakeDamage(double weaponDamage, LayerMask bodyZone)
+        private void AddDamageDealer(int dealerActorNumber, int damage)
+        {
+            if (TookDamageFrom.ContainsKey(dealerActorNumber))
+            {
+                TookDamageFrom[dealerActorNumber] += damage;
+            }
+            else
+            {
+                TookDamageFrom.Add(dealerActorNumber, damage);
+            }
+        }
+
+        private int GetAssistActorNum()
+        {
+            int assistActorNum = -1;
+            int assistDamage = 0;
+            
+            foreach (var kvp in TookDamageFrom)
+            {
+                if (assistDamage < kvp.Value)
+                {
+                    assistActorNum = kvp.Key;
+                }
+            }
+
+            return assistActorNum;
+        }
+        
+        public void TakeDamage(double weaponDamage, LayerMask bodyZone, Player dealer)
         {
             Debug.Log("TakeDamage called");
             
@@ -144,12 +177,19 @@ namespace PlayerManagement
 
             int newHealth =  Health - ((int) weaponDamage);
 
-            photonView.RPC("UpdateHealth", RpcTarget.All, newHealth);
+            if (newHealth <= 0) // Kill -> Raise event
+            {
+                Events.SendKillEvent(dealer.ActorNumber, GetAssistActorNum(), photonView.OwnerActorNr);
+            }
+
+            photonView.RPC("UpdateHealth", RpcTarget.All, newHealth, dealer.ActorNumber);
         }
 
         [PunRPC] 
-        void UpdateHealth(int newHealth)
+        void UpdateHealth(int newHealth, int dealerActorNumber)
         {
+            AddDamageDealer(dealerActorNumber, Health - newHealth);
+            
             Health = newHealth;
             
             if (PhotonNetwork.IsConnected && photonView.IsMine)

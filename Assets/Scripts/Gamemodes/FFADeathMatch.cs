@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Multiplayer;
 using Photon.Pun;
 using Photon.Realtime;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace Scripts.Gamemodes
 {
-    public class FFADeathMatch : MonoBehaviourPunCallbacks
+    public class FFADeathMatch : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         [Header("Setup")]
         public int PointsPerKill = 10;
@@ -25,10 +26,30 @@ namespace Scripts.Gamemodes
         {
             SetupDeathmatchData();
         }
+        
+        private void OnEnable()
+        {
+            PhotonNetwork.AddCallbackTarget(this);
+        }
+
+        private void OnDisable()
+        {
+            PhotonNetwork.RemoveCallbackTarget(this);
+        }
 
         #endregion
 
         #region PUN Callbacks
+
+        public void OnEvent(EventData photonEvent)
+        {
+            byte eventCode = photonEvent.Code;
+            
+            if (eventCode == EventCodes.Kill)
+            {
+                EventCustomData.Kill eventData = (EventCustomData.Kill) photonEvent.CustomData;
+            }
+        }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
@@ -46,6 +67,16 @@ namespace Scripts.Gamemodes
             }
 
             base.OnPlayerEnteredRoom(newPlayer);
+        }
+
+        public override void OnPlayerLeftRoom(Player otherPlayer)
+        {
+            if (!otherPlayer.IsInactive)
+            {
+                RemovePlayerFromData(otherPlayer);
+            }
+            
+            base.OnPlayerLeftRoom(otherPlayer);
         }
 
         #endregion
@@ -91,6 +122,21 @@ namespace Scripts.Gamemodes
             }
                 
             DeathmatchData.Add(roomPlayer, playerData);
+        }
+
+        void RemovePlayerFromData(Player roomPlayer)
+        {
+            Player toRemove = null;
+
+            foreach (var deathmatchPlayerData in DeathmatchData)
+            {
+                if (deathmatchPlayerData.Key.ActorNumber == roomPlayer.ActorNumber)
+                {
+                    toRemove = deathmatchPlayerData.Key;
+                }
+            }
+
+            DeathmatchData.Remove(toRemove);
         }
 
         void UpdateDataByPlayer(int playerActorNumber, int kills = -1, int assists = -1, int deaths = -1)

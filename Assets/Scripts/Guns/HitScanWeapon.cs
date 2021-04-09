@@ -71,7 +71,7 @@ namespace Guns
                 {
                     Debug.Log($"Took Damage: {damagedPlayerManager.GetInstanceID()} - Health: {damagedPlayerManager.Health}");
                     //Damages the player
-                    damagedPlayerManager.TakeDamage(damage, rayHit.collider.gameObject.layer);
+                    damagedPlayerManager.TakeDamage(damage, rayHit.collider.gameObject.layer, photonView.Owner);
                 }
             }
             else

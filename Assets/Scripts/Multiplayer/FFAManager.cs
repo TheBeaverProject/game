@@ -44,12 +44,8 @@ namespace Multiplayer
 
         PlayerManager RespawnPlayer()
         {
-            GameObject _gunPrefab = null;
-            
             if (PlayerManager.LocalPlayerInstance != null)
             {
-                // temp: add previous weapon to the new instance
-                _gunPrefab = playerManager.playerWeapon;
                 PhotonNetwork.Destroy(PlayerManager.LocalPlayerInstance);
                 PlayerManager.LocalPlayerInstance = null;
                 playerManager = null;
@@ -57,15 +53,7 @@ namespace Multiplayer
 
             // TODO: Buy Menu before respawning
 
-            var _playerManager = InstantiateLocalPlayer();
-            
-            // temp: add previous weapon to the new instance
-            if (_gunPrefab != null)
-            {
-                _playerManager.AddGunPrefabToPlayer(_gunPrefab);    
-            }
-
-            return _playerManager;
+            return InstantiateLocalPlayer();
         }
 
         /// <summary>

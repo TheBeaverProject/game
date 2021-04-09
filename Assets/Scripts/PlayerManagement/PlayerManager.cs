@@ -63,7 +63,7 @@ namespace PlayerManagement
             }
             
             HUD.playerName.text = PhotonNetwork.NickName;
-            playerText.text = $"{PhotonNetwork.NickName} - {photonView.Controller.GetPhotonTeam()}";
+            playerText.text = $"{PhotonNetwork.NickName}";
         }
 
         #endregion
@@ -84,7 +84,7 @@ namespace PlayerManagement
 
         #region Player
 
-        private GameObject playerWeapon;
+        public GameObject playerWeapon;
         
         public void AddGunPrefabToPlayer(GameObject gunPrefab)
         {

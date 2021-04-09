@@ -35,7 +35,7 @@ namespace Multiplayer
         [Tooltip("GameObject used to display scopes when aiming")]
         public GameObject ScopePrefab;
 
-        public Vector3 playerStartPos;
+        protected Vector3 playerStartPos;
 
         #endregion
 
@@ -68,7 +68,7 @@ namespace Multiplayer
 
         #region Private Methods
 
-        protected void InstantiateLocalPlayer()
+        protected PlayerManager InstantiateLocalPlayer()
         {
             // Instantiate the Object of the localPlayer
             // Using PhotonNetwork to make it present on the network
@@ -90,12 +90,13 @@ namespace Multiplayer
             clientBuyMenu.GetComponent<BuyMenuController>().playerManager = clientPlayer.GetComponent<PlayerManager>();
             
             // Assing the camera to the player object
-            clientPlayer.GetComponent<PlayerManager>().playerCameraHolder = clientCameraHolder;
-            clientPlayer.GetComponent<PlayerManager>().playerCamera = clientCamera;
-            clientPlayer.GetComponent<PlayerManager>().weaponCamera = clientWeaponCamera;
+            var playerManager = clientPlayer.GetComponent<PlayerManager>();
+            playerManager.playerCameraHolder = clientCameraHolder;
+            playerManager.playerCamera = clientCamera;
+            playerManager.weaponCamera = clientWeaponCamera;
             
             // Assign the HUD to the playerManager
-            clientPlayer.GetComponent<PlayerManager>().HUD = clientHUD.GetComponent<Controller>();
+            playerManager.HUD = clientHUD.GetComponent<Controller>();
 
             // Place the camera correctly and set the FOV according to the Player's settings
             clientCamera.GetComponent<MouseLook>().playerBody = clientPlayer.transform;
@@ -112,6 +113,8 @@ namespace Multiplayer
             playerMenusHandler.EscapeMenu = clientESCMenu;
             playerMenusHandler.playerCamera = clientCamera;
             playerMenusHandler.HUD = clientHUD;
+
+            return playerManager;
         }
 
         private static void InitCameraOnUIElement(GameObject uiEl, Camera ccam)

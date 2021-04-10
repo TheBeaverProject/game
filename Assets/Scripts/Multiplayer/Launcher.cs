@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using Scripts.Gamemodes;
 
 namespace Multiplayer
 {
@@ -28,6 +29,8 @@ namespace Multiplayer
         [Tooltip("UI Label to inform the user of the connection progress")]
         [SerializeField]
         private GameObject progressLabel;
+
+        public GamemodeSelection GamemodeSelection;
 
         private void Start()
         {
@@ -117,7 +120,15 @@ namespace Multiplayer
 
             if (PhotonNetwork.IsMasterClient && !PhotonNetwork.OfflineMode)
             {
-                PhotonNetwork.LoadLevel("Demo");
+                switch (GamemodeSelection.SelectedGameMode)
+                {
+                    case Mode.FFADeathMatch:
+                        PhotonNetwork.LoadLevel("FFADeathMatchDemo");
+                        break;
+                    case Mode.TeamDeathMatch:
+                        PhotonNetwork.LoadLevel("TeamDeathMatchDemo");
+                        break;
+                }
             }
         }
     }

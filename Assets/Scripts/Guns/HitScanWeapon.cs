@@ -97,7 +97,7 @@ namespace Guns
         [PunRPC]
         void PlayShotSound()
         {
-            weaponAudioSource.PlayOneShot(singleShotSoundEffect);
+           weaponAudioSource.PlayOneShot(singleShotSoundEffect);
         }
         
         #endregion

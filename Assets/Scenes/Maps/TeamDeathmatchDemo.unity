@@ -54526,6 +54526,56 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5147394430997931026, guid: 5552e3779dab2384d9fd8c538c2fc46d,
+        type: 3}
+      propertyPath: Team1SpawnPoints.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5147394430997931026, guid: 5552e3779dab2384d9fd8c538c2fc46d,
+        type: 3}
+      propertyPath: Team2SpawnPoints.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5147394430997931026, guid: 5552e3779dab2384d9fd8c538c2fc46d,
+        type: 3}
+      propertyPath: Team1SpawnPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 917574231}
+    - target: {fileID: 5147394430997931026, guid: 5552e3779dab2384d9fd8c538c2fc46d,
+        type: 3}
+      propertyPath: Team1SpawnPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 697559827}
+    - target: {fileID: 5147394430997931026, guid: 5552e3779dab2384d9fd8c538c2fc46d,
+        type: 3}
+      propertyPath: Team1SpawnPoints.Array.data[2]
+      value: 
+      objectReference: {fileID: 1196972038}
+    - target: {fileID: 5147394430997931026, guid: 5552e3779dab2384d9fd8c538c2fc46d,
+        type: 3}
+      propertyPath: Team1SpawnPoints.Array.data[3]
+      value: 
+      objectReference: {fileID: 692510700}
+    - target: {fileID: 5147394430997931026, guid: 5552e3779dab2384d9fd8c538c2fc46d,
+        type: 3}
+      propertyPath: Team2SpawnPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 1921957591}
+    - target: {fileID: 5147394430997931026, guid: 5552e3779dab2384d9fd8c538c2fc46d,
+        type: 3}
+      propertyPath: Team2SpawnPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 596261911}
+    - target: {fileID: 5147394430997931026, guid: 5552e3779dab2384d9fd8c538c2fc46d,
+        type: 3}
+      propertyPath: Team2SpawnPoints.Array.data[2]
+      value: 
+      objectReference: {fileID: 2073069843}
+    - target: {fileID: 5147394430997931026, guid: 5552e3779dab2384d9fd8c538c2fc46d,
+        type: 3}
+      propertyPath: Team2SpawnPoints.Array.data[3]
+      value: 
+      objectReference: {fileID: 2057085646}
     - target: {fileID: 5147394430997931027, guid: 5552e3779dab2384d9fd8c538c2fc46d,
         type: 3}
       propertyPath: m_Name

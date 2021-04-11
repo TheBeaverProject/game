@@ -52,6 +52,7 @@ namespace Scripts.Gamemodes
                 if (PlayerManager.LocalPlayerInstance)
                 {
                     FFAManager.PlayerManager.HUD.Init(HUDType.Deathmatch);
+                    playerInitialized = true;
                 }
             }
             

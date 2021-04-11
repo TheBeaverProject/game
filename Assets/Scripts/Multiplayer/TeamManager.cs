@@ -38,6 +38,7 @@ namespace Multiplayer
         }
 
         private bool localPlayerJoinedTeam;
+        public PlayerManager PlayerManager;
         void Update()
         {
             if (PlayerManager.LocalPlayerInstance == null)
@@ -47,8 +48,8 @@ namespace Multiplayer
                     localPlayerTeam = SelectNextTeam();
 
                     playerStartPos = SelectSpawnPoint(localPlayerTeam);
-                    
-                    InstantiateLocalPlayer();
+
+                    PlayerManager = RespawnPlayer();
                 }
                 else
                 {
@@ -57,6 +58,14 @@ namespace Multiplayer
             } else if (!localPlayerJoinedTeam && PlayerManager.LocalPlayerInstance != null)
             {
                 localPlayerJoinedTeam = JoinTeam(PlayerManager.LocalPlayerInstance.GetPhotonView());
+            }
+            
+            if (PlayerManager != null)
+            {
+                if (PlayerManager.Health <= 0)
+                {
+                    PlayerManager = RespawnPlayer();
+                }
             }
         }
 
@@ -95,6 +104,20 @@ namespace Multiplayer
             {
                 return 1;
             }
+        }
+        
+        PlayerManager RespawnPlayer()
+        {
+            if (PlayerManager.LocalPlayerInstance != null)
+            {
+                PhotonNetwork.Destroy(PlayerManager.LocalPlayerInstance);
+                PlayerManager.LocalPlayerInstance = null;
+                PlayerManager = null;
+            }
+
+            // TODO: Buy Menu before respawning
+
+            return InstantiateLocalPlayer();
         }
 
         Vector3 SelectSpawnPoint(int team)

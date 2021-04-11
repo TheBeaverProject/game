@@ -16,28 +16,34 @@ namespace UI.HUD
     public class Controller : MonoBehaviour
     {
         public TextMeshProUGUI playerName;
-        
         public AmmoDisplay ammoDisplay;
         public HealthDisplay healthDisplay;
         public RoundDisplay roundDisplay;
         public CountdownDisplay countdownDisplay;
         public TeamDisplay teamDisplay;
         public WeaponDisplay weaponDisplay;
+        public TeamPointsDisplay teamPointsDisplay;
         public GameObject crossHair;
-        
+
+        public HUDType currentType;
+
         public void Init(HUDType type)
         {
+            currentType = type;
+            
             switch (type)
             {
                 case HUDType.Deathmatch:
                     teamDisplay.gameObject.SetActive(false);
                     roundDisplay.gameObject.SetActive(false);
+                    teamPointsDisplay.gameObject.SetActive(false);
                     countdownDisplay.gameObject.SetActive(true);
                     break;
                 case HUDType.TeamDeathmatch:
                     roundDisplay.gameObject.SetActive(false);
                     teamDisplay.gameObject.SetActive(true);
                     countdownDisplay.gameObject.SetActive(true);
+                    teamPointsDisplay.gameObject.SetActive(true);
                     break;
             }
         }
@@ -56,6 +62,16 @@ namespace UI.HUD
         public void DisplayCrosshair(bool display)
         {
             crossHair.SetActive(display);
+        }
+
+        public void SetTeamPoints(int bluePoints, int redPoints)
+        {
+            if (currentType != HUDType.TeamDeathmatch)
+            {
+                return;
+            }
+            
+            teamPointsDisplay.SetPoints(bluePoints, redPoints);
         }
     }
 }

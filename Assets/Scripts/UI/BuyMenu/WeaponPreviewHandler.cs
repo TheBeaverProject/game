@@ -16,7 +16,7 @@ namespace UI.BuyMenu
         public void OnPointerEnter(PointerEventData eventData)
         {
             Preview.DisplayWeapon(weaponPrefab, weaponScript);
-            Debug.Log("Pointer Enter " + this.gameObject.name);
+            //Debug.Log("Pointer Enter " + this.gameObject.name);
         }
     }
 }

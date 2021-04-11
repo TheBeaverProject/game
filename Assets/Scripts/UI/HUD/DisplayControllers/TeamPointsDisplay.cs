@@ -13,17 +13,16 @@ public class TeamPointsDisplay : MonoBehaviour
 
     public void SetPoints(float bluePoints, float redPoints)
     {
+        bluePointsText.text = bluePoints.ToString();
+        redPointsText.text = redPoints.ToString();
+        
         if (bluePoints + redPoints == 0)
         {
             slider.value = 50;
+            return;
         }
-        
-        bluePointsText.text = bluePoints.ToString();
-        redPointsText.text = redPoints.ToString();
 
         var value = (bluePoints / (bluePoints + redPoints)) * 100;
-        
-        Debug.Log(value);
 
         slider.value = value;
     }

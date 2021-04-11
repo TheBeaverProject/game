@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Scripts.Gamemodes
 {
-    public class TeamDeathMatch : MonoBehaviourPunCallbacks, IOnEventCallback
+    public class TeamDeathMatch : Gamemode, IOnEventCallback
     {
         [Header("Setup")]
         public int PointsPerKill = 10;
@@ -49,20 +49,9 @@ namespace Scripts.Gamemodes
                 startTimer = true;
             }
         }
-
-        private bool playerInitialized = false;
+        
         private void Update()
         {
-            if (!playerInitialized)
-            {
-                if (PlayerManager.LocalPlayerInstance != null)
-                {
-                    TeamManager.PlayerManager.HUD.Init(HUDType.TeamDeathmatch);
-                    playerInitialized = true;
-                    TeamManager.PlayerManager.HUD.SetTeamPoints(321, 142);
-                }
-            }
-            
             if (startTimer)
             {
                 ElapsedTime = PhotonNetwork.Time - StartTime;
@@ -87,6 +76,18 @@ namespace Scripts.Gamemodes
         public override void OnDisable()
         {
             PhotonNetwork.RemoveCallbackTarget(this);
+        }
+
+        #endregion
+
+        #region Gamemode Callbacks
+        
+        public override void OnPlayerRespawn(PlayerManager playerManager)
+        {
+            Debug.Log($"Team1TotalPoints: {Team1TotalPoints}, Team2TotalPoints: {Team2TotalPoints}");
+            
+            playerManager.HUD.Init(HUDType.TeamDeathmatch);
+            playerManager.HUD.SetTeamPoints(Team1TotalPoints, Team2TotalPoints);
         }
 
         #endregion
@@ -141,7 +142,7 @@ namespace Scripts.Gamemodes
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
             }
         }
-        
+
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             // Add the player to the Deathmatch Data
@@ -157,7 +158,7 @@ namespace Scripts.Gamemodes
                 }
                 
                 // If we are the master client, update the points for everyone
-                photonView.RPC("UpdateTeamPoints", RpcTarget.Others, Team1TotalPoints, Team2TotalPoints);
+                photonView.RPC("UpdateTeamPoints", RpcTarget.All, Team1TotalPoints, Team2TotalPoints);
             }
 
             base.OnPlayerEnteredRoom(newPlayer);

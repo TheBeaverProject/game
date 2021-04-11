@@ -75,12 +75,10 @@ namespace PlayerManagement
             if (stream.IsWriting) // Local Player
             {
                 stream.SendNext(Health);
-                //Debug.Log($"Sent Health for {this.gameObject.name}: {Health}");
             }
             else if (stream.IsReading) // Network Player
             {
                 Health = (int) stream.ReceiveNext();
-                //Debug.Log($"Received Health for {this.gameObject.name}: {tempHealth}");
             }
         }
 
@@ -157,10 +155,14 @@ namespace PlayerManagement
 
             return assistActorNum;
         }
-        
+
+        private bool killed = false;
         public void TakeDamage(double weaponDamage, LayerMask bodyZone, Player dealer)
         {
-            Debug.Log("TakeDamage called");
+            if (killed)
+            {
+                return;
+            }
             
             switch (bodyZone)
             {
@@ -177,9 +179,10 @@ namespace PlayerManagement
 
             int newHealth =  Health - ((int) weaponDamage);
 
-            if (newHealth <= 0) // Kill -> Raise event
+            if (newHealth <= 0 && !killed) // Kill -> Raise event
             {
                 Events.SendKillEvent(dealer.ActorNumber, GetAssistActorNum(dealer.ActorNumber), photonView.OwnerActorNr);
+                killed = true;
             }
 
             photonView.RPC("UpdateHealth", RpcTarget.All, newHealth, dealer.ActorNumber);

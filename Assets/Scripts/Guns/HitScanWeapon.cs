@@ -69,14 +69,14 @@ namespace Guns
                 //Damages the player if raycast catch a player
                 if (rayHit.collider.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayerManager))
                 {
-                    Debug.Log($"Took Damage: {damagedPlayerManager.GetInstanceID()} - Health: {damagedPlayerManager.Health}");
+                    //Debug.Log($"Took Damage: {damagedPlayerManager.GetInstanceID()} - Health: {damagedPlayerManager.Health}");
                     //Damages the player
                     damagedPlayerManager.TakeDamage(damage, rayHit.collider.gameObject.layer, photonView.Owner);
                 }
             }
             else
             {
-                Debug.DrawRay(holder.playerCamera.transform.position, direction * 1000, Color.red);
+                //Debug.DrawRay(holder.playerCamera.transform.position, direction * 1000, Color.red);
             }
             
             bulletsLeft--;

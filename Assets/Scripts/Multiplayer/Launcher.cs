@@ -62,6 +62,8 @@ namespace Multiplayer
 
         public void Connect()
         {
+            PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser.Username;
+            
             if (controlPanel != null)
             {
                 progressLabel.SetActive(true);

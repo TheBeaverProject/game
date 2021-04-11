@@ -2,6 +2,7 @@
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using PlayerManagement;
+using Scripts.Gamemodes;
 using UnityEngine;
 
 namespace Multiplayer
@@ -26,7 +27,7 @@ namespace Multiplayer
 
         #region MonoBeavhiour callbacks
 
-        private int localPlayerTeam;
+        private byte localPlayerTeamCode;
         void Start()
         {
             PhotonTeamsManager = PhotonTeamsManager.Instance;
@@ -41,13 +42,13 @@ namespace Multiplayer
         public PlayerManager PlayerManager;
         void Update()
         {
-            if (PlayerManager.LocalPlayerInstance == null)
+            if (PlayerManager.LocalPlayerInstance == null && !localPlayerJoinedTeam )
             {
                 if (!AllowTeamSelection)
                 {
-                    localPlayerTeam = SelectNextTeam();
+                    localPlayerTeamCode = SelectNextTeam();
 
-                    playerStartPos = SelectSpawnPoint(localPlayerTeam);
+                    playerStartPos = SelectSpawnPoint(localPlayerTeamCode);
 
                     PlayerManager = RespawnPlayer();
                 }
@@ -55,7 +56,7 @@ namespace Multiplayer
                 {
                     // TODO: Support team selection modal when it is allowed
                 }
-            } else if (!localPlayerJoinedTeam && PlayerManager.LocalPlayerInstance != null)
+            } else if (!localPlayerJoinedTeam)
             {
                 localPlayerJoinedTeam = JoinTeam(PlayerManager.LocalPlayerInstance.GetPhotonView());
             }
@@ -79,22 +80,31 @@ namespace Multiplayer
         /// <returns>Returns true if the player has sucessfully joined the team</returns>
         public bool JoinTeam(PhotonView View)
         {
-            return View.Controller.JoinTeam((byte) localPlayerTeam);
+            var currentTeam = View.Controller.GetPhotonTeam();
+            
+            if (currentTeam != null)
+            {
+                if (currentTeam.Code == localPlayerTeamCode)
+                {
+                    return true;
+                }
+
+                return View.Controller.SwitchTeam(localPlayerTeamCode);
+            }
+            
+            return View.Controller.JoinTeam(localPlayerTeamCode);
         }
 
         /// <summary>
         /// Selects the next team the player will join according to the player count
         /// </summary>
         /// <returns>int representing the next team</returns>
-        int SelectNextTeam()
+        byte SelectNextTeam()
         {
             Photon.Realtime.Player[] Team1Players;
             Photon.Realtime.Player[] Team2Players;
             PhotonTeamsManager.TryGetTeamMembers(Team1, out Team1Players);
             PhotonTeamsManager.TryGetTeamMembers(Team2, out Team2Players);
-            
-            Debug.Log($"Team1 length {Team1Players.Length}");
-            Debug.Log($"Team2 length {Team2Players.Length}");
 
             if (Team1Players.Length > Team2Players.Length)
             {

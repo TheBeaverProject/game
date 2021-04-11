@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Scripts.Gamemodes
 {
-    public class FFADeathMatch : MonoBehaviourPunCallbacks, IOnEventCallback
+    public class FFADeathMatch : Gamemode, IOnEventCallback
     {
         [Header("Setup")]
         public int PointsPerKill = 10;
@@ -43,19 +43,9 @@ namespace Scripts.Gamemodes
                 startTimer = true;
             }
         }
-
-        private bool playerInitialized = false;
+        
         private void Update()
         {
-            if (!playerInitialized)
-            {
-                if (PlayerManager.LocalPlayerInstance)
-                {
-                    FFAManager.PlayerManager.HUD.Init(HUDType.Deathmatch);
-                    playerInitialized = true;
-                }
-            }
-            
             if (startTimer)
             {
                 ElapsedTime = PhotonNetwork.Time - StartTime;
@@ -83,6 +73,19 @@ namespace Scripts.Gamemodes
         }
 
         #endregion
+
+        private bool playerInitialized = false;
+        public override void OnPlayerRespawn(PlayerManager playerManager)
+        {
+            if (!playerInitialized)
+            {
+                if (PlayerManager.LocalPlayerInstance)
+                {
+                    playerManager.HUD.Init(HUDType.Deathmatch);
+                    playerInitialized = true;
+                }
+            }
+        }
 
         #region PUN Callbacks
 

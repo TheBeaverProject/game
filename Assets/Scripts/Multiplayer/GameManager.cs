@@ -2,6 +2,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using PlayerManagement;
+using Scripts.Gamemodes;
 using UI;
 using UI.BuyMenu;
 using UI.HUD;
@@ -13,6 +14,8 @@ namespace Multiplayer
     public class GameManager : MonoBehaviourPunCallbacks
     {
         #region Serialized Fields
+        
+        [Header("Prefabs")]
 
         [Tooltip("The prefab to use for representing the player")]
         public GameObject playerPrefab;
@@ -34,6 +37,10 @@ namespace Multiplayer
 
         [Tooltip("GameObject used to display scopes when aiming")]
         public GameObject ScopePrefab;
+        
+        [Header("Gamemode Manager")]
+        
+        public Gamemode gamemodeController;
 
         protected Vector3 playerStartPos;
 
@@ -114,6 +121,8 @@ namespace Multiplayer
             playerMenusHandler.playerCamera = clientCamera;
             playerMenusHandler.HUD = clientHUD;
 
+            gamemodeController.OnPlayerRespawn(playerManager);
+            
             return playerManager;
         }
 

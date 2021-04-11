@@ -74,6 +74,8 @@ namespace Scripts.Gamemodes
 
         #endregion
 
+        #region Gamemode callbacks
+
         private bool playerInitialized = false;
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
@@ -86,6 +88,12 @@ namespace Scripts.Gamemodes
                 }
             }
         }
+
+        public override void OnPlayerDeath()
+        {
+        }
+
+        #endregion
 
         #region PUN Callbacks
 

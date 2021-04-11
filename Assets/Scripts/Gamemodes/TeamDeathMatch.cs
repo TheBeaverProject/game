@@ -89,6 +89,11 @@ namespace Scripts.Gamemodes
             playerManager.HUD.Init(HUDType.TeamDeathmatch);
             playerManager.HUD.SetTeamPoints(Team1TotalPoints, Team2TotalPoints);
         }
+        
+        public override void OnPlayerDeath()
+        {
+        }
+        
 
         #endregion
 

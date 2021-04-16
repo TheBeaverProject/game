@@ -110,13 +110,10 @@ namespace Scripts.Gamemodes
             if (eventCode == EventCodes.Kill)
             {
                 Dictionary<string, int> eventData = (Dictionary<string, int>) photonEvent.CustomData;
-                
-                PlayersData.IncrementDataByPlayer(eventData["deadActorNum"], deaths: 1);
-                PlayersData.IncrementDataByPlayer(eventData["assistActorNum"], assists: 1);
 
                 var killer = PhotonNetwork.CurrentRoom.GetPlayer(eventData["killerActorNum"]);
-                var assist = PhotonNetwork.CurrentRoom.GetPlayer(eventData["deadActorNum"]);
-                var dead = PhotonNetwork.CurrentRoom.GetPlayer(eventData["assistActorNum"]);
+                var assist = PhotonNetwork.CurrentRoom.GetPlayer(eventData["assistActorNum"]);
+                var dead   = PhotonNetwork.CurrentRoom.GetPlayer(eventData["deadActorNum"]);
 
                 var killerTeam = killer?.GetPhotonTeam();
                 var assistTeam = assist?.GetPhotonTeam();
@@ -125,30 +122,34 @@ namespace Scripts.Gamemodes
                 if (killerTeam == deadTeam) // Team kill
                 {
                     if (killerTeam.Code == 1)
+                    {
                         Team1TotalPoints += PointsPerTeamKill;
+                    }
                     else
+                    {
                         Team2TotalPoints += PointsPerTeamKill;
+                    }
 
                     PlayersData.IncrementDataByPlayer(eventData["killerActorNum"], kills: 1, points: PointsPerTeamKill);
                 }
                 else
                 {
                     if (killerTeam.Code == 1)
+                    {
                         Team1TotalPoints += PointsPerKill;
+                    }
                     else
+                    {
                         Team2TotalPoints += PointsPerKill;
-
-                    if (assistTeam.Code == 1)
-                        Team1TotalPoints += PointsPerAssist;
-                    else
-                        Team2TotalPoints += PointsPerAssist;
+                    }
 
                     PlayersData.IncrementDataByPlayer(eventData["killerActorNum"], kills: 1, points: PointsPerKill);
-                    PlayersData.IncrementDataByPlayer(eventData["assistActorNum"], kills: 1, points: PointsPerAssist);
+                    PlayersData.IncrementDataByPlayer(eventData["assistActorNum"], assists: 1, points: PointsPerAssist);
                 }
-
-                TeamManager.PlayerManager.HUD.SetTeamPoints(Team1TotalPoints, Team2TotalPoints);
                 
+                PlayersData.IncrementDataByPlayer(eventData["deadActorNum"], deaths: 1);
+
+                TeamManager.PlayerManager.HUD.SetTeamPoints(Team1TotalPoints, Team2TotalPoints);                
                 TeamManager.PlayerManager.HUD.ScoreBoard.Set(
                     PlayersData.GetSortedPlayerDataByTeam(1), 
                     PlayersData.GetSortedPlayerDataByTeam(2));

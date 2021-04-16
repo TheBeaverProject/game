@@ -11,6 +11,14 @@ public class ScoreboardPlayerController : MonoBehaviour
     public TextMeshProUGUI assists;
     public TextMeshProUGUI points;
 
+    /// <summary>
+    /// Sets the player's info on the corresponding field
+    /// </summary>
+    /// <param name="name">name</param>
+    /// <param name="kills">kills num</param>
+    /// <param name="deaths">deaths num</param>
+    /// <param name="assists">assists num</param>
+    /// <param name="points">points num</param>
     public void Set(string name = "", int kills = -1, int deaths = -1, int assists = -1, int points = -1)
     {
         if (name != "")
@@ -21,5 +29,7 @@ public class ScoreboardPlayerController : MonoBehaviour
             this.deaths.text = deaths.ToString();
         if (assists != -1)
             this.assists.text = assists.ToString();
+        if (points != -1)
+            this.points.text = points.ToString();
     }
 }

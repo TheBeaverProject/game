@@ -15,6 +15,8 @@ namespace Scripts.Gamemodes
     {
         [Header("Setup")]
         public int PointsPerKill = 10;
+        
+        public int PointsPerAssist = 4;
 
         public int PointsPerTeamKill = -5;
 
@@ -84,10 +86,12 @@ namespace Scripts.Gamemodes
         
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
-            Debug.Log($"Team1TotalPoints: {Team1TotalPoints}, Team2TotalPoints: {Team2TotalPoints}");
-            
             playerManager.HUD.Init(HUDType.TeamDeathmatch);
             playerManager.HUD.SetTeamPoints(Team1TotalPoints, Team2TotalPoints);
+
+            playerManager.HUD.ScoreBoard.Set(
+                PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
+                PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
         }
         
         public override void OnPlayerDeath()
@@ -107,7 +111,6 @@ namespace Scripts.Gamemodes
             {
                 Dictionary<string, int> eventData = (Dictionary<string, int>) photonEvent.CustomData;
                 
-                PlayersData.IncrementDataByPlayer(eventData["killerActorNum"], kills: 1);
                 PlayersData.IncrementDataByPlayer(eventData["deadActorNum"], deaths: 1);
                 PlayersData.IncrementDataByPlayer(eventData["assistActorNum"], assists: 1);
 
@@ -122,27 +125,33 @@ namespace Scripts.Gamemodes
                 if (killerTeam == deadTeam) // Team kill
                 {
                     if (killerTeam.Code == 1)
-                    {
                         Team1TotalPoints += PointsPerTeamKill;
-                    }
                     else
-                    {
                         Team2TotalPoints += PointsPerTeamKill;
-                    }
+
+                    PlayersData.IncrementDataByPlayer(eventData["killerActorNum"], kills: 1, points: PointsPerTeamKill);
                 }
                 else
                 {
                     if (killerTeam.Code == 1)
-                    {
                         Team1TotalPoints += PointsPerKill;
-                    }
                     else
-                    {
                         Team2TotalPoints += PointsPerKill;
-                    }
+
+                    if (assistTeam.Code == 1)
+                        Team1TotalPoints += PointsPerAssist;
+                    else
+                        Team2TotalPoints += PointsPerAssist;
+
+                    PlayersData.IncrementDataByPlayer(eventData["killerActorNum"], kills: 1, points: PointsPerKill);
+                    PlayersData.IncrementDataByPlayer(eventData["assistActorNum"], kills: 1, points: PointsPerAssist);
                 }
-                
+
                 TeamManager.PlayerManager.HUD.SetTeamPoints(Team1TotalPoints, Team2TotalPoints);
+                
+                TeamManager.PlayerManager.HUD.ScoreBoard.Set(
+                    PlayersData.GetSortedPlayerDataByTeam(1), 
+                    PlayersData.GetSortedPlayerDataByTeam(2));
 
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
             }
@@ -152,7 +161,7 @@ namespace Scripts.Gamemodes
         {
             // Add the player to the Deathmatch Data
             PlayersData.AddPlayerToDataIfNotExists(newPlayer);
-            
+
             if (PhotonNetwork.IsMasterClient)
             {
                 // If we are the Master Client, synchronize player data for everyone
@@ -163,7 +172,7 @@ namespace Scripts.Gamemodes
                 }
                 
                 // If we are the master client, update the points for everyone
-                photonView.RPC("UpdateTeamPoints", RpcTarget.All, Team1TotalPoints, Team2TotalPoints);
+                photonView.RPC("UpdateTeamPoints", RpcTarget.Others, Team1TotalPoints, Team2TotalPoints);
             }
 
             base.OnPlayerEnteredRoom(newPlayer);

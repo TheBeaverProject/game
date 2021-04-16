@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using Scripts.Gamemodes;
+using UnityEngine;
 
 namespace Scripts
 {
@@ -80,7 +82,7 @@ namespace Scripts
         /// <param name="kills">new number of kills</param>
         /// <param name="assists">new number of assists</param>
         /// <param name="deaths">new number of deaths</param>
-        public void UpdateDataByPlayer(int playerActorNumber, int kills = -1, int assists = -1, int deaths = -1)
+        public void UpdateDataByPlayer(int playerActorNumber, int kills = -1, int assists = -1, int deaths = -1, int points = -1)
         {
             KeyValuePair<Player, PlayerData> toUpdate;
 
@@ -100,6 +102,7 @@ namespace Scripts
             playerData.kills = kills == -1 ? toUpdate.Value.kills : kills;
             playerData.deaths = deaths == -1 ? toUpdate.Value.deaths : deaths;
             playerData.assists = assists == -1 ? toUpdate.Value.assists : assists;
+            playerData.points = points == -1 ? toUpdate.Value.points : points;
 
             Dictionary[toUpdate.Key] = playerData;
         }
@@ -112,7 +115,7 @@ namespace Scripts
         /// <param name="kills">number of kills to add</param>
         /// <param name="assists">number of assists to add</param>
         /// <param name="deaths">number of deaths to add</param>
-        public void IncrementDataByPlayer(int playerActorNumber, int kills = -1, int assists = -1, int deaths = -1)
+        public void IncrementDataByPlayer(int playerActorNumber, int kills = -1, int assists = -1, int deaths = -1, int points = -1)
         {
             if (playerActorNumber == -1)
             {
@@ -136,8 +139,36 @@ namespace Scripts
             playerData.kills = kills == -1 ? toUpdate.Value.kills : toUpdate.Value.kills + kills;
             playerData.deaths = deaths == -1 ? toUpdate.Value.deaths : toUpdate.Value.deaths + deaths;
             playerData.assists = assists == -1 ? toUpdate.Value.assists : toUpdate.Value.assists + assists;
+            playerData.points = points == -1 ? toUpdate.Value.points : toUpdate.Value.points + points;
 
             Dictionary[toUpdate.Key] = playerData;
+        }
+
+
+        /// <summary>
+        /// Returns a sorted list of the PlayerData belonging to the players of a team
+        /// </summary>
+        /// <param name="teamCode">teamcode used to retreive players team</param>
+        /// <returns>Sorted PlayerData list by points</returns>
+        public List<PlayerData> GetSortedPlayerDataByTeam(byte teamCode)
+        {
+            var res = new List<PlayerData>();
+
+            foreach (var kvp in Dictionary)
+            {
+                Debug.Log($"{kvp.Key.GetPhotonTeam()} == {teamCode}");
+                Debug.Log(kvp.Key.GetPhotonTeam()?.Code == teamCode);
+                
+                if (kvp.Key.GetPhotonTeam()?.Code == teamCode)
+                {
+                    res.Add(kvp.Value);
+                    Debug.Log($"Got {kvp.Value.name} for team {teamCode}");
+                }
+            }
+            
+            res.Sort((p1, p2) => p1.points.CompareTo(p2.points));
+
+            return res;
         }
     }
     
@@ -150,5 +181,6 @@ namespace Scripts
         public int kills;
         public int assists;
         public int deaths;
+        public int points;
     }
 }

@@ -15,6 +15,7 @@ namespace UI.HUD
     
     public class Controller : MonoBehaviour
     {
+        public ScoreboardController ScoreBoard;
         public TextMeshProUGUI playerName;
         public AmmoDisplay ammoDisplay;
         public HealthDisplay healthDisplay;
@@ -26,6 +27,24 @@ namespace UI.HUD
         public GameObject crossHair;
 
         public HUDType currentType;
+
+        private void Start()
+        {
+            ScoreBoard.Container.SetActive(false);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKey(KeyCode.Tab))
+            {
+                ScoreBoard.Container.SetActive(true);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Tab))
+            {
+                ScoreBoard.Container.SetActive(false);
+            }
+        }
 
         public void Init(HUDType type)
         {

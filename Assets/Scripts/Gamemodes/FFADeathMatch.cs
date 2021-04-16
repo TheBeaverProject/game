@@ -91,6 +91,7 @@ namespace Scripts.Gamemodes
 
         public override void OnPlayerDeath()
         {
+            // ya zebi il est mort
         }
 
         #endregion

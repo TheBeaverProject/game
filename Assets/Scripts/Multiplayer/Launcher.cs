@@ -5,6 +5,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Scripts.Gamemodes;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Multiplayer
 {
@@ -73,7 +74,7 @@ namespace Multiplayer
             // Checks if the client is connected
             if (PhotonNetwork.IsConnected)
             {
-                PhotonNetwork.JoinRandomRoom();
+                JoinPhotonRoom(GamemodeSelection.SelectedGameMode);
             }
             else
             {
@@ -83,15 +84,21 @@ namespace Multiplayer
             }
         }
 
+        public void JoinPhotonRoom(Mode gamemode)
+        {
+            Hashtable expectedProperties = new Hashtable();
+            expectedProperties.Add("gm", GamemodeSelection.SelectedGameMode);
+
+            PhotonNetwork.JoinRandomRoom(expectedProperties, this.maxPlayersPerRoom);
+        }
+
         public override void OnConnectedToMaster()
         {
-            Debug.Log("Multiplayer/Launcher: OnConnectedToMaster was called by PUN");
-            
             // #Critical: The first we try to do is join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
             // We join the room only if we are in the process of a connection
             if (isConnecting)
             {
-                PhotonNetwork.JoinRandomRoom();
+                JoinPhotonRoom(GamemodeSelection.SelectedGameMode);
                 isConnecting = false;
             }
         }
@@ -111,9 +118,12 @@ namespace Multiplayer
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
             Debug.Log($"Multiplayer/Launcher: OnJoinRandomFailed was called by PUN. No random room were found. returnCode: {returnCode}, message: {message}");
-            
+
             // #Critical: We failed to join a random room, so we create a new one.
-            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = this.maxPlayersPerRoom });
+            Hashtable properties = new Hashtable();
+            properties.Add("gm", GamemodeSelection.SelectedGameMode);
+
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = this.maxPlayersPerRoom, CustomRoomProperties = properties});
         }
 
         public override void OnJoinedRoom()
@@ -122,7 +132,7 @@ namespace Multiplayer
 
             if (PhotonNetwork.IsMasterClient && !PhotonNetwork.OfflineMode)
             {
-                switch (GamemodeSelection.SelectedGameMode)
+                switch ((Mode) PhotonNetwork.CurrentRoom.CustomProperties["gm"])
                 {
                     case Mode.FFADeathMatch:
                         PhotonNetwork.LoadLevel("FFADeathMatchDemo");

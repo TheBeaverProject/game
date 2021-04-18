@@ -274,6 +274,10 @@ namespace Scripts.Gamemodes
             PhotonNetwork.CurrentRoom.SetCustomProperties(CustomValue);
         }
 
+        /// <summary>
+        /// 1 = team1 | 2 = team2 | 0 = draw
+        /// </summary>
+        /// <returns>byte representing the winner of the match</returns>
         byte GetWinner()
         {
             byte winner;

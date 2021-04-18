@@ -5376,16 +5376,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BlueTeamPlayers:
   - {fileID: 3438245308703059039}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8165938542198232862}
+  - {fileID: 5969655614883908729}
+  - {fileID: 2758741581492425605}
+  - {fileID: 4086670329180131928}
   RedTeamPlayers:
   - {fileID: 3438245309471731131}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2637764568034097783}
+  - {fileID: 6155275280572690641}
+  - {fileID: 3413314178178210012}
+  - {fileID: 2066741257779640939}
   Container: {fileID: 3438245308720646464}
 --- !u!1 &3438245309092078189
 GameObject:

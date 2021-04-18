@@ -65,7 +65,21 @@ namespace Scripts.Gamemodes
 
                 if (ElapsedTime >= GameDurationInMinutes * 60)
                 {
-                    // TODO: Timer is finished
+                    startTimer = false;
+                    
+                    byte winner = GetWinner();
+
+                    if (winner == 0)
+                    {
+                        // Add 2 minutes to game time if it is a draw
+                        GameDurationInMinutes += 2;
+                        startTimer = true;
+                    }
+                    else // Game is finished
+                    {
+                        InitEndgameScreen(winner);
+                        // TODO: Register game in firebase if masterclient
+                    }
                 }
             }
         }
@@ -93,11 +107,15 @@ namespace Scripts.Gamemodes
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
         }
-        
-        public override void OnPlayerDeath()
+
+        public override void OnPlayerJoinedTeam()
         {
+            Debug.Log("OnPlayerJoinedTeam");
+            
+            TeamManager.PlayerManager.HUD.ScoreBoard.Set(
+                PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
+                PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
         }
-        
 
         #endregion
 
@@ -220,6 +238,33 @@ namespace Scripts.Gamemodes
 
         #region Private Methods
 
+        void InitEndgameScreen(byte winner)
+        {
+            // Disable movement
+            TeamManager.PlayerManager.DisableMovement();
+            // Instantiate endgame screen
+            var go = Instantiate(EndgameScreenPrefab, Vector3.zero, Quaternion.identity);
+
+            var controller = go.GetComponent<EndGameScreenController>();
+
+            EndGameScreenController.Result result;
+
+            if (winner == PhotonNetwork.LocalPlayer.GetPhotonTeam().Code)
+            {
+                result = EndGameScreenController.Result.Win;
+            }
+            else
+            {
+                result = EndGameScreenController.Result.Loss;
+            }
+
+            controller.SetResult(result);
+            
+            go.GetComponentInChildren<ScoreboardController>().Set(
+                PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
+                PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
+        }
+
         void StartTimer()
         {
             var CustomValue = new Hashtable();
@@ -227,6 +272,25 @@ namespace Scripts.Gamemodes
             startTimer = true;
             CustomValue.Add("StartTime", StartTime);
             PhotonNetwork.CurrentRoom.SetCustomProperties(CustomValue);
+        }
+
+        byte GetWinner()
+        {
+            byte winner;
+            
+            if (Team1TotalPoints > Team2TotalPoints)
+            {
+                winner = 1;
+            } else if (Team2TotalPoints > Team1TotalPoints)
+            {
+                winner = 2;
+            }
+            else
+            {
+                winner = 0;
+            }
+
+            return winner;
         }
 
         #endregion

@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using TMPro;
+using UI;
 using UnityEngine;
 
 namespace PlayerManagement
@@ -123,6 +124,18 @@ namespace PlayerManagement
                 return;
             
             playerWeapon.GetComponent<Gunnable>().AllowShooting = true;
+        }
+
+        public void DisableMovement()
+        {
+            this.gameObject.GetComponent<PlayerMenusHandler>().UnLockCursor();
+            this.gameObject.GetComponent<PlayerMovementManager>().enabled = false;
+        }
+
+        public void EnableMovement()
+        {
+            this.gameObject.GetComponent<PlayerMenusHandler>().LockCursor();
+            this.gameObject.GetComponent<PlayerMovementManager>().enabled = true;
         }
         
         // List to hold the actor number of the players who dealt damage to this player and the dealt damage

@@ -19,13 +19,23 @@ public class ScoreboardController : MonoBehaviour
         int i = 0;
         foreach (var playerData in bluePlayers)
         {
-            BlueTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+            if (i < 5)
+            {
+                BlueTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+            }
+
+            i++;
         }
 
         i = 0;
         foreach (var playerData in redPlayers)
         {
-            RedTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+            if (i < 5)
+            {
+                RedTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+            }
+
+            i++;
         }
     }
 }

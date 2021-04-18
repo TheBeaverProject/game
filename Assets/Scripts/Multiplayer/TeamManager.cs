@@ -91,8 +91,13 @@ namespace Multiplayer
 
                 return View.Controller.SwitchTeam(localPlayerTeamCode);
             }
-            
-            return View.Controller.JoinTeam(localPlayerTeamCode);
+
+            bool success = View.Controller.JoinTeam(localPlayerTeamCode);
+
+            if (success)
+                gamemodeController.OnPlayerJoinedTeam();
+
+            return success;
         }
 
         /// <summary>

@@ -175,7 +175,7 @@ namespace Scripts
         {
             var res = new List<PlayerData>(Dictionary.Values);
             
-            res.Sort((p1, p2) => p1.points.CompareTo(p2.points));
+            res.Sort((p1, p2) => p2.points.CompareTo(p1.points));
 
             return res;
         }

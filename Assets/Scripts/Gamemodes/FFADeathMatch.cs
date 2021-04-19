@@ -80,20 +80,11 @@ namespace Scripts.Gamemodes
 
         #region Gamemode callbacks
 
-        private bool playerInitialized = false;
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
-            if (!playerInitialized)
-            {
-                if (PlayerManager.LocalPlayerInstance)
-                {
-                    playerManager.HUD.Init(HUDType.Deathmatch);
+            playerManager.HUD.Init(HUDType.Deathmatch);
                     
-                    playerManager.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
-                    
-                    playerInitialized = true;
-                }
-            }
+            playerManager.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
         }
 
         #endregion

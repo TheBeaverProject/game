@@ -23,7 +23,7 @@ namespace Scripts.Gamemodes
         
         public FFAManager FFAManager;
 
-        public GameData DeathMatchData = new GameData();
+        public GameData PlayersData = new GameData();
 
         private bool startTimer;
         
@@ -31,7 +31,7 @@ namespace Scripts.Gamemodes
 
         private void Start()
         {
-            DeathMatchData.SetupData(PhotonNetwork.CurrentRoom.Players);
+            PlayersData.SetupData(PhotonNetwork.CurrentRoom.Players);
 
             if (PhotonNetwork.IsMasterClient)
             {
@@ -57,7 +57,11 @@ namespace Scripts.Gamemodes
 
                 if (ElapsedTime >= GameDurationInMinutes * 60)
                 {
-                    // TODO: Timer is finished
+                    startTimer = false;
+                    
+                    InitEndgameScreen();
+                    
+                    // TODO: Register the game in firebase if masterclient
                 }
             }
         }
@@ -84,14 +88,12 @@ namespace Scripts.Gamemodes
                 if (PlayerManager.LocalPlayerInstance)
                 {
                     playerManager.HUD.Init(HUDType.Deathmatch);
+                    
+                    playerManager.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
+                    
                     playerInitialized = true;
                 }
             }
-        }
-
-        public override void OnPlayerDeath()
-        {
-            // ya zebi il est mort
         }
 
         #endregion
@@ -106,10 +108,12 @@ namespace Scripts.Gamemodes
             {
                 Dictionary<string, int> eventData = (Dictionary<string, int>) photonEvent.CustomData;
                 
-                DeathMatchData.IncrementDataByPlayer(eventData["killerActorNum"], kills: 1);
-                DeathMatchData.IncrementDataByPlayer(eventData["deadActorNum"], deaths: 1);
-                DeathMatchData.IncrementDataByPlayer(eventData["assistActorNum"], assists: 1);
+                PlayersData.IncrementDataByPlayer(eventData["killerActorNum"], kills: 1, points: PointsPerKill);
+                PlayersData.IncrementDataByPlayer(eventData["assistActorNum"], assists: 1, points: PointsPerAssists);
+                PlayersData.IncrementDataByPlayer(eventData["deadActorNum"], deaths: 1);
                 
+                FFAManager.PlayerManager.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
+
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
             }
         }
@@ -117,29 +121,25 @@ namespace Scripts.Gamemodes
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             // Add the player to the Deathmatch Data
-            DeathMatchData.AddPlayerToDataIfNotExists(newPlayer);
+            PlayersData.AddPlayerToDataIfNotExists(newPlayer);
             
             if (PhotonNetwork.IsMasterClient)
             {
                 // If we are the Master Client, synchronize player data for everyone
-                foreach (var deathmatchPlayerData in DeathMatchData.Dictionary)
+                foreach (var deathmatchPlayerData in PlayersData.Dictionary)
                 {
                     photonView.RPC("UpdateDeathmatchPlayerData", RpcTarget.Others, 
                         deathmatchPlayerData.Key.ActorNumber, deathmatchPlayerData.Value.kills, deathmatchPlayerData.Value.assists, deathmatchPlayerData.Value.deaths);
                 }
             }
-
-            base.OnPlayerEnteredRoom(newPlayer);
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             if (!otherPlayer.IsInactive)
             {
-                DeathMatchData.RemovePlayerFromData(otherPlayer);
+                PlayersData.RemovePlayerFromData(otherPlayer);
             }
-            
-            base.OnPlayerLeftRoom(otherPlayer);
         }
         
         public void OnPhotonCustomRoomPropertiesChanged(Hashtable propertiesThatChanged)
@@ -159,7 +159,7 @@ namespace Scripts.Gamemodes
         void UpdateDeathmatchPlayerData(int playerActorNumber, int kills, int assists, int deaths)
         {
             Debug.Log($"{playerActorNumber}: {kills}, {assists}, {deaths}");
-            DeathMatchData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths);
+            PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths);
         }
 
         #endregion
@@ -178,6 +178,49 @@ namespace Scripts.Gamemodes
         }
 
         #endregion
+        
+        void InitEndgameScreen()
+        {
+            Player winner = GetWinner();
+            
+            // Disable movement
+            FFAManager.PlayerManager.DisableMovement();
+            // Instantiate endgame screen
+            var go = Instantiate(EndgameScreenPrefab, Vector3.zero, Quaternion.identity);
+
+            var controller = go.GetComponent<EndGameScreenController>();
+
+            EndGameScreenController.Result result;
+
+            if (winner == PhotonNetwork.LocalPlayer)
+            {
+                result = EndGameScreenController.Result.Win;
+            }
+            else
+            {
+                result = EndGameScreenController.Result.Loss;
+            }
+
+            controller.SetResult(result);
+
+            go.GetComponentInChildren<ScoreboardController>().SetAsFFA(PlayersData.GetSortedPlayerData());
+        }
+
+        Player GetWinner()
+        {
+            Player winner = null;
+            int points = 0;
+
+            foreach (var kvp in PlayersData.Dictionary)
+            {
+                if (kvp.Value.points >= points)
+                {
+                    winner = kvp.Key;
+                }
+            }
+
+            return winner;
+        }
 
         #endregion
     }

@@ -9,12 +9,14 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Multiplayer
 {
-    public class Launcher : MonoBehaviourPunCallbacks
+    public class Launcher : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
     {
         /// <summary>
         /// Client's version number
         /// </summary>
-        private string gameVersion = "0.0.1";
+        private string gameVersion = "0.5.1";
+
+        public const string GAMEMODE_PROP_KEY = "gm";
         
         /// <summary>
         /// The maximum number of player that can be in a single room
@@ -61,6 +63,61 @@ namespace Multiplayer
         /// </summary>
         private bool isConnecting;
 
+        #region Photon callbacks
+
+        public override void OnConnectedToMaster()
+        {
+            // #Critical: The first we try to do is join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
+            // We join the room only if we are in the process of a connection
+            if (isConnecting)
+            {
+                JoinPhotonRoom(GamemodeSelection.SelectedGameMode);
+                isConnecting = false;
+            }
+        }
+
+        public override void OnDisconnected(DisconnectCause cause)
+        {
+            if (controlPanel != null)
+            {
+                progressLabel.SetActive(false);
+                controlPanel.SetActive(true);
+            }
+            
+            isConnecting = false;
+            Debug.LogWarningFormat("Multiplayer/Launcher: OnDisconnected was called by PUN with reason {0}", cause);
+        }
+
+        void IMatchmakingCallbacks.OnJoinRandomFailed(short returnCode, string message)
+        {
+            Debug.Log($"Multiplayer/Launcher: OnJoinRandomFailed was called by PUN. No random room were found. returnCode: {returnCode}, message: {message}");
+
+            // #Critical: We failed to join a random room, so we create a new one.
+            CreateRoom(GamemodeSelection.SelectedGameMode);
+        }
+
+        void IMatchmakingCallbacks.OnJoinedRoom()
+        {
+            Debug.Log($"Multiplayer/Launcher: OnJoinedRoom called by PUN.");
+
+            if (PhotonNetwork.IsMasterClient && !PhotonNetwork.OfflineMode)
+            {
+                switch ((Mode) PhotonNetwork.CurrentRoom.CustomProperties["gm"])
+                {
+                    case Mode.FFADeathMatch:
+                        PhotonNetwork.LoadLevel("FFADeathMatchDemo");
+                        break;
+                    case Mode.TeamDeathMatch:
+                        PhotonNetwork.LoadLevel("TeamDeathMatchDemo");
+                        break;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
         public void Connect()
         {
             PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser.Username;
@@ -86,62 +143,21 @@ namespace Multiplayer
 
         public void JoinPhotonRoom(Mode gamemode)
         {
-            Hashtable expectedProperties = new Hashtable();
-            expectedProperties.Add("gm", GamemodeSelection.SelectedGameMode);
+            Hashtable expectedProperties = new Hashtable{ { GAMEMODE_PROP_KEY, (int) gamemode } };
 
             PhotonNetwork.JoinRandomRoom(expectedProperties, this.maxPlayersPerRoom);
         }
 
-        public override void OnConnectedToMaster()
+        public void CreateRoom(Mode gamemode)
         {
-            // #Critical: The first we try to do is join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
-            // We join the room only if we are in the process of a connection
-            if (isConnecting)
-            {
-                JoinPhotonRoom(GamemodeSelection.SelectedGameMode);
-                isConnecting = false;
-            }
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.CustomRoomPropertiesForLobby = new[] {GAMEMODE_PROP_KEY};
+            roomOptions.CustomRoomProperties = new Hashtable {{GAMEMODE_PROP_KEY, (int) gamemode}};
+            roomOptions.MaxPlayers = this.maxPlayersPerRoom;
+
+            PhotonNetwork.CreateRoom(PhotonNetwork.NickName+gamemode.ToString(), roomOptions);
         }
 
-        public override void OnDisconnected(DisconnectCause cause)
-        {
-            if (controlPanel != null)
-            {
-                progressLabel.SetActive(false);
-                controlPanel.SetActive(true);
-            }
-            
-            isConnecting = false;
-            Debug.LogWarningFormat("Multiplayer/Launcher: OnDisconnected was called by PUN with reason {0}", cause);
-        }
-
-        public override void OnJoinRandomFailed(short returnCode, string message)
-        {
-            Debug.Log($"Multiplayer/Launcher: OnJoinRandomFailed was called by PUN. No random room were found. returnCode: {returnCode}, message: {message}");
-
-            // #Critical: We failed to join a random room, so we create a new one.
-            Hashtable properties = new Hashtable();
-            properties.Add("gm", GamemodeSelection.SelectedGameMode);
-
-            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = this.maxPlayersPerRoom, CustomRoomProperties = properties});
-        }
-
-        public override void OnJoinedRoom()
-        {
-            Debug.Log($"Multiplayer/Launcher: OnJoinedRoom called by PUN.");
-
-            if (PhotonNetwork.IsMasterClient && !PhotonNetwork.OfflineMode)
-            {
-                switch ((Mode) PhotonNetwork.CurrentRoom.CustomProperties["gm"])
-                {
-                    case Mode.FFADeathMatch:
-                        PhotonNetwork.LoadLevel("FFADeathMatchDemo");
-                        break;
-                    case Mode.TeamDeathMatch:
-                        PhotonNetwork.LoadLevel("TeamDeathMatchDemo");
-                        break;
-                }
-            }
-        }
+        #endregion
     }
 }

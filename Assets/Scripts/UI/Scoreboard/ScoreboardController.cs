@@ -38,4 +38,31 @@ public class ScoreboardController : MonoBehaviour
             i++;
         }
     }
+
+    /// <summary>
+    /// Populates the scoreboard as a FFA List
+    /// </summary>
+    /// <param name="playerData"></param>
+    public void SetAsFFA(List<PlayerData> playersData)
+    {
+        int i = 0;
+        int v = 0;
+
+        for (int j = 0; j < playersData.Count; j++)
+        {
+            var playerData = playersData[i];
+            
+            if (j < 5)
+            {
+                BlueTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+                i++;
+            }
+
+            if (j >= 5 && j < 10)
+            {
+                RedTeamPlayers[v].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+                v++;
+            }
+        }
+    }
 }

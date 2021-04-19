@@ -170,8 +170,17 @@ namespace Scripts
 
             return res;
         }
+        
+        public List<PlayerData> GetSortedPlayerData()
+        {
+            var res = new List<PlayerData>(Dictionary.Values);
+            
+            res.Sort((p1, p2) => p1.points.CompareTo(p2.points));
+
+            return res;
+        }
     }
-    
+
     /// <summary>
     /// Structure used to hold the data of the players during a game
     /// </summary>

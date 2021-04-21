@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,36 +23,56 @@ namespace UI.MainMenu
 
         private GameObject currentTab;
         private Button currentButton;
+        private string currentTabStr;
 
         private void ToggleTab(string tab)
         {
+            if (tab == currentTabStr)
+            {
+                return;
+            }
+            
             Vector3 upVector = new Vector3(0, Screen.height);
             Vector3 downVector = new Vector3(0, -Screen.height);
             
-            currentTab.transform.position += upVector;
+            SmoothToggle(currentTab.transform, upVector);
+
             currentButton.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.UpperCase;
             
             switch (tab)
             {
                 case "home":
-                    HomeTab.transform.position += downVector;
+                    SmoothToggle(HomeTab.transform, downVector);
                     currentTab = HomeTab;
                     currentButton = HomeButton;
+                    currentTabStr = "home";
                     break;
                 case "play":
-                    PlayTab.transform.position += downVector;
+                    SmoothToggle(PlayTab.transform, downVector);
                     currentTab = PlayTab;
                     currentButton = PlayButton;
+                    currentTabStr = "play";
                     break;
                 case "settings":
-                    SettingsTab.transform.position += downVector;
+                    SmoothToggle(SettingsTab.transform, downVector);
                     currentTab = SettingsTab;
                     currentButton = SettingsButton;
+                    currentTabStr = "settings";
                     break;
             }
             
             currentButton.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.UpperCase;
             currentButton.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
+        }
+
+        private void SmoothToggle(Transform transform, Vector3 vector3, Action callback = null)
+        {
+            var initpos = transform.position;
+            
+            StartCoroutine(Utils.SmoothTransition(
+                f => transform.position = Vector3.Lerp(transform.position,
+                    initpos + vector3, f),
+                0.2f, callback));
         }
 
         #endregion

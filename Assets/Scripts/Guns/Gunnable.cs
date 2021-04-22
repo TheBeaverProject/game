@@ -89,6 +89,8 @@ namespace Guns
         protected int bulletsLeft, bulletsShot, magazineUsed = 0;
         public int GetMagSize => magazineSize;
         public int GetMagLeft => magazineNumber - magazineUsed;
+        public float GetTimeBetweenShooting => timeBetweenShooting;
+        public float GetTimeBetweenShoot => timeBetweenShots;
         public int GetBulletsLeft => bulletsLeft;
 
         public bool aiming;

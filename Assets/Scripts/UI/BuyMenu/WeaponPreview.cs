@@ -10,6 +10,7 @@ namespace UI.BuyMenu
         public TextMeshProUGUI weaponName;
         public Slider damageSlider;
         public Slider spreadSlider;
+        public Slider fireRateSlider;
         public TextMeshProUGUI ammoText;
         public TextMeshProUGUI modeText;
 
@@ -34,7 +35,8 @@ namespace UI.BuyMenu
 
             weaponName.text = weaponScript.weaponName;
             damageSlider.value = weaponScript.damage;
-            spreadSlider.value = weaponScript.spread;
+            spreadSlider.value = weaponScript.returnSpeed + weaponScript.rotationSpeed;
+            fireRateSlider.value = weaponScript.GetTimeBetweenShoot + weaponScript.GetTimeBetweenShooting;
             ammoText.text = $"{weaponScript.GetMagSize}x{weaponScript.GetMagLeft}";
             modeText.text =
                 weaponScript.allowButtonHold ?

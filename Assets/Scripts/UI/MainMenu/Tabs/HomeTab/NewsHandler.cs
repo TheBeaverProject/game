@@ -20,7 +20,7 @@ namespace UI.MainMenu.Tabs.HomeTab
                     var container = Instantiate(newsPrefab);
  
                     container.transform.position = newsContainer.transform.position;
-                    container.transform.Translate(10, -10 + -220 * count, 0);
+                    container.transform.Translate(10, -20 + -240 * count, 0);
 
                     container.GetComponent<NewsContainerHandler>().SetContent(news.Title, news.Content);
                     

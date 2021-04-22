@@ -27,6 +27,12 @@ namespace Firebase.Data
 
         [JsonProperty("updateTime")]
         public DateTimeOffset UpdateTime { get; set; }
+
+        public string GetId()
+        {
+            var t = this.Name.Split('/');
+            return t[t.Length - 1];
+        }
     }
 
     public partial class FirebaseMatchDocumentFields
@@ -38,16 +44,10 @@ namespace Firebase.Data
         public String Winner { get; set; }
 
         [JsonProperty("endDate")]
-        public EndDate EndDate { get; set; }
+        public Date EndDate { get; set; }
 
         [JsonProperty("players")]
         public Players Players { get; set; }
-    }
-
-    public partial class EndDate
-    {
-        [JsonProperty("timestampValue")]
-        public DateTimeOffset TimestampValue { get; set; }
     }
 
     public partial class Players
@@ -96,19 +96,6 @@ namespace Firebase.Data
         
         [JsonProperty("points")]
         public Number Points { get; set; }
-    }
-
-    public partial class Number
-    {
-        [JsonProperty("integerValue")]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long IntegerValue { get; set; }
-    }
-
-    public partial class String
-    {
-        [JsonProperty("stringValue")]
-        public string StringValue { get; set; }
     }
 
     public partial class FirebaseMatchDocument

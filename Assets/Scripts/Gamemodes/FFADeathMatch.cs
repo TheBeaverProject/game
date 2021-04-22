@@ -151,6 +151,16 @@ namespace Scripts.Gamemodes
             PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths, points);
         }
 
+        [PunRPC]
+        void RegisterMatch(string documentId)
+        {
+            StatisticsHandler.RegisterMatch(documentId, success =>
+            {
+                if (success)
+                    Debug.Log("Successfully registered in the finished match");
+            });
+        }
+
         #endregion
 
         #region Private Methods
@@ -181,22 +191,18 @@ namespace Scripts.Gamemodes
 
             EndGameScreenController.Result result;
 
-            if (winner == PhotonNetwork.LocalPlayer)
-            {
-                result = EndGameScreenController.Result.Win;
-            }
-            else
-            {
-                result = EndGameScreenController.Result.Loss;
-            }
+            result = winner.UserId == PhotonNetwork.LocalPlayer.UserId ?
+                EndGameScreenController.Result.Win : EndGameScreenController.Result.Loss;
 
             controller.SetResult(result);
 
             go.GetComponentInChildren<ScoreboardController>().SetAsFFA(PlayersData.GetSortedPlayerData());
             
-            StatisticsHandler.PostNewMatch(Mode.FFADeathMatch.ToString(), winner.NickName, PlayersData, success =>
+            StatisticsHandler.PostNewMatch(Mode.FFADeathMatch.ToString(), winner.NickName, PlayersData, (success, document) =>
             {
-                Debug.Log($"PostNewMatch status: {success}");
+                var documentId = document.GetId();
+                
+                photonView.RPC("RegisterMatch", RpcTarget.All, documentId);
             });
         }
 

@@ -232,6 +232,16 @@ namespace Scripts.Gamemodes
             Team1TotalPoints = team1Points;
             Team2TotalPoints = team2Points;
         }
+        
+        [PunRPC]
+        void RegisterMatch(string documentId)
+        {
+            StatisticsHandler.RegisterMatch(documentId, success =>
+            {
+                if (success)
+                    Debug.Log("Successfully registered in the finished match");
+            });
+        }
 
         #endregion
 
@@ -265,9 +275,11 @@ namespace Scripts.Gamemodes
 
             if (PhotonNetwork.IsMasterClient)
             {
-                StatisticsHandler.PostNewMatch(Mode.TeamDeathMatch.ToString(), winner.ToString(), PlayersData, success =>
+                StatisticsHandler.PostNewMatch(Mode.TeamDeathMatch.ToString(), winner.ToString(), PlayersData, (success, document) =>
                 {
-                    Debug.Log($"PostNewMatch status: {success}");
+                    var documentId = document.GetId();
+                
+                    photonView.RPC("RegisterMatch", RpcTarget.All, documentId);
                 });
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
+using Firebase;
 using Multiplayer;
 using Photon.Pun;
 using Photon.Realtime;
@@ -60,8 +61,6 @@ namespace Scripts.Gamemodes
                     startTimer = false;
                     
                     InitEndgameScreen();
-                    
-                    // TODO: Register the game in firebase if masterclient
                 }
             }
         }
@@ -120,7 +119,7 @@ namespace Scripts.Gamemodes
                 foreach (var deathmatchPlayerData in PlayersData.Dictionary)
                 {
                     photonView.RPC("UpdateDeathmatchPlayerData", RpcTarget.Others, 
-                        deathmatchPlayerData.Key.ActorNumber, deathmatchPlayerData.Value.kills, deathmatchPlayerData.Value.assists, deathmatchPlayerData.Value.deaths);
+                        deathmatchPlayerData.Key.ActorNumber, deathmatchPlayerData.Value.kills, deathmatchPlayerData.Value.assists, deathmatchPlayerData.Value.deaths, deathmatchPlayerData.Value.points);
                 }
             }
         }
@@ -147,10 +146,9 @@ namespace Scripts.Gamemodes
         #region RPC Methods
 
         [PunRPC]
-        void UpdateDeathmatchPlayerData(int playerActorNumber, int kills, int assists, int deaths)
+        void UpdateDeathmatchPlayerData(int playerActorNumber, int kills, int assists, int deaths, int points)
         {
-            Debug.Log($"{playerActorNumber}: {kills}, {assists}, {deaths}");
-            PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths);
+            PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths, points);
         }
 
         #endregion
@@ -195,6 +193,11 @@ namespace Scripts.Gamemodes
             controller.SetResult(result);
 
             go.GetComponentInChildren<ScoreboardController>().SetAsFFA(PlayersData.GetSortedPlayerData());
+            
+            StatisticsHandler.PostNewMatch(Mode.FFADeathMatch.ToString(), winner.NickName, PlayersData, success =>
+            {
+                Debug.Log($"PostNewMatch status: {success}");
+            });
         }
 
         Player GetWinner()

@@ -52,6 +52,28 @@ namespace Firebase
             PlayerPrefs.DeleteKey(PlayerPrefKeys.SaveCredentials);
             PlayerPrefs.Save();
         }
+
+        
+        public delegate void GetIdTokenCallback(string token);
+        
+        /// <summary>
+        /// Returns the logged in user's id token
+        /// </summary>
+        /// <param name="callback">callback containing the id token</param>
+        /// <returns></returns>
+        public static void GetIdToken(GetIdTokenCallback callback)
+        {
+            AuthHandler.CheckAuthentication((status =>
+            {
+                if (!status)
+                {
+                    callback("");
+                    return;
+                }
+
+                callback(PlayerPrefs.GetString(PlayerPrefKeys.LoggedUserToken));
+            }));
+        }
         
         public delegate void SignInCallback(User user);
         

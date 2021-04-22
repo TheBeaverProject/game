@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
+using Firebase;
 using Multiplayer;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
@@ -78,7 +79,6 @@ namespace Scripts.Gamemodes
                     else // Game is finished
                     {
                         InitEndgameScreen(winner);
-                        // TODO: Register game in firebase if masterclient
                     }
                 }
             }
@@ -187,7 +187,7 @@ namespace Scripts.Gamemodes
                 foreach (var playerData in PlayersData.Dictionary)
                 {
                     photonView.RPC("UpdatePlayerData", RpcTarget.Others, 
-                        playerData.Key.ActorNumber, playerData.Value.kills, playerData.Value.assists, playerData.Value.deaths);
+                        playerData.Key.ActorNumber, playerData.Value.kills, playerData.Value.assists, playerData.Value.deaths, playerData.Value.points);
                 }
                 
                 // If we are the master client, update the points for everyone
@@ -221,10 +221,9 @@ namespace Scripts.Gamemodes
         #region RPC Methods
 
         [PunRPC]
-        void UpdatePlayerData(int playerActorNumber, int kills, int assists, int deaths)
+        void UpdatePlayerData(int playerActorNumber, int kills, int assists, int deaths, int points)
         {
-            Debug.Log($"{playerActorNumber}: {kills}, {assists}, {deaths}");
-            PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths);
+            PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths, points);
         }
 
         [PunRPC]
@@ -263,6 +262,14 @@ namespace Scripts.Gamemodes
             go.GetComponentInChildren<ScoreboardController>().Set(
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                StatisticsHandler.PostNewMatch(Mode.TeamDeathMatch.ToString(), winner.ToString(), PlayersData, success =>
+                {
+                    Debug.Log($"PostNewMatch status: {success}");
+                });
+            }
         }
 
         void StartTimer()

@@ -54591,6 +54591,12 @@ PrefabInstance:
       propertyPath: FFAManager
       value: 
       objectReference: {fileID: 948287053723839011}
+    - target: {fileID: 52700164885713005, guid: 642ba23ff8d178341a553e9fbe5eeb20,
+        type: 3}
+      propertyPath: EndgameScreenPrefab
+      value: 
+      objectReference: {fileID: 2603762395528671364, guid: c1bc93e8ba85489488a720dfd545b790,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 642ba23ff8d178341a553e9fbe5eeb20, type: 3}
 --- !u!114 &1862354146 stripped

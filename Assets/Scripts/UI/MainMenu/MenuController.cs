@@ -15,6 +15,8 @@ namespace UI.MainMenu
         public GameObject PlayTab;
         public GameObject SettingsTab;
 
+        public GameObject Selector;
+
         public Button HomeButton;
         public Button PlayButton;
         public Button SettingsButton;
@@ -23,7 +25,7 @@ namespace UI.MainMenu
 
         private GameObject currentTab;
         private Button currentButton;
-        private string currentTabStr;
+        private string currentTabStr = "home";
 
         private void ToggleTab(string tab)
         {
@@ -32,8 +34,8 @@ namespace UI.MainMenu
                 return;
             }
             
-            Vector3 upVector = new Vector3(0, Screen.height);
-            Vector3 downVector = new Vector3(0, -Screen.height);
+            Vector3 upVector = new Vector3(Screen.width, 0);
+            Vector3 downVector = new Vector3(-Screen.width, 0);
             
             SmoothToggle(currentTab.transform, upVector);
 
@@ -42,19 +44,22 @@ namespace UI.MainMenu
             switch (tab)
             {
                 case "home":
-                    SmoothToggle(HomeTab.transform, downVector);
+                    HomeTab.transform.position += 2 * downVector;
+                    SmoothToggle(HomeTab.transform, upVector);
                     currentTab = HomeTab;
                     currentButton = HomeButton;
                     currentTabStr = "home";
                     break;
                 case "play":
-                    SmoothToggle(PlayTab.transform, downVector);
+                    PlayTab.transform.position += 2 * downVector;
+                    SmoothToggle(PlayTab.transform, upVector);
                     currentTab = PlayTab;
                     currentButton = PlayButton;
                     currentTabStr = "play";
                     break;
                 case "settings":
-                    SmoothToggle(SettingsTab.transform, downVector);
+                    SettingsTab.transform.position += 2 * downVector;
+                    SmoothToggle(SettingsTab.transform, upVector);
                     currentTab = SettingsTab;
                     currentButton = SettingsButton;
                     currentTabStr = "settings";
@@ -63,6 +68,7 @@ namespace UI.MainMenu
             
             currentButton.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.UpperCase;
             currentButton.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
+            Selector.transform.position = currentButton.transform.position;
         }
 
         private void SmoothToggle(Transform transform, Vector3 vector3, Action callback = null)
@@ -72,7 +78,7 @@ namespace UI.MainMenu
             StartCoroutine(Utils.SmoothTransition(
                 f => transform.position = Vector3.Lerp(transform.position,
                     initpos + vector3, f),
-                0.2f, callback));
+                0.5f, callback));
         }
 
         #endregion
@@ -84,8 +90,8 @@ namespace UI.MainMenu
         {
             currentTab = HomeTab;
             currentButton = HomeButton;
-            PlayTab.transform.position += new Vector3(0, Screen.height);
-            SettingsTab.transform.position += new Vector3(0, Screen.height);
+            PlayTab.transform.position += new Vector3(Screen.width, 0);
+            SettingsTab.transform.position += new Vector3(Screen.width, 0);
         }
 
         private void Update()

@@ -2,6 +2,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using PlayerManagement;
+using Scripts.Gamemodes;
 using UI;
 using UI.BuyMenu;
 using UI.HUD;
@@ -13,6 +14,8 @@ namespace Multiplayer
     public class GameManager : MonoBehaviourPunCallbacks
     {
         #region Serialized Fields
+        
+        [Header("Prefabs")]
 
         [Tooltip("The prefab to use for representing the player")]
         public GameObject playerPrefab;
@@ -34,8 +37,12 @@ namespace Multiplayer
 
         [Tooltip("GameObject used to display scopes when aiming")]
         public GameObject ScopePrefab;
+        
+        [Header("Gamemode Manager")]
+        
+        public Gamemode gamemodeController;
 
-        public Vector3 playerStartPos;
+        protected Vector3 playerStartPos;
 
         #endregion
 
@@ -68,7 +75,7 @@ namespace Multiplayer
 
         #region Private Methods
 
-        protected void InstantiateLocalPlayer()
+        protected PlayerManager InstantiateLocalPlayer()
         {
             // Instantiate the Object of the localPlayer
             // Using PhotonNetwork to make it present on the network
@@ -90,12 +97,13 @@ namespace Multiplayer
             clientBuyMenu.GetComponent<BuyMenuController>().playerManager = clientPlayer.GetComponent<PlayerManager>();
             
             // Assing the camera to the player object
-            clientPlayer.GetComponent<PlayerManager>().playerCameraHolder = clientCameraHolder;
-            clientPlayer.GetComponent<PlayerManager>().playerCamera = clientCamera;
-            clientPlayer.GetComponent<PlayerManager>().weaponCamera = clientWeaponCamera;
+            var playerManager = clientPlayer.GetComponent<PlayerManager>();
+            playerManager.playerCameraHolder = clientCameraHolder;
+            playerManager.playerCamera = clientCamera;
+            playerManager.weaponCamera = clientWeaponCamera;
             
             // Assign the HUD to the playerManager
-            clientPlayer.GetComponent<PlayerManager>().HUD = clientHUD.GetComponent<Controller>();
+            playerManager.HUD = clientHUD.GetComponent<Controller>();
 
             // Place the camera correctly and set the FOV according to the Player's settings
             clientCamera.GetComponent<MouseLook>().playerBody = clientPlayer.transform;
@@ -112,6 +120,10 @@ namespace Multiplayer
             playerMenusHandler.EscapeMenu = clientESCMenu;
             playerMenusHandler.playerCamera = clientCamera;
             playerMenusHandler.HUD = clientHUD;
+
+            gamemodeController.OnPlayerRespawn(playerManager);
+            
+            return playerManager;
         }
 
         private static void InitCameraOnUIElement(GameObject uiEl, Camera ccam)

@@ -1,7 +1,11 @@
-﻿using Guns;
+﻿using System.Collections.Generic;
+using Guns;
+using Multiplayer;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using TMPro;
+using UI;
 using UnityEngine;
 
 namespace PlayerManagement
@@ -28,13 +32,12 @@ namespace PlayerManagement
         [Tooltip("The current Health of our player")]
         [SerializeField]
         private int health = 100;
-
         public int Health
         {
             get => health;
             set => health = value < 0 ? 0 : value;
         }
-        
+
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
 
@@ -63,7 +66,7 @@ namespace PlayerManagement
             }
             
             HUD.playerName.text = PhotonNetwork.NickName;
-            playerText.text = $"{PhotonNetwork.NickName} - {photonView.Controller.GetPhotonTeam()}";
+            playerText.text = $"{PhotonNetwork.NickName}";
         }
 
         #endregion
@@ -73,18 +76,16 @@ namespace PlayerManagement
             if (stream.IsWriting) // Local Player
             {
                 stream.SendNext(Health);
-                //Debug.Log($"Sent Health for {this.gameObject.name}: {Health}");
             }
             else if (stream.IsReading) // Network Player
             {
                 Health = (int) stream.ReceiveNext();
-                //Debug.Log($"Received Health for {this.gameObject.name}: {tempHealth}");
             }
         }
 
         #region Player
 
-        private GameObject playerWeapon;
+        public GameObject playerWeapon;
         
         public void AddGunPrefabToPlayer(GameObject gunPrefab)
         {
@@ -125,9 +126,56 @@ namespace PlayerManagement
             playerWeapon.GetComponent<Gunnable>().AllowShooting = true;
         }
 
-        public void TakeDamage(double weaponDamage, LayerMask bodyZone)
+        public void DisableMovement()
         {
-            Debug.Log("TakeDamage called");
+            this.gameObject.GetComponent<PlayerMenusHandler>().UnLockCursor();
+            this.gameObject.GetComponent<PlayerMovementManager>().enabled = false;
+        }
+
+        public void EnableMovement()
+        {
+            this.gameObject.GetComponent<PlayerMenusHandler>().LockCursor();
+            this.gameObject.GetComponent<PlayerMovementManager>().enabled = true;
+        }
+        
+        // List to hold the actor number of the players who dealt damage to this player and the dealt damage
+        public Dictionary<int, int> TookDamageFrom = new Dictionary<int, int>();
+
+        private void AddDamageDealer(int dealerActorNumber, int damage)
+        {
+            if (TookDamageFrom.ContainsKey(dealerActorNumber))
+            {
+                TookDamageFrom[dealerActorNumber] += damage;
+            }
+            else
+            {
+                TookDamageFrom.Add(dealerActorNumber, damage);
+            }
+        }
+
+        private int GetAssistActorNum(int killerActorNumber)
+        {
+            int assistActorNum = -1;
+            int assistDamage = 0;
+            
+            foreach (var kvp in TookDamageFrom)
+            {
+                if (assistDamage < kvp.Value && kvp.Key != killerActorNumber)
+                {
+                    assistActorNum = kvp.Key;
+                }
+            }
+
+            return assistActorNum;
+        }
+
+        private bool killed = false;
+        public void TakeDamage(double weaponDamage, LayerMask bodyZone, Player dealer)
+        {
+            if (killed)
+            {
+                return;
+            }
             
             switch (bodyZone)
             {
@@ -144,12 +192,20 @@ namespace PlayerManagement
 
             int newHealth =  Health - ((int) weaponDamage);
 
-            photonView.RPC("UpdateHealth", RpcTarget.All, newHealth);
+            if (newHealth <= 0 && !killed) // Kill -> Raise event
+            {
+                Events.SendKillEvent(dealer.ActorNumber, GetAssistActorNum(dealer.ActorNumber), photonView.OwnerActorNr);
+                killed = true;
+            }
+
+            photonView.RPC("UpdateHealth", RpcTarget.All, newHealth, dealer.ActorNumber);
         }
 
         [PunRPC] 
-        void UpdateHealth(int newHealth)
+        void UpdateHealth(int newHealth, int dealerActorNumber)
         {
+            AddDamageDealer(dealerActorNumber, Health - newHealth);
+            
             Health = newHealth;
             
             if (PhotonNetwork.IsConnected && photonView.IsMine)

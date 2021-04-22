@@ -41,7 +41,7 @@ namespace PlayerManagement
                     Random.Range(-RecoilRotation.z, RecoilRotation.z));
             }
         }
-
+        
         public void SetValues(Gunnable weapon)
         {
             this.rotationSpeed = weapon.rotationSpeed;

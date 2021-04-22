@@ -89,7 +89,7 @@ namespace UI.BuyMenu
         // Selects the first step of the Menu and displays the buttons of the second step
         private void SelectStep1(string step)
         {
-            Debug.Log($"Selected Step 2 {step}");
+            //Debug.Log($"Selected Step 2 {step}");
             Step2Button.gameObject.SetActive(true);
 
             // Destroy Previous Buttons
@@ -135,7 +135,7 @@ namespace UI.BuyMenu
         {
             if (playerManager == null) return;
             
-            Debug.Log($"Bought Weapon {weaponPrefab.name}");
+            //Debug.Log($"Bought Weapon {weaponPrefab.name}");
             playerManager.AddGunPrefabToPlayer(weaponPrefab);
         }
     }

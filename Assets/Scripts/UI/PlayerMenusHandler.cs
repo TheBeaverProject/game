@@ -47,7 +47,7 @@ namespace UI
                 BuyMenuController.Container.SetActive(true);
                 UnLockCursor();
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (BuyMenuController.Container.activeInHierarchy)

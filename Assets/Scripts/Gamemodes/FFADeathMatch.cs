@@ -197,13 +197,16 @@ namespace Scripts.Gamemodes
             controller.SetResult(result);
 
             go.GetComponentInChildren<ScoreboardController>().SetAsFFA(PlayersData.GetSortedPlayerData());
-            
-            StatisticsHandler.PostNewMatch(Mode.FFADeathMatch.ToString(), winner.NickName, PlayersData, (success, document) =>
+
+            if (PhotonNetwork.IsMasterClient)
             {
-                var documentId = document.GetId();
+                StatisticsHandler.PostNewMatch(Mode.FFADeathMatch.ToString(), winner.NickName, PlayersData, (success, document) =>
+                {
+                    var documentId = document.GetId();
                 
-                photonView.RPC("RegisterMatch", RpcTarget.All, documentId);
-            });
+                    photonView.RPC("RegisterMatch", RpcTarget.All, documentId);
+                });
+            }
         }
 
         Player GetWinner()

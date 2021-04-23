@@ -120,12 +120,26 @@ namespace Multiplayer
 
         public void Connect()
         {
-            PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser.Username;
+            PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser?.Username != null ? Firebase.AuthHandler.loggedinUser?.Username : "OfflinePlayer";
             
             if (controlPanel != null)
             {
                 progressLabel.SetActive(true);
                 controlPanel.SetActive(false);
+            }
+            else
+            {
+                // Offline / standalone connection
+                if (PhotonNetwork.IsConnected)
+                {
+                    PhotonNetwork.JoinRandomRoom();
+                }
+                else
+                {
+                    isConnecting = PhotonNetwork.ConnectUsingSettings();
+                    PhotonNetwork.GameVersion = gameVersion;
+                }
+                return;
             }
             
             // Checks if the client is connected

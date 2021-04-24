@@ -17,6 +17,8 @@ namespace Multiplayer
         private string gameVersion = "0.5.1";
 
         public const string GAMEMODE_PROP_KEY = "gm";
+
+        public string map = "Balcony";
         
         /// <summary>
         /// The maximum number of player that can be in a single room
@@ -105,10 +107,10 @@ namespace Multiplayer
                 switch ((Mode) PhotonNetwork.CurrentRoom.CustomProperties["gm"])
                 {
                     case Mode.FFADeathMatch:
-                        PhotonNetwork.LoadLevel("FFADeathMatchDemo");
+                        PhotonNetwork.LoadLevel("FFADeathMatch" + map);
                         break;
                     case Mode.TeamDeathMatch:
-                        PhotonNetwork.LoadLevel("TeamDeathMatchDemo");
+                        PhotonNetwork.LoadLevel("TeamDeathMatch" + map);
                         break;
                 }
             }

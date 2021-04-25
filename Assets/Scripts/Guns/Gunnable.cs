@@ -160,11 +160,8 @@ namespace Guns
         #region Shooting Mechanics
 
         protected abstract void Shoot();
-        
-        protected void ResetShot()
-        {
-            readyToShoot = true;
-        }
+
+        protected abstract void ResetShot();
 
         #endregion
 

@@ -28,6 +28,9 @@ namespace PlayerManagement
 
         [Tooltip("Text used to display infos about the player")]
         public TextMeshPro playerText;
+
+        [Tooltip("Line renderer to display bullets traces")]
+        public LineRenderer lineRenderer;
         
         [Tooltip("The current Health of our player")]
         [SerializeField]
@@ -107,7 +110,13 @@ namespace PlayerManagement
             playerWeapon.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             // Sets the holder of the gun
-            playerWeapon.GetComponent<Gunnable>().holder = this;
+            var GunnableScript = playerWeapon.GetComponent<Gunnable>();
+            GunnableScript.holder = this;
+            
+            if (GunnableScript is HitScanWeapon)
+            {
+                ((HitScanWeapon) GunnableScript).lineRenderer = this.lineRenderer;
+            }
         }
 
         public void DisableShooting()

@@ -13,6 +13,8 @@ namespace Guns
         //Raycast hit
         protected RaycastHit rayHit;
 
+        public LineRenderer lineRenderer;
+
         protected override void MyInput()
         {
             if (holder == null) // Process inputs only if the weapon is bound to a player
@@ -44,8 +46,6 @@ namespace Guns
 
         protected override void Shoot()
         {
-            var lineRenderer = GetComponent<LineRenderer>();
-            
             // Plays shoot sound
             photonView.RPC("PlayShotSound", RpcTarget.All);
             
@@ -93,6 +93,12 @@ namespace Guns
             
             if (bulletsShot > 0 && bulletsLeft > 0)
                 Invoke("Shoot",timeBetweenShots);
+        }
+
+        protected override void ResetShot()
+        {
+            lineRenderer.positionCount = 0;
+            readyToShoot = true;
         }
 
         #region RPC Methods

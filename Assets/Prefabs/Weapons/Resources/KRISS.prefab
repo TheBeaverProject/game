@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 452310166657532580}
   - component: {fileID: 450152929150528116}
   - component: {fileID: 440296149229967200}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: -3771500861182518087}
   - component: {fileID: -239428540629454791}
   - component: {fileID: 5948538075542529787}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: KRISS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,6 +208,7 @@ MonoBehaviour:
   aiming: 0
   AllowShooting: 0
   holder: {fileID: 0}
+  lineRenderer: {fileID: 0}
 --- !u!114 &-239428540629454791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,7 +337,7 @@ GameObject:
   - component: {fileID: 457577996589876154}
   - component: {fileID: 450096321397336822}
   - component: {fileID: 439672741511879642}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Magazin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -416,7 +417,7 @@ GameObject:
   - component: {fileID: 452132843179940572}
   - component: {fileID: 446099737002397066}
   - component: {fileID: 439981449344337678}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -495,7 +496,7 @@ GameObject:
   - component: {fileID: 457594137922768264}
   - component: {fileID: 450283982719934354}
   - component: {fileID: 440293963510164918}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Stock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -574,7 +575,7 @@ GameObject:
   - component: {fileID: 457354967325143358}
   - component: {fileID: 450068438867565968}
   - component: {fileID: 440690260577344436}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -652,7 +653,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8952312311101857447}
   - component: {fileID: 95758515374081467}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -814,7 +815,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5516298531612683006}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: BarrelTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -848,7 +849,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1815964348400836, guid: 241db89805c6d2741adfee2dc6f31a10, type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4259783428436596, guid: 241db89805c6d2741adfee2dc6f31a10, type: 3}
       propertyPath: m_RootOrder

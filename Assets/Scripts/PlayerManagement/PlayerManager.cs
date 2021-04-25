@@ -4,6 +4,7 @@ using Multiplayer;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using Scripts;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -102,6 +103,11 @@ namespace PlayerManagement
             
             // Sets the gun as the children of the camera
             playerWeapon.transform.SetParent(transform);
+            
+            // Sets the layer so it is rendered by the weaponCamera
+            Utils.SetLayerRecursively(playerWeapon, 12);
+            playerWeapon.layer = 12;
+            
 
             // Position correctly the gun
             // Local values so it looks good on camera

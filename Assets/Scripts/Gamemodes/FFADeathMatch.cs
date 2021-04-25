@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
+using Firebase;
 using Multiplayer;
 using Photon.Pun;
 using Photon.Realtime;
@@ -60,8 +61,6 @@ namespace Scripts.Gamemodes
                     startTimer = false;
                     
                     InitEndgameScreen();
-                    
-                    // TODO: Register the game in firebase if masterclient
                 }
             }
         }
@@ -120,7 +119,7 @@ namespace Scripts.Gamemodes
                 foreach (var deathmatchPlayerData in PlayersData.Dictionary)
                 {
                     photonView.RPC("UpdateDeathmatchPlayerData", RpcTarget.Others, 
-                        deathmatchPlayerData.Key.ActorNumber, deathmatchPlayerData.Value.kills, deathmatchPlayerData.Value.assists, deathmatchPlayerData.Value.deaths);
+                        deathmatchPlayerData.Key.ActorNumber, deathmatchPlayerData.Value.kills, deathmatchPlayerData.Value.assists, deathmatchPlayerData.Value.deaths, deathmatchPlayerData.Value.points);
                 }
             }
         }
@@ -147,10 +146,19 @@ namespace Scripts.Gamemodes
         #region RPC Methods
 
         [PunRPC]
-        void UpdateDeathmatchPlayerData(int playerActorNumber, int kills, int assists, int deaths)
+        void UpdateDeathmatchPlayerData(int playerActorNumber, int kills, int assists, int deaths, int points)
         {
-            Debug.Log($"{playerActorNumber}: {kills}, {assists}, {deaths}");
-            PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths);
+            PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths, points);
+        }
+
+        [PunRPC]
+        void RegisterMatch(string documentId)
+        {
+            StatisticsHandler.RegisterMatch(documentId, success =>
+            {
+                if (success)
+                    Debug.Log("Successfully registered in the finished match");
+            });
         }
 
         #endregion
@@ -183,18 +191,22 @@ namespace Scripts.Gamemodes
 
             EndGameScreenController.Result result;
 
-            if (winner == PhotonNetwork.LocalPlayer)
-            {
-                result = EndGameScreenController.Result.Win;
-            }
-            else
-            {
-                result = EndGameScreenController.Result.Loss;
-            }
+            result = winner.UserId == PhotonNetwork.LocalPlayer.UserId ?
+                EndGameScreenController.Result.Win : EndGameScreenController.Result.Loss;
 
             controller.SetResult(result);
 
             go.GetComponentInChildren<ScoreboardController>().SetAsFFA(PlayersData.GetSortedPlayerData());
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                StatisticsHandler.PostNewMatch(Mode.FFADeathMatch.ToString(), winner.NickName, PlayersData, (success, document) =>
+                {
+                    var documentId = document.GetId();
+                
+                    photonView.RPC("RegisterMatch", RpcTarget.All, documentId);
+                });
+            }
         }
 
         Player GetWinner()

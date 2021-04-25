@@ -170,6 +170,7 @@ namespace Multiplayer
             roomOptions.CustomRoomPropertiesForLobby = new[] {GAMEMODE_PROP_KEY};
             roomOptions.CustomRoomProperties = new Hashtable {{GAMEMODE_PROP_KEY, (int) gamemode}};
             roomOptions.MaxPlayers = this.maxPlayersPerRoom;
+            roomOptions.PublishUserId = true;
 
             PhotonNetwork.CreateRoom(PhotonNetwork.NickName+gamemode.ToString(), roomOptions);
         }

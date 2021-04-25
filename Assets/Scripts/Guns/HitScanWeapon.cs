@@ -13,8 +13,6 @@ namespace Guns
         //Raycast hit
         protected RaycastHit rayHit;
 
-        public LineRenderer lineRenderer;
-
         protected override void MyInput()
         {
             if (holder == null) // Process inputs only if the weapon is bound to a player
@@ -95,7 +93,7 @@ namespace Guns
 
         protected override void ResetShot()
         {
-            lineRenderer.positionCount = 0;
+            photonView.RPC("SetLineRenderer", RpcTarget.All, 0, null);
             readyToShoot = true;
         }
 
@@ -112,6 +110,11 @@ namespace Guns
         {
             lineRenderer.positionCount = count;
 
+            if (pos == null)
+            {
+                return;
+            }
+            
             int i = 0;
             foreach (var vector3 in pos)
             {

@@ -36,6 +36,7 @@ namespace Guns
         
         [SerializeField]
         public ScopeHUDController.scopeType ScopeType;
+        public LineRenderer lineRenderer;
         
         // Weapon Behavior
         [Header("Weapon Behavior")]
@@ -255,6 +256,8 @@ namespace Guns
                 {
                     // Sets the parent if the gun is not ours
                     transform.SetParent(holder.transform);
+
+                    this.lineRenderer = holder.lineRenderer;
 
                     transform.position = holder.transform.position;
                     transform.rotation = holder.transform.rotation;

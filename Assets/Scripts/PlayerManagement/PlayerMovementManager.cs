@@ -6,15 +6,16 @@ namespace PlayerManagement
 {
     public class PlayerMovementManager : MonoBehaviourPun
     {
-        // Character Controller  reference
         // Sets up the character controller
+        [Header("Character Controller Reference")]
         public CharacterController controller;
-
-        // Physics var
+        
+        // Physics variables
         private Vector3 velocity;
-        private float gravitationalConstant = -9.81f;
+        // Modified it to be stronger than on earth because the units are clearly not real/fucked up
+        private float gravitationalConstant = -18f;
 
-        // == Collision check attributs ==
+        [Tooltip("Collision check attributes")]
         // Ground collision check
         public Transform groundCheck;
         public float groundDistance = 0.4f;
@@ -26,9 +27,10 @@ namespace PlayerManagement
         public Transform roofCheck;
         bool isHittingCeiling;
 
+        [Tooltip("[TMP DEV] Player movement attributes")]
         // [TMP DEV]Set the player movement speed
-        public float movementSpeed = 16f;
-        public float jumpHeight = 3f;
+        public float movementSpeed = 10f;
+        public float jumpHeight = 2f;
 
         private bool isJumping;
 
@@ -70,7 +72,10 @@ namespace PlayerManagement
             // RTFM
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
-            Vector3 move = transform.right * x + transform.forward * z;
+            Vector3 move;
+
+            move = transform.right * x + transform.forward * z;
+            
             controller.Move(move * movementSpeed * Time.deltaTime);
 
             if (Input.GetButtonDown("Jump") && !isJumping)
@@ -82,6 +87,7 @@ namespace PlayerManagement
 
             // Apply gravity
             velocity.y += gravitationalConstant * Time.deltaTime;
+
             controller.Move(velocity * Time.deltaTime);
         }
 

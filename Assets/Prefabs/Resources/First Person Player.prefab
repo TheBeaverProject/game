@@ -154,8 +154,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   roofCheck: {fileID: 4419865849789244982}
-  movementSpeed: 16
-  jumpHeight: 3
+  movementSpeed: 10
+  jumpHeight: 2
 --- !u!114 &7261727423731255463
 MonoBehaviour:
   m_ObjectHideFlags: 0

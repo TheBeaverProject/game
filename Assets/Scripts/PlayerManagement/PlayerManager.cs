@@ -66,11 +66,13 @@ namespace PlayerManagement
         {
             if (PhotonNetwork.IsConnected && !photonView.IsMine)
             {
+                playerText.text = $"{photonView.Controller.NickName}";
                 return;
             }
             
+            Debug.Log(PhotonNetwork.NickName);
+            
             HUD.playerName.text = PhotonNetwork.NickName;
-            playerText.text = $"{PhotonNetwork.NickName}";
         }
 
         #endregion

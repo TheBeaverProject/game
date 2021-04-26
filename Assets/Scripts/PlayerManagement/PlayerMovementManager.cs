@@ -28,7 +28,7 @@ namespace PlayerManagement
         bool isHittingCeiling;
 
         [Tooltip("[TMP DEV] Player movement attributes")]
-        // [TMP DEV]Set the player movement speed
+        // [TMP DEV] Set the player movement speed
         public float movementSpeed = 10f;
         public float jumpHeight = 2f;
 
@@ -70,6 +70,7 @@ namespace PlayerManagement
             {
                 _animator.SetBool("inAir", false);
                 _animator.SetTrigger("JUMP_END");
+                isJumping = false;
                 velocity.y = -0.5f; // not 0 because gravity goes brrrr
             }
             
@@ -82,16 +83,14 @@ namespace PlayerManagement
             _animator.SetFloat("x_axis", x);
             _animator.SetFloat("z_axis", z);
             
-            if (x != 0 || z != 0)
-                _animator.SetBool("isMoving", true);
-            else
-                _animator.SetBool("isMoving", false);
-            
+            _animator.SetBool("isMoving", x != 0 || z != 0);
+
             controller.Move(move * movementSpeed * Time.deltaTime);
 
             if (Input.GetButtonDown("Jump") && !isJumping)
             {
                 isJumping = true;
+                _animator.SetTrigger("JUMP_START");
                 _animator.SetBool("inAir", true);
                 
                 velocity.y = jump.Jump().y;

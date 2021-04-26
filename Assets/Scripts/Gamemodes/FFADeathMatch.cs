@@ -196,6 +196,8 @@ namespace Scripts.Gamemodes
             var controller = go.GetComponent<EndGameScreenController>();
 
             EndGameScreenController.Result result;
+            
+            Debug.Log($"Winner: {winner.ActorNumber}, localPlayer: {PhotonNetwork.LocalPlayer.ActorNumber}");
 
             result = winner.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber ?
                 EndGameScreenController.Result.Win : EndGameScreenController.Result.Loss;
@@ -225,6 +227,7 @@ namespace Scripts.Gamemodes
                 if (kvp.Value.points >= points)
                 {
                     winner = kvp.Key;
+                    points = kvp.Value.points;
                 }
             }
 

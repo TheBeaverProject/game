@@ -63,6 +63,11 @@ namespace Scripts.Gamemodes
                     InitEndgameScreen();
                 }
             }
+
+            if (Input.GetKey(KeyCode.Tab))
+            {
+                FFAManager?.PlayerManager?.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
+            }
         }
 
         public override void OnEnable()
@@ -149,6 +154,7 @@ namespace Scripts.Gamemodes
         void UpdateDeathmatchPlayerData(int playerActorNumber, int kills, int assists, int deaths, int points)
         {
             PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths, points);
+            FFAManager?.PlayerManager?.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
         }
 
         [PunRPC]
@@ -191,7 +197,7 @@ namespace Scripts.Gamemodes
 
             EndGameScreenController.Result result;
 
-            result = winner.UserId == PhotonNetwork.LocalPlayer.UserId ?
+            result = winner.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber ?
                 EndGameScreenController.Result.Win : EndGameScreenController.Result.Loss;
 
             controller.SetResult(result);

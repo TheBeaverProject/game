@@ -187,6 +187,7 @@ MonoBehaviour:
   allowScope: 1
   scopedFOV: 50
   ScopeType: 2
+  lineRenderer: {fileID: 0}
   allowButtonHold: 1
   timeBetweenShooting: 0.05
   reloadTime: 2
@@ -208,7 +209,6 @@ MonoBehaviour:
   aiming: 0
   AllowShooting: 0
   holder: {fileID: 0}
-  lineRenderer: {fileID: 0}
 --- !u!114 &-239428540629454791
 MonoBehaviour:
   m_ObjectHideFlags: 0

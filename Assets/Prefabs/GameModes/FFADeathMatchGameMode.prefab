@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 52700164885713002}
   - component: {fileID: 52700164885713005}
   - component: {fileID: 52700164885713003}
+  - component: {fileID: 7779796963488321982}
   m_Layer: 0
   m_Name: FFADeathMatchGameMode
   m_TagString: Untagged
@@ -44,9 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952226dbbf4e4b6fab20a60330004b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EndgameScreenPrefab: {fileID: 0}
   PointsPerKill: 10
   PointsPerAssists: 4
   GameDurationInMinutes: 10
+  StartTime: 0
+  ElapsedTime: 0
+  FFAManager: {fileID: 0}
 --- !u!114 &52700164885713003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,3 +74,15 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &7779796963488321982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52700164885713004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8214f0115ab44b0ca460e71a194e6d62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

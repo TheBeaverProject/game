@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using Scripts;
 using UnityEngine;
 
@@ -22,6 +23,15 @@ public class ScoreboardController : MonoBehaviour
             if (i < 5)
             {
                 BlueTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+
+                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    BlueTeamPlayers[i].pName.faceColor = new Color32(246, 235, 20, 255);
+                }
+                else
+                {
+                    BlueTeamPlayers[i].pName.faceColor = new Color32(255, 255, 255, 255);
+                }
             }
 
             i++;
@@ -33,6 +43,15 @@ public class ScoreboardController : MonoBehaviour
             if (i < 5)
             {
                 RedTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+                
+                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    RedTeamPlayers[i].pName.faceColor = new Color32(246, 235, 20, 255);
+                }
+                else
+                {
+                    RedTeamPlayers[i].pName.faceColor = new Color32(255, 255, 255, 255);
+                }
             }
 
             i++;
@@ -55,12 +74,33 @@ public class ScoreboardController : MonoBehaviour
             if (j < 5)
             {
                 BlueTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+                
+                Debug.Log($"{playerData.actorNumber} vs {PhotonNetwork.LocalPlayer.ActorNumber}");
+                
+                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    BlueTeamPlayers[i].pName.faceColor = new Color32(246, 235, 20, 255);
+                }
+                else
+                {
+                    BlueTeamPlayers[i].pName.faceColor = new Color32(255, 255, 255, 255);
+                }
+                
                 i++;
             }
 
             if (j >= 5 && j < 10)
             {
                 RedTeamPlayers[v].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+
+                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    RedTeamPlayers[i].pName.faceColor = new Color32(246, 235, 20, 255);
+                }
+                else
+                {
+                    RedTeamPlayers[i].pName.faceColor = new Color32(255, 255, 255, 255);
+                }
                 v++;
             }
         }

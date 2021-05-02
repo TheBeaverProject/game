@@ -31,6 +31,7 @@ namespace Scripts
                 var roomPlayer = roomPlayerKVP.Value;
                 var playerData = new PlayerData();
                 playerData.name = roomPlayer.NickName;
+                playerData.actorNumber = roomPlayer.ActorNumber;
                 
                 Dictionary.Add(roomPlayer, playerData);
             }
@@ -44,6 +45,7 @@ namespace Scripts
         {
             var playerData = new PlayerData();
             playerData.name = roomPlayer.NickName;
+            playerData.actorNumber = roomPlayer.ActorNumber;
 
             foreach (var PlayerData in Dictionary)
             {
@@ -168,6 +170,10 @@ namespace Scripts
             return res;
         }
         
+        /// <summary>
+        /// Returns a sorted list of every PlayerData
+        /// </summary>
+        /// <returns>sorted list of PlayerData</returns>
         public List<PlayerData> GetSortedPlayerData()
         {
             var res = new List<PlayerData>(Dictionary.Values);
@@ -176,6 +182,19 @@ namespace Scripts
 
             return res;
         }
+
+        public PlayerData GetSinglePlayerData(int ActorNumber)
+        {
+            foreach (var data in Dictionary)
+            {
+                if (data.Value.actorNumber == ActorNumber)
+                {
+                    return data.Value;
+                }
+            }
+
+            return new PlayerData();
+        }
     }
 
     /// <summary>
@@ -183,6 +202,7 @@ namespace Scripts
     /// </summary>
     public struct PlayerData
     {
+        public int actorNumber;
         public string name;
         public int kills;
         public int assists;

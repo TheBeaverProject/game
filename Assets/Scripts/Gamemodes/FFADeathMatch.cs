@@ -38,7 +38,6 @@ namespace Scripts.Gamemodes
 
             if (PhotonNetwork.IsMasterClient)
             {
-                endUnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + GameDurationInMinutes * 60;
                 StartTimer();
             }
             else
@@ -194,6 +193,7 @@ namespace Scripts.Gamemodes
         {
             var CustomValue = new Hashtable();
             StartTime = PhotonNetwork.Time;
+            endUnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + GameDurationInMinutes * 60;
             startTimer = true;
             CustomValue.Add("StartTime", StartTime);
             CustomValue.Add("EndTimeUnix", endUnixTimestamp);

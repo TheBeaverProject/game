@@ -20,6 +20,11 @@ namespace DiscordRPC
             discord.RunCallbacks();
         }
 
+        private void OnDestroy()
+        {
+            discord.Dispose();
+        }
+
         public void ClearActivity()
         {
             activityManager.ClearActivity((res) =>

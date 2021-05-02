@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6419684899456555922}
   - component: {fileID: 1806592470399931849}
   - component: {fileID: -5912690600415349947}
+  - component: {fileID: 3827035785023815094}
   m_Layer: 0
   m_Name: TeamDeathMatch
   m_TagString: Untagged
@@ -44,7 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e86e2ce0b434db197aaaa89b0bb3f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EndgameScreenPrefab: {fileID: 0}
   PointsPerKill: 10
+  PointsPerAssist: 4
   PointsPerTeamKill: -5
   GameDurationInMinutes: 10
   StartTime: 0
@@ -74,3 +77,15 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &3827035785023815094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4360318910633493022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8214f0115ab44b0ca460e71a194e6d62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

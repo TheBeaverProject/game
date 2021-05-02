@@ -100,6 +100,7 @@ namespace Scripts
             
             var playerData = new PlayerData();
             playerData.name = toUpdate.Key.NickName;
+            playerData.actorNumber = toUpdate.Key.ActorNumber;
             
             playerData.kills = kills == -1 ? toUpdate.Value.kills : kills;
             playerData.deaths = deaths == -1 ? toUpdate.Value.deaths : deaths;
@@ -138,6 +139,8 @@ namespace Scripts
             
             var playerData = new PlayerData();
             playerData.name = toUpdate.Key.NickName;
+            playerData.actorNumber = toUpdate.Key.ActorNumber;
+            
             playerData.kills = kills == -1 ? toUpdate.Value.kills : toUpdate.Value.kills + kills;
             playerData.deaths = deaths == -1 ? toUpdate.Value.deaths : toUpdate.Value.deaths + deaths;
             playerData.assists = assists == -1 ? toUpdate.Value.assists : toUpdate.Value.assists + assists;
@@ -187,7 +190,7 @@ namespace Scripts
         {
             foreach (var data in Dictionary)
             {
-                if (data.Value.actorNumber == ActorNumber)
+                if (data.Key.ActorNumber == ActorNumber)
                 {
                     return data.Value;
                 }

@@ -1,5 +1,55 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &359727209244695380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5861184022402362004}
+  - component: {fileID: 829303362755936740}
+  m_Layer: 5
+  m_Name: KillFeed
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5861184022402362004
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359727209244695380}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3411205111892341338}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 400, y: 300}
+  m_Pivot: {x: 1, y: 1}
+--- !u!114 &829303362755936740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359727209244695380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e4544986a0d464b8d377c0a6b03125, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KillFeedElementPrefab: {fileID: 3889810367764642512, guid: e2dd3ec8263548748a74160b215f7e56,
+    type: 3}
 --- !u!1 &623883814574316993
 GameObject:
   m_ObjectHideFlags: 0
@@ -4045,6 +4095,7 @@ RectTransform:
   - {fileID: 3264470942108313227}
   - {fileID: 6044356757251802896}
   - {fileID: 7430316090252401890}
+  - {fileID: 5861184022402362004}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4142,6 +4193,7 @@ MonoBehaviour:
   teamDisplay: {fileID: 3411205112566764428}
   weaponDisplay: {fileID: 3411205111948920051}
   teamPointsDisplay: {fileID: 732503407707080881}
+  killFeedDisplay: {fileID: 829303362755936740}
   crossHair: {fileID: 3411205110877576565}
   currentType: 0
 --- !u!1 &3411205111931128616
@@ -5603,7 +5655,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: -0.0000038146973}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6263,7 +6315,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -1.6, y: -84.4}
+  m_AnchoredPosition: {x: -1.6, y: -84.3999}
   m_SizeDelta: {x: 379.27664, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &4400809649244465831

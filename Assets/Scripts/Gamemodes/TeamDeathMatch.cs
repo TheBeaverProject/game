@@ -111,7 +111,7 @@ namespace Scripts.Gamemodes
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
             playerManager.HUD.Init(HUDType.TeamDeathmatch);
-            playerManager.HUD.SetTeamPoints(Team1TotalPoints, Team2TotalPoints);
+            playerManager.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);
 
             playerManager.HUD.ScoreBoard.Set(
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
@@ -179,10 +179,12 @@ namespace Scripts.Gamemodes
                 
                 PlayersData.IncrementDataByPlayer(eventData["deadActorNum"], deaths: 1);
 
-                TeamManager.PlayerManager.HUD.SetTeamPoints(Team1TotalPoints, Team2TotalPoints);                
+                // Update HUD and Killfeed
+                TeamManager.PlayerManager.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);                
                 TeamManager.PlayerManager.HUD.ScoreBoard.Set(
                     PlayersData.GetSortedPlayerDataByTeam(1), 
                     PlayersData.GetSortedPlayerDataByTeam(2));
+                TeamManager.PlayerManager.HUD.AddKillFeedElement(killer, assist, dead);
 
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
             }

@@ -74,9 +74,7 @@ public class ScoreboardController : MonoBehaviour
             if (j < 5)
             {
                 BlueTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
-                
-                Debug.Log($"{playerData.actorNumber} vs {PhotonNetwork.LocalPlayer.ActorNumber}");
-                
+
                 if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
                 {
                     BlueTeamPlayers[i].pName.faceColor = new Color32(246, 235, 20, 255);

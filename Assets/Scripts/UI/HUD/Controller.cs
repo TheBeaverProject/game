@@ -1,5 +1,7 @@
 using System;
 using Guns;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using Scripts.UI.HUD.DisplayControllers;
 using TMPro;
 using UI.HUD.DisplayControllers;
@@ -24,6 +26,7 @@ namespace UI.HUD
         public TeamDisplay teamDisplay;
         public WeaponDisplay weaponDisplay;
         public TeamPointsDisplay teamPointsDisplay;
+        public KillFeedDisplay killFeedDisplay;
         public GameObject crossHair;
 
         public HUDType currentType;
@@ -46,6 +49,10 @@ namespace UI.HUD
             }
         }
 
+        /// <summary>
+        /// Sets the HUD layout according to the type of game
+        /// </summary>
+        /// <param name="type"></param>
         public void Init(HUDType type)
         {
             currentType = type;
@@ -67,23 +74,40 @@ namespace UI.HUD
             }
         }
 
+        /// <summary>
+        /// Update the countdown displaying the remaining/elapsed time of the game
+        /// </summary>
+        /// <param name="timeInSeconds">remaining/elapsed time in seconds</param>
         public void UpdateCountdown(double timeInSeconds)
         {
             countdownDisplay.UpdateTime(timeInSeconds);
         }
 
+        /// <summary>
+        /// Updates the main weapon display
+        /// </summary>
+        /// <param name="gun">gun used to update the display</param>
         public void UpdateWeaponDisplay(Gunnable gun)
         {
             ammoDisplay.SetHUDAmmo(gun.GetBulletsLeft, gun.GetMagSize, gun.GetMagLeft);
             weaponDisplay.weaponNameText.text = gun.weaponName;
         }
 
+        /// <summary>
+        /// Displays or hide the crosshair
+        /// </summary>
+        /// <param name="display"></param>
         public void DisplayCrosshair(bool display)
         {
             crossHair.SetActive(display);
         }
 
-        public void SetTeamPoints(int bluePoints, int redPoints)
+        /// <summary>
+        /// Updates the team points on the points display
+        /// </summary>
+        /// <param name="bluePoints">team blue points</param>
+        /// <param name="redPoints">team red points</param>
+        public void UpdateTeamPoints(int bluePoints, int redPoints)
         {
             if (currentType != HUDType.TeamDeathmatch)
             {
@@ -91,6 +115,13 @@ namespace UI.HUD
             }
             
             teamPointsDisplay.SetPoints(bluePoints, redPoints);
+        }
+
+        public void AddKillFeedElement(Player killer, Player assist, Player killed)
+        {
+            var team = killer.GetPhotonTeam();
+            Color iconColor = team == null ? new Color(246, 235, 20, 255) : team.Color;
+            killFeedDisplay.AddElement(killer.NickName, killed.NickName, iconColor, killer.IsLocal, killed.IsLocal);
         }
     }
 }

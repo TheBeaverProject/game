@@ -26,7 +26,8 @@ namespace Photon.Pun.UtilityScripts
     {
         public string Name;
         public byte Code;
-
+        public Color Color;
+        
         public override string ToString()
         {
             return string.Format("{0} [{1}]", this.Name, this.Code);
@@ -53,8 +54,8 @@ namespace Photon.Pun.UtilityScripts
         [SerializeField]
         private List<PhotonTeam> teamsList = new List<PhotonTeam>
         {
-            new PhotonTeam { Name = "Blue", Code = 1 },
-            new PhotonTeam { Name = "Red", Code = 2 }
+            new PhotonTeam { Name = "Beavers", Code = 1, Color = new Color(31, 235, 248)},
+            new PhotonTeam { Name = "Sharks", Code = 2, Color = new Color(229, 55, 55)}
         };
 
         private Dictionary<byte, PhotonTeam> teamsByCode;

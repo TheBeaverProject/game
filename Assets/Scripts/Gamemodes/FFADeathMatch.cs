@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DiscordRPC;
 using ExitGames.Client.Photon;
 using Firebase;
@@ -109,13 +110,20 @@ namespace Scripts.Gamemodes
             if (eventCode == EventCodes.Kill)
             {
                 Dictionary<string, int> eventData = (Dictionary<string, int>) photonEvent.CustomData;
+                var playerList = PhotonNetwork.PlayerList.ToList();
+                var killer = PhotonNetwork.CurrentRoom.GetPlayer(eventData["killerActorNum"]);
+                var assist = PhotonNetwork.CurrentRoom.GetPlayer(eventData["assistActorNum"]);
+                var killed = PhotonNetwork.CurrentRoom.GetPlayer(eventData["deadActorNum"]);
                 
                 PlayersData.IncrementDataByPlayer(eventData["killerActorNum"], kills: 1, points: PointsPerKill);
                 PlayersData.IncrementDataByPlayer(eventData["assistActorNum"], assists: 1, points: PointsPerAssists);
                 PlayersData.IncrementDataByPlayer(eventData["deadActorNum"], deaths: 1);
-                
-                FFAManager.PlayerManager.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
 
+                
+                
+                // Update HUD and Killfeed
+                FFAManager.PlayerManager.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
+                FFAManager.PlayerManager.HUD.AddKillFeedElement(killer, assist, killed);
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
             }
 

@@ -10,6 +10,19 @@ public class ScoreboardController : MonoBehaviour
     public ScoreboardPlayerController[] RedTeamPlayers;
     public GameObject Container;
 
+    public void Init()
+    {
+        foreach (var scoreboardPlayerController in BlueTeamPlayers)
+        {
+            scoreboardPlayerController.gameObject.SetActive(false);
+        }
+        
+        foreach (var scoreboardPlayerController in RedTeamPlayers)
+        {
+            scoreboardPlayerController.gameObject.SetActive(false);
+        }
+    }
+
     /// <summary>
     /// Populates the scoreboard with the given lists
     /// </summary>
@@ -17,6 +30,8 @@ public class ScoreboardController : MonoBehaviour
     /// <param name="redPlayers">playerData of the red team</param>
     public void Set(IEnumerable<PlayerData> bluePlayers, IEnumerable<PlayerData> redPlayers)
     {
+        Init();
+        
         int i = 0;
         foreach (var playerData in bluePlayers)
         {
@@ -66,6 +81,7 @@ public class ScoreboardController : MonoBehaviour
     {
         int i = 0;
         int v = 0;
+        Init();
 
         for (int j = 0; j < playersData.Count; j++)
         {

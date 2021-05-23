@@ -21,6 +21,7 @@ public class ScoreboardPlayerController : MonoBehaviour
     /// <param name="points">points num</param>
     public void Set(string name = "", int kills = -1, int deaths = -1, int assists = -1, int points = -1)
     {
+        this.gameObject.SetActive(true);
         if (name != "")
             this.pName.text = name;
         if (kills != -1)

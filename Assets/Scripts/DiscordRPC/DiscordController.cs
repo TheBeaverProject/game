@@ -89,17 +89,7 @@ namespace DiscordRPC
                 InitDiscord();
             }
             
-            activityManager.UpdateActivity(activity, (res) =>
-            {
-                if (res == Result.Ok)
-                {
-                    Debug.Log("DiscordRPC.DiscordController: Updated Activity!");
-                }
-                else
-                {
-                    Debug.LogError($"DiscordRPC.DiscordController: {res}");
-                }
-            });
+            activityManager.UpdateActivity(activity, (res) => {});
         }
     }
 }

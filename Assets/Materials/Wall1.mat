@@ -70,10 +70,10 @@ Material:
     - _DstBlend: 0
     - _Falloff: 50
     - _GlossMapScale: 1
-    - _Glossiness: 0.517
+    - _Glossiness: 0.045
     - _GlossyReflections: 1
     - _GridScale: 1
-    - _Metallic: 0.06
+    - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverlayAmount: 1

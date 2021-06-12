@@ -73,7 +73,7 @@ Material:
     - _Metallic: 0.197
     - _Mode: 3
     - _OcclusionStrength: 1
-    - _OverlayAmount: 0.504
+    - _OverlayAmount: 0.564
     - _Parallax: 0.02
     - _Smoothness: 0.358
     - _SmoothnessTextureChannel: 0

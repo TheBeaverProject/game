@@ -23,25 +23,44 @@
     public class NewsFields
     {
         [JsonProperty("previewImage")]
-        public String PreviewImage { get; set; }
+        public StringV PreviewImage { get; set; }
         
         [JsonProperty("author")]
-        public String Author { get; set; }
+        public StringV Author { get; set; }
         
         [JsonProperty("content")]
-        public String Content { get; set; }
+        public StringV Content { get; set; }
         
         [JsonProperty("title")]
-        public String Title { get; set; }
+        public StringV Title { get; set; }
         
         [JsonProperty("publishDate")]
-        public Date PublishDate { get; set; }
+        public DateV PublishDate { get; set; }
         
         [JsonProperty("url")]
-        public String Url { get; set; }
+        public StringV Url { get; set; }
         
         [JsonProperty("likes")]
-        public Number Likes { get; set; }
+        public IntV Likes { get; set; }
+    }
+    
+    public class DateV
+    {
+        [JsonProperty("timestampValue")]
+        public DateTimeOffset TimestampValue { get; set; }
+    }
+    
+    public class IntV
+    {
+        [JsonProperty("integerValue")]
+        [JsonConverter(typeof(ParseStringConverter))]
+        public long IntegerValue { get; set; }
+    }
+    
+    public class StringV
+    {
+        [JsonProperty("stringValue")]
+        public string StringValue { get; set; }
     }
 
     public partial class FirebaseNewsDocument

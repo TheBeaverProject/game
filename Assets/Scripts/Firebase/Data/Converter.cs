@@ -6,10 +6,10 @@
     using System.Globalization;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
-
-    public static class Serialize<T>
+    
+    public static class Serialize
     {
-        public static string ToJson(T self) => JsonConvert.SerializeObject(self, Firebase.Data.Converter.Settings);
+        public static string ToJson(this FirebaseAuthResponse self) => JsonConvert.SerializeObject(self, Firebase.Data.Converter.Settings);
     }
 
     internal static class Converter

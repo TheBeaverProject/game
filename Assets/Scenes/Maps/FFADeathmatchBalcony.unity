@@ -41185,11 +41185,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 948287055244213022, guid: f2b898fd17d597841935eb74dab2e15f,
         type: 3}
-      propertyPath: gamemodeController
-      value: 
-      objectReference: {fileID: 2125054799}
-    - target: {fileID: 948287055244213022, guid: f2b898fd17d597841935eb74dab2e15f,
-        type: 3}
       propertyPath: SpawnPoints.Array.size
       value: 10
       objectReference: {fileID: 0}
@@ -96564,26 +96559,8 @@ PrefabInstance:
       propertyPath: FFAManager
       value: 
       objectReference: {fileID: 948077682}
-    - target: {fileID: 52700164885713005, guid: 642ba23ff8d178341a553e9fbe5eeb20,
-        type: 3}
-      propertyPath: EndgameScreenPrefab
-      value: 
-      objectReference: {fileID: 2603762395528671364, guid: c1bc93e8ba85489488a720dfd545b790,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 642ba23ff8d178341a553e9fbe5eeb20, type: 3}
---- !u!114 &2125054799 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 52700164885713005, guid: 642ba23ff8d178341a553e9fbe5eeb20,
-    type: 3}
-  m_PrefabInstance: {fileID: 2125054798}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 952226dbbf4e4b6fab20a60330004b94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2126281229
 PrefabInstance:
   m_ObjectHideFlags: 0

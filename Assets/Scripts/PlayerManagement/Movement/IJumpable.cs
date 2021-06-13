@@ -16,7 +16,7 @@ namespace PlayerManagement.Movement
         public Vector3 Jump()
         {
             // TODO: store it in const instead of hardcoding it
-            return new Vector3(0, (float) Math.Sqrt(-4f * -9.81f), 0);
+            return new Vector3(0, (float) Math.Sqrt(2f * -2f * -9.81f), 0);
         }
     }
 

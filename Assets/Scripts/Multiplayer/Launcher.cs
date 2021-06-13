@@ -14,7 +14,7 @@ namespace Multiplayer
         /// <summary>
         /// Client's version number
         /// </summary>
-        private string gameVersion = "0.5.3";
+        private string gameVersion = "0.5.1";
 
         public const string GAMEMODE_PROP_KEY = "gm";
 
@@ -170,7 +170,6 @@ namespace Multiplayer
             roomOptions.CustomRoomPropertiesForLobby = new[] {GAMEMODE_PROP_KEY};
             roomOptions.CustomRoomProperties = new Hashtable {{GAMEMODE_PROP_KEY, (int) gamemode}};
             roomOptions.MaxPlayers = this.maxPlayersPerRoom;
-            roomOptions.PublishUserId = true;
 
             PhotonNetwork.CreateRoom(PhotonNetwork.NickName+gamemode.ToString(), roomOptions);
         }

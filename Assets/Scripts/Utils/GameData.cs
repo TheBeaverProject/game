@@ -156,6 +156,9 @@ namespace Scripts
 
             foreach (var kvp in Dictionary)
             {
+                Debug.Log($"{kvp.Key.GetPhotonTeam()} == {teamCode}");
+                Debug.Log(kvp.Key.GetPhotonTeam()?.Code == teamCode);
+                
                 if (kvp.Key.GetPhotonTeam()?.Code == teamCode)
                 {
                     res.Add(kvp.Value);

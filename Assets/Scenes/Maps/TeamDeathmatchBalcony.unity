@@ -69324,12 +69324,6 @@ PrefabInstance:
       propertyPath: TeamManager
       value: 
       objectReference: {fileID: 1124207375}
-    - target: {fileID: 1806592470399931849, guid: 30928c0c4bac2984488efb88b1824c46,
-        type: 3}
-      propertyPath: EndgameScreenPrefab
-      value: 
-      objectReference: {fileID: 2603762395528671364, guid: c1bc93e8ba85489488a720dfd545b790,
-        type: 3}
     - target: {fileID: 4360318910633493022, guid: 30928c0c4bac2984488efb88b1824c46,
         type: 3}
       propertyPath: m_Name

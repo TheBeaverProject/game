@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8023913731290807852}
   - component: {fileID: 8108749420827106582}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8103533789288720968}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BarrelTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 7893007778394718793}
   - component: {fileID: 7921819112776985885}
   - component: {fileID: 7911875478255443907}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 7896519044610934693}
   - component: {fileID: 7921518525338456065}
   - component: {fileID: 7912015451576225657}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +362,7 @@ GameObject:
   - component: {fileID: 7892731818543847771}
   - component: {fileID: 7921569788527220637}
   - component: {fileID: 7912103313693267779}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,7 +444,7 @@ GameObject:
   - component: {fileID: -3380099014869701033}
   - component: {fileID: 127013731846878088}
   - component: {fileID: -947602462378926001}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: M107A1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -537,7 +537,6 @@ MonoBehaviour:
   allowScope: 1
   scopedFOV: 15
   ScopeType: 0
-  lineRenderer: {fileID: 0}
   allowButtonHold: 0
   timeBetweenShooting: 1.5
   reloadTime: 4
@@ -687,7 +686,7 @@ GameObject:
   - component: {fileID: 7893103652851725167}
   - component: {fileID: 7920961939584786515}
   - component: {fileID: 7911488824218343157}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Magazin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -765,7 +764,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1718038175694352, guid: 157e61aafb557454591343e72b8aa95a, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1833295309261242, guid: 157e61aafb557454591343e72b8aa95a, type: 3}
       propertyPath: m_Name
@@ -773,7 +772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1833295309261242, guid: 157e61aafb557454591343e72b8aa95a, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4053367055762314, guid: 157e61aafb557454591343e72b8aa95a, type: 3}
       propertyPath: m_RootOrder

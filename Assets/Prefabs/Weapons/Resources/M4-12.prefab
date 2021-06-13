@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4429034440079495553}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BarrelTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9086090476651550882}
   - component: {fileID: 4640369964523755329}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 8729537891333285329}
   - component: {fileID: 8737787002847483435}
   - component: {fileID: 8747994590136835597}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 8735442432327683021}
   - component: {fileID: 8737736044731393749}
   - component: {fileID: 8747980750207880719}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +362,7 @@ GameObject:
   - component: {fileID: 8735306309804301205}
   - component: {fileID: 8740802492845411391}
   - component: {fileID: 8748018372866517535}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 8735635458061041415}
   - component: {fileID: 8737719301258100899}
   - component: {fileID: 8747740014475321899}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Mag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -524,7 +524,7 @@ GameObject:
   - component: {fileID: 4111830042084330495}
   - component: {fileID: 4835098979603454091}
   - component: {fileID: 1075190170595698238}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: M4-12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -640,7 +640,6 @@ MonoBehaviour:
   allowScope: 1
   scopedFOV: 20
   ScopeType: 1
-  lineRenderer: {fileID: 0}
   allowButtonHold: 0
   timeBetweenShooting: 0.2
   reloadTime: 2.5
@@ -768,7 +767,7 @@ GameObject:
   - component: {fileID: 8729643932012325801}
   - component: {fileID: 8737715510798893745}
   - component: {fileID: 8746492609634643415}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -849,7 +848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1658719679491026, guid: 42d8b8503e455fb458d0688690fe327b, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4145837679024148, guid: 42d8b8503e455fb458d0688690fe327b, type: 3}
       propertyPath: m_RootOrder

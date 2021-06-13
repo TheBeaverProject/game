@@ -38,7 +38,7 @@ namespace Multiplayer
             Team2.Name = Team2Name;
         }
 
-        public bool localPlayerJoinedTeam;
+        private bool localPlayerJoinedTeam;
         public PlayerManager PlayerManager;
         void Update()
         {
@@ -115,12 +115,9 @@ namespace Multiplayer
             {
                 return 2;
             }
-            else if (Team1Players.Length < Team2Players.Length)
+            else
             {
                 return 1;
-            } else
-            {
-                return (byte) Random.Range(1, 2);
             }
         }
         

@@ -44,6 +44,8 @@ namespace Guns
 
         protected override void Shoot()
         {
+            var lineRenderer = GetComponent<LineRenderer>();
+            
             // Plays shoot sound
             photonView.RPC("PlayShotSound", RpcTarget.All);
             
@@ -60,7 +62,9 @@ namespace Guns
             // The raycast starting from the camera with the spread added
             if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range))
             {
-                photonView.RPC("SetLineRenderer", RpcTarget.All, 2, new Vector3[] { barrelTip.transform.position, rayHit.point });
+                lineRenderer.positionCount = 2;
+                lineRenderer.SetPosition(0, barrelTip.transform.position);
+                lineRenderer.SetPosition(1, rayHit.point);
 
                 //Damages the player if raycast catch a player
                 if (rayHit.collider.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayerManager))
@@ -91,36 +95,12 @@ namespace Guns
                 Invoke("Shoot",timeBetweenShots);
         }
 
-        protected override void ResetShot()
-        {
-            photonView.RPC("SetLineRenderer", RpcTarget.All, 0, null);
-            readyToShoot = true;
-        }
-
         #region RPC Methods
 
         [PunRPC]
         void PlayShotSound()
         {
            weaponAudioSource.PlayOneShot(singleShotSoundEffect);
-        }
-
-        [PunRPC]
-        void SetLineRenderer(int count, Vector3[] pos = null)
-        {
-            lineRenderer.positionCount = count;
-
-            if (pos == null)
-            {
-                return;
-            }
-            
-            int i = 0;
-            foreach (var vector3 in pos)
-            {
-                lineRenderer.SetPosition(i, vector3);
-                i++;
-            }
         }
         
         #endregion

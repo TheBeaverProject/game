@@ -27,60 +27,79 @@ namespace Firebase.Data
     public class UserFields
     {
         [JsonProperty("level")]
-        public Number Level { get; set; }
+        public Elo Level { get; set; }
 
         [JsonProperty("matchHistory")]
-        public FirestoreStringList MatchHistory { get; set; }
+        public Items MatchHistory { get; set; }
 
         [JsonProperty("elo")]
-        public Number Elo { get; set; }
+        public Elo Elo { get; set; }
 
         [JsonProperty("registerDate")]
         public Date RegisterDate { get; set; }
 
         [JsonProperty("items")]
-        public FirestoreStringList Items { get; set; }
+        public Items Items { get; set; }
 
         [JsonProperty("username")]
-        public String Username { get; set; }
+        public Email Username { get; set; }
 
         [JsonProperty("likedNews")]
-        public FirestoreStringList LikedNews { get; set; }
+        public LikedNews LikedNews { get; set; }
 
         [JsonProperty("email")]
-        public String Email { get; set; }
+        public Email Email { get; set; }
 
         [JsonProperty("birthdate")]
         public Date Birthdate { get; set; }
 
         [JsonProperty("status")]
-        public Number Status { get; set; }
+        public Elo Status { get; set; }
+    }
+
+    public class Date
+    {
+        [JsonProperty("timestampValue")]
+        public DateTimeOffset TimestampValue { get; set; }
+    }
+
+    public class Elo
+    {
+        [JsonProperty("integerValue")]
+        [JsonConverter(typeof(ParseStringConverter))]
+        public long IntegerValue { get; set; }
+    }
+
+    public class Email
+    {
+        [JsonProperty("stringValue")]
+        public string StringValue { get; set; }
+    }
+
+    public class Items
+    {
+        [JsonProperty("arrayValue")]
+        public ItemsArrayValue ArrayValue { get; set; }
+    }
+
+    public class ItemsArrayValue
+    {
+    }
+
+    public class LikedNews
+    {
+        [JsonProperty("arrayValue")]
+        public LikedNewsArrayValue ArrayValue { get; set; }
+    }
+
+    public class LikedNewsArrayValue
+    {
+        [JsonProperty("values")]
+        public List<Email> Values { get; set; }
     }
 
     public partial class FirebaseUserDocument
     {
         public static FirebaseUserDocument FromJson(string json) => JsonConvert.DeserializeObject<FirebaseUserDocument>(json, Firebase.Data.Converter.Settings);
-
-        public FirebaseUserDocument()
-        {
-            Name = "";
-            
-            Fields = new UserFields
-            {
-                Birthdate = new Date(),
-                Elo = new Number(),
-                Email = new String(),
-                Items = new FirestoreStringList(),
-                Level = new Number(),
-                LikedNews = new FirestoreStringList(),
-                MatchHistory = new FirestoreStringList(),
-                RegisterDate = new Date(),
-                Status = new Number(),
-                Username = new String()
-            };
-            
-            CreateTime = DateTimeOffset.Now;
-            UpdateTime = DateTimeOffset.Now;
-        }
     }
 }

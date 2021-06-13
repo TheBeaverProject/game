@@ -17,10 +17,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Maps/TeamDeathmatchDemo.unity
     guid: d604c40bd77badb4d931ffbb3e239abf
-  - enabled: 1
-    path: Assets/Scenes/Maps/TeamDeathmatchBalcony.unity
+  - enabled: 0
+    path: Assets/Scenes/Maps/TeamDeathmatchDefault.unity
     guid: 3847afcd2dc0b544d90a6b4e5757df0d
+  - enabled: 0
+    path: Assets/Scenes/Maps/FFADeathmatchDefault.unity
+    guid: 97b30a26129ebce479eedb8988139548
   - enabled: 1
     path: Assets/Scenes/Maps/FFADeathmatchBalcony.unity
-    guid: 97b30a26129ebce479eedb8988139548
+    guid: 1399f8c8434fefb499c07160dc843e6a
+  - enabled: 1
+    path: Assets/Scenes/Maps/TeamDeathmatchBalcony.unity
+    guid: 856a480d1b502f84fb2d86bb693af175
   m_configObjects: {}

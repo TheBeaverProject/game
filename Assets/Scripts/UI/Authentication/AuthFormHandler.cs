@@ -41,7 +41,7 @@ namespace UI.Authentication
 
         public void OnRegister()
         {
-            Application.OpenURL("https://deploy-preview-2--thebeaverproject.netlify.app/register"); // TODO: PRODUCTION URL
+            Application.OpenURL("https://thebeaverproject.tk/register"); // TODO: PRODUCTION URL
         }
 
         private void NextStep()

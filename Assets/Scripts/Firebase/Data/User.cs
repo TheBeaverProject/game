@@ -17,22 +17,22 @@ namespace Firebase.Data
         private string email;
         private DateTimeOffset birthdate;
         private List<string> likedNews;
-        private List<object> matchHistory;
+        private List<string> matchHistory;
         private int elo;
         private DateTimeOffset registerDate;
         private Status status;
-        private List<object> items;
+        private List<string> items;
         private int level;
 
         public User(string username,
             string email, 
             DateTimeOffset birthdate, 
             List<string> likedNews, 
-            List<object> matchHistory,
+            List<string> matchHistory,
             int elo,
             DateTimeOffset registerDate,
             Status status,
-            List<object> items,
+            List<string> items,
             int level)
         {
             this.username = username;
@@ -57,7 +57,7 @@ namespace Firebase.Data
 
         public List<string> LikedNews => likedNews;
 
-        public List<object> MatchHistory => matchHistory;
+        public List<string> MatchHistory => matchHistory;
 
         public int Elo => elo;
 
@@ -65,6 +65,6 @@ namespace Firebase.Data
 
         public Status Status => status;
 
-        public List<object> Items => items;
+        public List<string> Items => items;
     }
 }

@@ -7,8 +7,9 @@ namespace Firebase
 {
     public class DatabaseHandler : MonoBehaviour
     {
-        private const string ProjectId = "beaver-ea0ea";
-        private const string DatabaseId = "(default)";
+        protected const string ProjectId = "beaver-ea0ea";
+        protected const string DatabaseId = "(default)";
+        protected const string DatabaseUrl = "https://firestore.googleapis.com/v1";
         
         public delegate void GetUserCallback(User user);
         
@@ -20,19 +21,39 @@ namespace Firebase
         /// <returns>Object containing the user's data</returns>
         public static void GetUserById(string userId, GetUserCallback callback)
         {
-            RestClient.Get($"https://firestore.googleapis.com/v1/projects/{ProjectId}/databases/{DatabaseId}/documents/users/{userId}")
+            RestClient.Get($"{DatabaseUrl}/projects/{ProjectId}/databases/{DatabaseId}/documents/users/{userId}")
                 .Then(userRes =>
                 {
                     var userResponseJson = userRes.Text;
 
                     var firebaseUserDocument = FirebaseUserDocument.FromJson(userResponseJson);
 
+                    var likedNews = new List<string>();
+
+                    if (firebaseUserDocument?.Fields?.LikedNews?.ArrayValue?.Values != null)
+                    {
+                        foreach (var value in firebaseUserDocument?.Fields?.LikedNews?.ArrayValue?.Values)
+                        {
+                            likedNews.Add(value.StringValue);
+                        }
+                    }
+                    
+                    var matchHistory = new List<string>();
+
+                    if (firebaseUserDocument?.Fields?.MatchHistory?.ArrayValue?.Values != null)
+                    {
+                        foreach (var value in firebaseUserDocument?.Fields?.MatchHistory?.ArrayValue?.Values)
+                        {
+                            matchHistory.Add(value.StringValue);
+                        }
+                    }
+
                     callback(new User(
                         firebaseUserDocument.Fields.Username.StringValue,
                         firebaseUserDocument.Fields.Email.StringValue,
                         firebaseUserDocument.Fields.Birthdate.TimestampValue,
-                        null,
-                        null,
+                        likedNews,
+                        matchHistory,
                         (int) firebaseUserDocument.Fields.Elo.IntegerValue,
                         firebaseUserDocument.Fields.RegisterDate.TimestampValue,
                         (Status) firebaseUserDocument.Fields.Status.IntegerValue,
@@ -52,7 +73,7 @@ namespace Firebase
         public static void GetAllNews(GetAllNewsCallback callback)
         {
             
-            RestClient.Get($"https://firestore.googleapis.com/v1/projects/{ProjectId}/databases/{DatabaseId}/documents/news")
+            RestClient.Get($"{DatabaseUrl}/projects/{ProjectId}/databases/{DatabaseId}/documents/news")
                 .Then(userRes =>
                 {
                     var userResponseJson = userRes.Text;

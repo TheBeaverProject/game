@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Guns;
 using Multiplayer;
 using Photon.Pun;
@@ -7,7 +8,9 @@ using Photon.Realtime;
 using Scripts;
 using TMPro;
 using UI;
+using UI.Effects;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace PlayerManagement
 {
@@ -208,6 +211,8 @@ namespace PlayerManagement
             }
 
             int newHealth =  Health - ((int) weaponDamage);
+            
+            photonView.RPC("DamageEffect", RpcTarget.All, (float) weaponDamage);
 
             if (newHealth <= 0 && !killed) // Kill -> Raise event
             {
@@ -216,6 +221,28 @@ namespace PlayerManagement
             }
 
             photonView.RPC("UpdateHealth", RpcTarget.All, newHealth, dealer.ActorNumber);
+        }
+
+        [PunRPC] 
+        void DamageEffect(float amount)
+        {
+            if (!photonView.IsMine) return;   
+            
+            var effScript = playerCamera.GetComponent<ChromaticAberration>();
+            float duration = 0.2f;
+            float maxX = Mathf.Clamp(Random.Range(-amount, amount), -1.5f, -1.5f);
+            float maxY = Mathf.Clamp(Random.Range(-amount, amount), -1.5f, -1.5f);
+            Debug.Log($"MaxX: {maxX}, MaxY: {maxY}");
+            StartCoroutine(Utils.SmoothTransition(f =>
+                effScript.ChromaticAbberation =
+                    new Vector2(Mathf.SmoothStep(0, maxX, f), Mathf.SmoothStep(0, maxY, f))
+                , duration / 2, () =>
+            {
+                StartCoroutine(Utils.SmoothTransition(f => 
+                    effScript.ChromaticAbberation =
+                        new Vector2(Mathf.SmoothStep(maxX, 0, f), Mathf.SmoothStep(maxY, 0, f))
+                    , duration / 2));
+            }));
         }
 
         [PunRPC] 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DiscordRPC;
 using ExitGames.Client.Photon;
 using Firebase;
 using Multiplayer;
@@ -26,6 +27,7 @@ namespace Scripts.Gamemodes
         public double StartTime;
         public double ElapsedTime;
         private bool startTimer;
+        public long endUnixTimestamp;
 
         [Header("Values")]
         public int Team1TotalPoints = 0;
@@ -49,6 +51,7 @@ namespace Scripts.Gamemodes
             else
             {
                 StartTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
+                endUnixTimestamp = long.Parse(PhotonNetwork.CurrentRoom.CustomProperties["EndTimeUnix"].ToString());
                 startTimer = true;
             }
         }
@@ -82,6 +85,13 @@ namespace Scripts.Gamemodes
                     }
                 }
             }
+            
+            if (Input.GetKey(KeyCode.Tab))
+            {
+                TeamManager?.PlayerManager?.HUD.ScoreBoard.Set(
+                    PlayersData.GetSortedPlayerDataByTeam(1), 
+                    PlayersData.GetSortedPlayerDataByTeam(2));
+            }
         }
         
         public override void OnEnable()
@@ -101,11 +111,13 @@ namespace Scripts.Gamemodes
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
             playerManager.HUD.Init(HUDType.TeamDeathmatch);
-            playerManager.HUD.SetTeamPoints(Team1TotalPoints, Team2TotalPoints);
+            playerManager.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);
 
             playerManager.HUD.ScoreBoard.Set(
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
+            
+            UpdateDiscordActivity();
         }
 
         public override void OnPlayerJoinedTeam()
@@ -167,13 +179,17 @@ namespace Scripts.Gamemodes
                 
                 PlayersData.IncrementDataByPlayer(eventData["deadActorNum"], deaths: 1);
 
-                TeamManager.PlayerManager.HUD.SetTeamPoints(Team1TotalPoints, Team2TotalPoints);                
+                // Update HUD and Killfeed
+                TeamManager.PlayerManager.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);                
                 TeamManager.PlayerManager.HUD.ScoreBoard.Set(
                     PlayersData.GetSortedPlayerDataByTeam(1), 
                     PlayersData.GetSortedPlayerDataByTeam(2));
+                TeamManager.PlayerManager.HUD.AddKillFeedElement(killer, assist, dead);
 
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
             }
+            
+            UpdateDiscordActivity();
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -283,13 +299,22 @@ namespace Scripts.Gamemodes
                 });
             }
         }
+        
+        void UpdateDiscordActivity()
+        {
+            var discordController = this.gameObject.GetComponent<DiscordController>();
+            var localPlayerData = PlayersData.GetSinglePlayerData(PhotonNetwork.LocalPlayer.ActorNumber);
+            discordController.UpdateActivity($"Team Deathmatch | {Team1TotalPoints} - {Team2TotalPoints}", $"KDA: {localPlayerData.kills}/{localPlayerData.deaths}/{localPlayerData.assists} - Score: {localPlayerData.points}", endTimestamp: endUnixTimestamp);
+        }
 
         void StartTimer()
         {
             var CustomValue = new Hashtable();
             StartTime = PhotonNetwork.Time;
+            endUnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + GameDurationInMinutes * 60;
             startTimer = true;
             CustomValue.Add("StartTime", StartTime);
+            CustomValue.Add("EndTimeUnix", endUnixTimestamp);
             PhotonNetwork.CurrentRoom.SetCustomProperties(CustomValue);
         }
 

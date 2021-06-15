@@ -1,4 +1,6 @@
-﻿using Photon.Pun;
+﻿using System.Linq;
+using Firebase;
+using Photon.Pun;
 using PlayerManagement;
 using UnityEngine;
 
@@ -23,5 +25,16 @@ namespace Scripts.Gamemodes
         /// Called when the player joins a new team
         /// </summary>
         public virtual void OnPlayerJoinedTeam() {}
+
+        public void UpdateElo(EndGameScreenController.Result result, EndGameScreenController controller)
+        {
+            int eloPrevUpdate = (int) PhotonNetwork.LocalPlayer.CustomProperties["elo"];
+            int gainloss = EloHandler.GetEloUpdate(PhotonNetwork.LocalPlayer, 
+                result == EndGameScreenController.Result.Win,
+                PhotonNetwork.PlayerList.ToList());
+            
+            EloHandler.UpdateLocalPlayerElo(eloPrevUpdate + gainloss, success => {});
+            controller.SetNewElo(eloPrevUpdate, gainloss);
+        }
     }
 }

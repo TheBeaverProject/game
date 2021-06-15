@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Firebase;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -122,16 +123,17 @@ namespace Multiplayer
 
         public void Connect()
         {
-            PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser?.Username != null ? Firebase.AuthHandler.loggedinUser?.Username : "OfflinePlayer";
-            
+            PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser?.Username != null ? 
+                Firebase.AuthHandler.loggedinUser?.Username : "OfflinePlayer";
+            EloHandler.RefreshLocalPlayerElo();
+
             if (controlPanel != null)
             {
                 progressLabel.SetActive(true);
                 controlPanel.SetActive(false);
             }
-            else
+            else // Offline / standalone connection
             {
-                // Offline / standalone connection
                 if (PhotonNetwork.IsConnected)
                 {
                     PhotonNetwork.JoinRandomRoom();

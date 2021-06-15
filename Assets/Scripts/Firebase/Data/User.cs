@@ -13,6 +13,7 @@ namespace Firebase.Data
     
     public class User
     {
+        private string ID;
         private string username;
         private string email;
         private DateTimeOffset birthdate;
@@ -24,7 +25,7 @@ namespace Firebase.Data
         private List<string> items;
         private int level;
 
-        public User(string username,
+        public User(string ID, string username,
             string email, 
             DateTimeOffset birthdate, 
             List<string> likedNews, 
@@ -35,6 +36,7 @@ namespace Firebase.Data
             List<string> items,
             int level)
         {
+            this.ID = ID;
             this.username = username;
             this.birthdate = birthdate;
             this.likedNews = likedNews;
@@ -47,6 +49,8 @@ namespace Firebase.Data
             this.level = level;
         }
 
+        public string _ID => ID;
+        
         public int Level => level;
 
         public string Username => username;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DiscordRPC;
 using ExitGames.Client.Photon;
 using Firebase;
@@ -81,7 +82,7 @@ namespace Scripts.Gamemodes
                     }
                     else // Game is finished
                     {
-                        InitEndgameScreen(winner);
+                        Endgame(winner);
                     }
                 }
             }
@@ -263,32 +264,31 @@ namespace Scripts.Gamemodes
 
         #region Private Methods
 
-        void InitEndgameScreen(byte winner)
+        void Endgame(byte winner)
         {
             // Disable movement
             TeamManager.PlayerManager.DisableMovement();
             // Instantiate endgame screen
             var go = Instantiate(EndgameScreenPrefab, Vector3.zero, Quaternion.identity);
-
             var controller = go.GetComponent<EndGameScreenController>();
 
+            // Set result on endgame screen
             EndGameScreenController.Result result;
-
             if (winner == PhotonNetwork.LocalPlayer.GetPhotonTeam().Code)
-            {
                 result = EndGameScreenController.Result.Win;
-            }
             else
-            {
                 result = EndGameScreenController.Result.Loss;
-            }
-
             controller.SetResult(result);
             
+            // Update endgame scoreboard
             go.GetComponentInChildren<ScoreboardController>().Set(
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
 
+            // Update ELO
+            UpdateElo(result, controller);
+            
+            // Publish statistics
             if (PhotonNetwork.IsMasterClient)
             {
                 StatisticsHandler.PostNewMatch(Mode.TeamDeathMatch.ToString(), winner.ToString(), PlayersData, (success, document) =>

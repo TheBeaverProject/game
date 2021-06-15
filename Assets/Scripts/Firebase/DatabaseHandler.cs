@@ -11,6 +11,8 @@ namespace Firebase
         protected const string DatabaseId = "(default)";
         protected const string DatabaseUrl = "https://firestore.googleapis.com/v1";
         
+        public delegate void SuccessCallback(bool success);
+        
         public delegate void GetUserCallback(User user);
         
         /// <summary>
@@ -49,6 +51,7 @@ namespace Firebase
                     }
 
                     callback(new User(
+                        userId,
                         firebaseUserDocument.Fields.Username.StringValue,
                         firebaseUserDocument.Fields.Email.StringValue,
                         firebaseUserDocument.Fields.Birthdate.TimestampValue,

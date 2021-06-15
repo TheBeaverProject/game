@@ -64,7 +64,7 @@ namespace Scripts.Gamemodes
                 {
                     startTimer = false;
                     
-                    InitEndgameScreen();
+                    Endgame();
                 }
             }
 
@@ -210,7 +210,7 @@ namespace Scripts.Gamemodes
 
         #endregion
         
-        void InitEndgameScreen()
+        void Endgame()
         {
             Player winner = GetWinner();
             
@@ -218,20 +218,22 @@ namespace Scripts.Gamemodes
             FFAManager.PlayerManager.DisableMovement();
             // Instantiate endgame screen
             var go = Instantiate(EndgameScreenPrefab, Vector3.zero, Quaternion.identity);
-
             var controller = go.GetComponent<EndGameScreenController>();
 
+            // Set result on endgame screen
             EndGameScreenController.Result result;
-            
             Debug.Log($"Winner: {winner.ActorNumber}, localPlayer: {PhotonNetwork.LocalPlayer.ActorNumber}");
-
             result = winner.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber ?
                 EndGameScreenController.Result.Win : EndGameScreenController.Result.Loss;
-
             controller.SetResult(result);
 
+            // Update endgame scoreboard
             go.GetComponentInChildren<ScoreboardController>().SetAsFFA(PlayersData.GetSortedPlayerData());
 
+            // Update Elo
+            UpdateElo(result, controller);
+
+            // Publish stats
             if (PhotonNetwork.IsMasterClient)
             {
                 StatisticsHandler.PostNewMatch(Mode.FFADeathMatch.ToString(), winner.NickName, PlayersData, (success, document) =>

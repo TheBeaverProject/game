@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 
 namespace Multiplayer
 {
-    public class GameManager : MonoBehaviourPunCallbacks
+    public abstract class GameManager : MonoBehaviourPunCallbacks
     {
         #region Serialized Fields
         

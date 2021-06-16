@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace Scripts
 {
@@ -40,6 +42,30 @@ namespace Scripts
                 }
                 SetLayerRecursively(child.gameObject, newLayer);
             }
+        }
+
+        public delegate void SpriteCallback(Sprite sprite);
+        public static IEnumerator GetSpriteFromUrl(string url, SpriteCallback callback)
+        {
+            UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+            Sprite sprite = null;
+            
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError) {
+                Debug.LogWarning(www.error);
+            }
+            else
+            {
+                var texture = ((DownloadHandlerTexture) www.downloadHandler).texture;
+                
+                sprite = Sprite.Create(
+                    texture, 
+                    new Rect(0, 0, texture.width, texture.height), 
+                    new Vector2(0, 0));
+            }
+
+            callback(sprite);
         }
     }
 }

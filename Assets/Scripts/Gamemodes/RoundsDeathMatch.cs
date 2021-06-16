@@ -156,6 +156,7 @@ namespace Scripts.Gamemodes
                     PlayersData.GetSortedPlayerDataByTeam(1), 
                     PlayersData.GetSortedPlayerDataByTeam(2));
                 RoundsManager?.playerManager?.HUD.AddKillFeedElement(killer, assist, dead);
+                UpdateTeammatesOnHud();
 
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]}" + 
                           $"with assist by {eventData["assistActorNum"]}");
@@ -190,7 +191,7 @@ namespace Scripts.Gamemodes
                 photonView.RPC("UpdateRounds", RpcTarget.Others, Team1Rounds, Team2Rounds);
             }
 
-            base.OnPlayerEnteredRoom(newPlayer);
+            UpdateTeammatesOnHud();
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -354,6 +355,14 @@ namespace Scripts.Gamemodes
             var discordController = this.gameObject.GetComponent<DiscordController>();
             var localPlayerData = PlayersData.GetSinglePlayerData(PhotonNetwork.LocalPlayer.ActorNumber);
             discordController.UpdateActivity($"Rounds Deathmatch | {Team1Rounds} - {Team2Rounds}", $"KDA: {localPlayerData.kills}/{localPlayerData.deaths}/{localPlayerData.assists} - Score: {localPlayerData.points}", endTimestamp: endUnixTimestamp);
+        }
+        
+        void UpdateTeammatesOnHud()
+        {
+            var teammates = PlayersData.GetPlayerDataByTeam(PhotonNetwork.LocalPlayer.GetPhotonTeam().Code);
+            teammates.Remove(teammates.Find(data => data.name == PhotonNetwork.NickName));
+            
+            RoundsManager.playerManager.HUD.UpdateTeammatesInfo(teammates);
         }
 
         void StartTimer()

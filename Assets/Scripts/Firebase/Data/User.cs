@@ -16,6 +16,7 @@ namespace Firebase.Data
         private string ID;
         private string username;
         private string email;
+        private string iconUrl;
         private DateTimeOffset birthdate;
         private List<string> likedNews;
         private List<string> matchHistory;
@@ -26,7 +27,8 @@ namespace Firebase.Data
         private int level;
 
         public User(string ID, string username,
-            string email, 
+            string email,
+            string iconUrl,
             DateTimeOffset birthdate, 
             List<string> likedNews, 
             List<string> matchHistory,
@@ -38,6 +40,7 @@ namespace Firebase.Data
         {
             this.ID = ID;
             this.username = username;
+            this.iconUrl = iconUrl;
             this.birthdate = birthdate;
             this.likedNews = likedNews;
             this.matchHistory = matchHistory;
@@ -49,6 +52,8 @@ namespace Firebase.Data
             this.level = level;
         }
 
+        public string IconUrl => iconUrl;
+        
         public string _ID => ID;
         
         public int Level => level;

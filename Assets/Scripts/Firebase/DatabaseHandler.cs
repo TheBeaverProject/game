@@ -54,6 +54,7 @@ namespace Firebase
                         userId,
                         firebaseUserDocument.Fields.Username.StringValue,
                         firebaseUserDocument.Fields.Email.StringValue,
+                        firebaseUserDocument.Fields?.IconUrl?.StringValue != null ? firebaseUserDocument.Fields.IconUrl.StringValue : "https://thebeaverproject.tk/logo192.png",
                         firebaseUserDocument.Fields.Birthdate.TimestampValue,
                         likedNews,
                         matchHistory,

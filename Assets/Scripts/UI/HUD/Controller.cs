@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Guns;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using Scripts;
 using Scripts.UI.HUD.DisplayControllers;
 using TMPro;
 using UI.HUD.DisplayControllers;
@@ -138,6 +140,28 @@ namespace UI.HUD
             var team = killer.GetPhotonTeam();
             Color iconColor = team == null ? new Color(246, 235, 20, 255) : team.Color;
             killFeedDisplay.AddElement(killer.NickName, killed.NickName, iconColor, killer.IsLocal, killed.IsLocal);
+        }
+
+        public struct HUDPlayerInfo
+        {
+            public string nickname;
+            public string icon;
+            public int health;
+        }
+
+        public void UpdateTeammatesInfo(List<PlayerData> teammates)
+        {
+            var teammatesHudInfo = new List<HUDPlayerInfo>();
+
+            foreach (var teammate in teammates)
+            {
+                teammatesHudInfo.Add(new HUDPlayerInfo
+                {
+                    nickname = teammate.name,
+                    icon = teammate.iconUrl,
+                    health = teammate.alive ? 100 : 0
+                });
+            }
         }
     }
 }

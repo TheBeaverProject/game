@@ -46,6 +46,8 @@ namespace Scripts.Gamemodes
         {
             PlayersData.SetupData(PhotonNetwork.CurrentRoom.Players);
             
+            UpdateTeammatesOnHud();
+            
             if (PhotonNetwork.IsMasterClient)
             {
                 StartTimer();
@@ -186,6 +188,7 @@ namespace Scripts.Gamemodes
                     PlayersData.GetSortedPlayerDataByTeam(1), 
                     PlayersData.GetSortedPlayerDataByTeam(2));
                 TeamManager.playerManager.HUD.AddKillFeedElement(killer, assist, dead);
+                UpdateTeammatesOnHud();
 
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
             }
@@ -296,7 +299,7 @@ namespace Scripts.Gamemodes
             // Publish statistics
             if (PhotonNetwork.IsMasterClient)
             {
-                StatisticsHandler.PostNewMatch(Mode.TeamDeathMatch.ToString(), winner.ToString(), PlayersData, (success, document) =>
+                StatisticsHandler.PostNewMatch(Mode.QuickTeamDeathMatch.ToString(), winner.ToString(), PlayersData, (success, document) =>
                 {
                     var documentId = document.GetId();
                 
@@ -310,6 +313,14 @@ namespace Scripts.Gamemodes
             var discordController = this.gameObject.GetComponent<DiscordController>();
             var localPlayerData = PlayersData.GetSinglePlayerData(PhotonNetwork.LocalPlayer.ActorNumber);
             discordController.UpdateActivity($"Team Deathmatch | {Team1TotalPoints} - {Team2TotalPoints}", $"KDA: {localPlayerData.kills}/{localPlayerData.deaths}/{localPlayerData.assists} - Score: {localPlayerData.points}", endTimestamp: endUnixTimestamp);
+        }
+
+        void UpdateTeammatesOnHud()
+        {
+            var teammates = PlayersData.GetPlayerDataByTeam(PhotonNetwork.LocalPlayer.GetPhotonTeam().Code);
+            teammates.Remove(teammates.Find(data => data.name == PhotonNetwork.NickName));
+            
+            TeamManager.playerManager.HUD.UpdateTeammatesInfo(teammates);
         }
 
         void StartTimer()

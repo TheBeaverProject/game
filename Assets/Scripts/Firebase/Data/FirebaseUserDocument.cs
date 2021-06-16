@@ -43,6 +43,9 @@ namespace Firebase.Data
 
         [JsonProperty("username")]
         public String Username { get; set; }
+        
+        [JsonProperty("iconUrl")]
+        public String IconUrl { get; set; }
 
         [JsonProperty("likedNews")]
         public FirestoreStringList LikedNews { get; set; }

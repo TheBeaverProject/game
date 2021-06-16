@@ -11,9 +11,9 @@ using UnityEngine;
 
 namespace Firebase
 {
-    public class EloHandler : DatabaseHandler
+    public class PlayerHandler : DatabaseHandler
     {
-        public static void RefreshLocalPlayerElo()
+        public static void RefreshLocalPlayerInfo()
         {
             DatabaseHandler.GetUserById(AuthHandler.loggedinUser._ID, user =>
             {
@@ -29,6 +29,11 @@ namespace Firebase
                     playerCustomProperties["firebaseId"] = AuthHandler.loggedinUser._ID;
                 else
                     playerCustomProperties.Add("firebaseId", AuthHandler.loggedinUser._ID);
+                
+                if (playerCustomProperties.ContainsKey("iconUrl"))
+                    playerCustomProperties["iconUrl"] = AuthHandler.loggedinUser.Email;
+                else
+                    playerCustomProperties.Add("iconUrl", AuthHandler.loggedinUser.Email);
                 
                 PhotonNetwork.LocalPlayer.SetCustomProperties(playerCustomProperties);
             });
@@ -60,7 +65,7 @@ namespace Firebase
                     if (res.StatusCode == 200)
                     {
                         callback(true);
-                        EloHandler.RefreshLocalPlayerElo();
+                        PlayerHandler.RefreshLocalPlayerInfo();
                     }
                     else
                     {

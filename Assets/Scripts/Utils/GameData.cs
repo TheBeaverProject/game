@@ -34,6 +34,7 @@ namespace Scripts
                 playerData.name = roomPlayer.NickName;
                 playerData.actorNumber = roomPlayer.ActorNumber;
                 playerData.alive = true;
+                playerData.iconUrl = (string) roomPlayerKVP.Value.CustomProperties["iconUrl"];
                 
                 Dictionary.Add(roomPlayer, playerData);
             }
@@ -270,6 +271,7 @@ namespace Scripts
     {
         public int actorNumber;
         public string name;
+        public string iconUrl;
         public bool alive;
         public int kills;
         public int assists;

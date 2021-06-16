@@ -128,7 +128,7 @@ namespace Multiplayer
         {
             PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser?.Username != null ? 
                 Firebase.AuthHandler.loggedinUser?.Username : "OfflinePlayer";
-            EloHandler.RefreshLocalPlayerElo();
+            PlayerHandler.RefreshLocalPlayerInfo();
 
             if (controlPanel != null)
             {

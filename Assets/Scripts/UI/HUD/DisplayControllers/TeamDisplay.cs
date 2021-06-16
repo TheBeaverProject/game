@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using Scripts;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,24 +12,39 @@ namespace UI.HUD.DisplayControllers
 
         public void UpdatePlayerHealth(int id, int newHealth)
         {
-            if (id < 1 || id > playerContainers.Length)
+            if (id < 0 || id >= playerContainers.Length)
                 return;
-            Slider slider = playerContainers[id - 1].GetComponentInChildren<Slider>();
+            Slider slider = playerContainers[id].GetComponentInChildren<Slider>();
             Scripts.UI.HUD.Methods.Healthbar.UpdateHealth(slider, newHealth);
         }
         
         public void UpdatePlayerName(int id, string newName)
         {
-            if (id < 1 || id > playerContainers.Length)
+            if (id < 0 || id >= playerContainers.Length)
                 return;
-            playerContainers[id - 1].GetComponentInChildren<TextMeshProUGUI>().text = newName.ToUpper();
+            playerContainers[id].GetComponentInChildren<TextMeshProUGUI>().text = newName.ToUpper();
         }
         
         public void UpdatePlayerIcon(int id, Sprite sprite)
         {
-            if (id < 1 || id > playerContainers.Length)
+            if (id < 0 || id >= playerContainers.Length)
                 return;
-            playerContainers[id - 1].GetComponentInChildren<UnityEngine.UI.Image>().sprite = sprite;
+            playerContainers[id].GetComponentInChildren<UnityEngine.UI.Image>().sprite = sprite;
+        }
+        
+        public void UpdateTeammates(List<Controller.HUDPlayerInfo> teammates)
+        {
+            for (int i = 0; i < teammates.Count; i++)
+            {
+                var teammate = teammates[i];
+                UpdatePlayerHealth(i, teammate.health);
+                UpdatePlayerName(i, teammate.nickname);
+
+                StartCoroutine(Utils.GetSpriteFromUrl(teammate.icon, (sprite) =>
+                {
+                    UpdatePlayerIcon(i, sprite);
+                }));
+            }
         }
     }
 }

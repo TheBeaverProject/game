@@ -29,11 +29,11 @@ namespace Scripts.Gamemodes
         public void UpdateElo(EndGameScreenController.Result result, EndGameScreenController controller)
         {
             int eloPrevUpdate = (int) PhotonNetwork.LocalPlayer.CustomProperties["elo"];
-            int gainloss = EloHandler.GetEloUpdate(PhotonNetwork.LocalPlayer, 
+            int gainloss = PlayerHandler.GetEloUpdate(PhotonNetwork.LocalPlayer, 
                 result == EndGameScreenController.Result.Win,
                 PhotonNetwork.PlayerList.ToList());
             
-            EloHandler.UpdateLocalPlayerElo(eloPrevUpdate + gainloss, success => {});
+            PlayerHandler.UpdateLocalPlayerElo(eloPrevUpdate + gainloss, success => {});
             controller.SetNewElo(eloPrevUpdate, gainloss);
         }
     }

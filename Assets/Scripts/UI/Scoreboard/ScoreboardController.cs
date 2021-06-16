@@ -39,7 +39,15 @@ public class ScoreboardController : MonoBehaviour
             {
                 BlueTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
 
-                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber && !playerData.alive)
+                {
+                    BlueTeamPlayers[i].pName.faceColor = new Color32(186, 165, 0, 255);
+                }
+                if (!playerData.alive)
+                {
+                    BlueTeamPlayers[i].pName.faceColor = new Color32(100, 100, 100, 255);
+                }
+                else if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
                 {
                     BlueTeamPlayers[i].pName.faceColor = new Color32(246, 235, 20, 255);
                 }
@@ -59,7 +67,15 @@ public class ScoreboardController : MonoBehaviour
             {
                 RedTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
                 
-                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber && !playerData.alive)
+                {
+                    RedTeamPlayers[i].pName.faceColor = new Color32(186, 165, 0, 255);
+                }
+                if (!playerData.alive)
+                {
+                    RedTeamPlayers[i].pName.faceColor = new Color32(100, 100, 100, 255);
+                }
+                else if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
                 {
                     RedTeamPlayers[i].pName.faceColor = new Color32(246, 235, 20, 255);
                 }
@@ -91,7 +107,15 @@ public class ScoreboardController : MonoBehaviour
             {
                 BlueTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
 
-                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber && !playerData.alive)
+                {
+                    BlueTeamPlayers[i].pName.faceColor = new Color32(186, 165, 0, 255);
+                }
+                if (!playerData.alive)
+                {
+                    BlueTeamPlayers[i].pName.faceColor = new Color32(100, 100, 100, 255);
+                }
+                else if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
                 {
                     BlueTeamPlayers[i].pName.faceColor = new Color32(246, 235, 20, 255);
                 }
@@ -107,7 +131,15 @@ public class ScoreboardController : MonoBehaviour
             {
                 RedTeamPlayers[v].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
 
-                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber && !playerData.alive)
+                {
+                    RedTeamPlayers[i].pName.faceColor = new Color32(186, 165, 0, 255);
+                }
+                if (!playerData.alive)
+                {
+                    RedTeamPlayers[i].pName.faceColor = new Color32(100, 100, 100, 255);
+                }
+                else if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
                 {
                     RedTeamPlayers[i].pName.faceColor = new Color32(246, 235, 20, 255);
                 }

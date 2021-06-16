@@ -12,16 +12,16 @@ namespace UI.HUD.DisplayControllers
         public int blueRounds = 0;
         public int redRounds = 0;
 
-        public void AddRound(int team)
+        public void SetRounds(int team, int rounds)
         {
             switch (team)
             {
                 case 0:
-                    blueRounds++;
+                    blueRounds = rounds;
                     blueText.text = String.Format("{0,2:00}", blueRounds);
                     break;
                 case 1:
-                    redRounds++;
+                    redRounds = rounds;
                     redText.text = String.Format("{0,2:00}", redRounds);;
                     break;
             }

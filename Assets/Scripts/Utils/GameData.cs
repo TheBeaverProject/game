@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using Scripts.Gamemodes;
@@ -32,6 +33,7 @@ namespace Scripts
                 var playerData = new PlayerData();
                 playerData.name = roomPlayer.NickName;
                 playerData.actorNumber = roomPlayer.ActorNumber;
+                playerData.alive = true;
                 
                 Dictionary.Add(roomPlayer, playerData);
             }
@@ -46,6 +48,7 @@ namespace Scripts
             var playerData = new PlayerData();
             playerData.name = roomPlayer.NickName;
             playerData.actorNumber = roomPlayer.ActorNumber;
+            playerData.alive = true;
 
             foreach (var PlayerData in Dictionary)
             {
@@ -101,6 +104,7 @@ namespace Scripts
             var playerData = new PlayerData();
             playerData.name = toUpdate.Key.NickName;
             playerData.actorNumber = toUpdate.Key.ActorNumber;
+            playerData.alive = toUpdate.Value.alive;
             
             playerData.kills = kills == -1 ? toUpdate.Value.kills : kills;
             playerData.deaths = deaths == -1 ? toUpdate.Value.deaths : deaths;
@@ -140,6 +144,7 @@ namespace Scripts
             var playerData = new PlayerData();
             playerData.name = toUpdate.Key.NickName;
             playerData.actorNumber = toUpdate.Key.ActorNumber;
+            playerData.alive = toUpdate.Value.alive;
             
             playerData.kills = kills == -1 ? toUpdate.Value.kills : toUpdate.Value.kills + kills;
             playerData.deaths = deaths == -1 ? toUpdate.Value.deaths : toUpdate.Value.deaths + deaths;
@@ -150,12 +155,7 @@ namespace Scripts
         }
 
 
-        /// <summary>
-        /// Returns a sorted list of the PlayerData belonging to the players of a team
-        /// </summary>
-        /// <param name="teamCode">teamcode used to retreive players team</param>
-        /// <returns>Sorted PlayerData list by points</returns>
-        public List<PlayerData> GetSortedPlayerDataByTeam(byte teamCode)
+        public List<PlayerData> GetPlayerDataByTeam(byte teamCode)
         {
             var res = new List<PlayerData>();
 
@@ -164,9 +164,20 @@ namespace Scripts
                 if (kvp.Key.GetPhotonTeam()?.Code == teamCode)
                 {
                     res.Add(kvp.Value);
-                    Debug.Log($"Got {kvp.Value.name} for team {teamCode}");
                 }
             }
+
+            return res;
+        }
+
+        /// <summary>
+        /// Returns a sorted list of the PlayerData belonging to the players of a team
+        /// </summary>
+        /// <param name="teamCode">teamcode used to retreive players team</param>
+        /// <returns>Sorted PlayerData list by points</returns>
+        public List<PlayerData> GetSortedPlayerDataByTeam(byte teamCode)
+        {
+            var res = GetPlayerDataByTeam(teamCode);
             
             res.Sort((p1, p2) => p1.points.CompareTo(p2.points));
 
@@ -186,6 +197,11 @@ namespace Scripts
             return res;
         }
 
+        /// <summary>
+        /// Returns the PlayerData of a single player
+        /// </summary>
+        /// <param name="ActorNumber">ActorNumber or Id corresponding to the player</param>
+        /// <returns>PlayerData of the wanted player</returns>
         public PlayerData GetSinglePlayerData(int ActorNumber)
         {
             foreach (var data in Dictionary)
@@ -198,6 +214,53 @@ namespace Scripts
 
             return new PlayerData();
         }
+
+        public void SetPlayerState(int ActorNumber, bool alive)
+        {
+            KeyValuePair<Player, PlayerData> toUpdate;
+
+            foreach (var PlayerData in Dictionary)
+            {
+                var Player = PlayerData.Key;
+
+                if (Player.ActorNumber == ActorNumber)
+                {
+                    toUpdate = PlayerData;
+                }
+            }
+
+            var playerData = new PlayerData();
+            playerData.name = toUpdate.Key.NickName;
+            playerData.actorNumber = toUpdate.Key.ActorNumber;
+            playerData.alive = alive;
+            
+            playerData.kills = toUpdate.Value.kills;
+            playerData.deaths = toUpdate.Value.deaths;
+            playerData.assists = toUpdate.Value.assists;
+            playerData.points = toUpdate.Value.points;
+            
+            Dictionary[toUpdate.Key] = playerData;
+        }
+
+        public bool IsEveryPlayerDead(byte teamCode = 3)
+        {
+            if (teamCode == 3)
+            {
+                return Dictionary.Values.ToList().TrueForAll(data => !data.alive);
+            }
+
+            return GetPlayerDataByTeam(teamCode).TrueForAll(data => !data.alive);
+        }
+        
+        public List<PlayerData> GetPlayerDataAlive(byte teamCode = 3)
+        {
+            if (teamCode == 3)
+            {
+                return Dictionary.Values.ToList().FindAll(data => !data.alive);
+            }
+
+            return GetPlayerDataByTeam(teamCode).FindAll(data => !data.alive);
+        }
     }
 
     /// <summary>
@@ -207,6 +270,7 @@ namespace Scripts
     {
         public int actorNumber;
         public string name;
+        public bool alive;
         public int kills;
         public int assists;
         public int deaths;

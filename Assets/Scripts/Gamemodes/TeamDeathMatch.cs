@@ -25,6 +25,7 @@ namespace Scripts.Gamemodes
 
         public int GameDurationInMinutes = 10;
         
+        [Header("Timer")]
         public double StartTime;
         public double ElapsedTime;
         private bool startTimer;
@@ -36,8 +37,8 @@ namespace Scripts.Gamemodes
         public int Team2TotalPoints = 0;
 
         public GameData PlayersData = new GameData();
-
         public TeamManager TeamManager;
+        
         
         #region MonoBehaviours callbacks
 
@@ -61,11 +62,10 @@ namespace Scripts.Gamemodes
         {
             if (startTimer)
             {
-                ElapsedTime = PhotonNetwork.Time - StartTime;
-
                 if (PlayerManager.LocalPlayerInstance != null)
                 {
-                    TeamManager.PlayerManager.HUD.UpdateCountdown(GameDurationInMinutes * 60 - ElapsedTime);
+                    ElapsedTime = PhotonNetwork.Time - StartTime;
+                    TeamManager.playerManager.HUD.UpdateCountdown(GameDurationInMinutes * 60 - ElapsedTime);
                 }
 
                 if (ElapsedTime >= GameDurationInMinutes * 60)
@@ -82,14 +82,14 @@ namespace Scripts.Gamemodes
                     }
                     else // Game is finished
                     {
-                        Endgame(winner);
+                        GameEnd(winner);
                     }
                 }
             }
             
             if (Input.GetKey(KeyCode.Tab))
             {
-                TeamManager?.PlayerManager?.HUD.ScoreBoard.Set(
+                TeamManager?.playerManager?.HUD.ScoreBoard.Set(
                     PlayersData.GetSortedPlayerDataByTeam(1), 
                     PlayersData.GetSortedPlayerDataByTeam(2));
             }
@@ -111,7 +111,7 @@ namespace Scripts.Gamemodes
         
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
-            playerManager.HUD.Init(HUDType.TeamDeathmatch);
+            playerManager.HUD.Init(HUDType.Teams);
             playerManager.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);
 
             playerManager.HUD.ScoreBoard.Set(
@@ -125,7 +125,7 @@ namespace Scripts.Gamemodes
         {
             Debug.Log("OnPlayerJoinedTeam");
             
-            TeamManager.PlayerManager.HUD.ScoreBoard.Set(
+            TeamManager.playerManager.HUD.ScoreBoard.Set(
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
         }
@@ -181,11 +181,11 @@ namespace Scripts.Gamemodes
                 PlayersData.IncrementDataByPlayer(eventData["deadActorNum"], deaths: 1);
 
                 // Update HUD and Killfeed
-                TeamManager.PlayerManager.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);                
-                TeamManager.PlayerManager.HUD.ScoreBoard.Set(
+                TeamManager.playerManager.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);                
+                TeamManager.playerManager.HUD.ScoreBoard.Set(
                     PlayersData.GetSortedPlayerDataByTeam(1), 
                     PlayersData.GetSortedPlayerDataByTeam(2));
-                TeamManager.PlayerManager.HUD.AddKillFeedElement(killer, assist, dead);
+                TeamManager.playerManager.HUD.AddKillFeedElement(killer, assist, dead);
 
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
             }
@@ -231,6 +231,11 @@ namespace Scripts.Gamemodes
             {
                 StartTime = (double) propsTime;
             }
+            
+            if (propertiesThatChanged.TryGetValue("EndTimeUnix", out propsTime))
+            {
+                endUnixTimestamp = (long) propsTime;
+            }
         }
 
         #endregion
@@ -264,10 +269,10 @@ namespace Scripts.Gamemodes
 
         #region Private Methods
 
-        void Endgame(byte winner)
+        void GameEnd(byte winner)
         {
             // Disable movement
-            TeamManager.PlayerManager.DisableMovement();
+            TeamManager.playerManager.DisableMovement();
             // Instantiate endgame screen
             var go = Instantiate(EndgameScreenPrefab, Vector3.zero, Quaternion.identity);
             var controller = go.GetComponent<EndGameScreenController>();

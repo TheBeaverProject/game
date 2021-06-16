@@ -72,9 +72,7 @@ namespace PlayerManagement
                 playerText.text = $"{photonView.Controller.NickName}";
                 return;
             }
-            
-            Debug.Log(PhotonNetwork.NickName);
-            
+
             HUD.playerName.text = PhotonNetwork.NickName;
         }
 
@@ -157,6 +155,12 @@ namespace PlayerManagement
             this.gameObject.GetComponent<PlayerMenusHandler>().LockCursor();
             this.gameObject.GetComponent<PlayerMovementManager>().enabled = true;
         }
+
+        public void EnterSpecMode()
+        {
+            DisableMovement();
+            DisableShooting();
+        }
         
         // List to hold the actor number of the players who dealt damage to this player and the dealt damage
         public Dictionary<int, int> TookDamageFrom = new Dictionary<int, int>();
@@ -220,7 +224,7 @@ namespace PlayerManagement
                 killed = true;
             }
 
-            photonView.RPC("UpdateHealth", RpcTarget.All, newHealth, dealer.ActorNumber);
+            photonView.RPC("UpdateHealth", RpcTarget.AllViaServer, newHealth, dealer.ActorNumber);
         }
 
         [PunRPC] 
@@ -230,9 +234,9 @@ namespace PlayerManagement
             
             var effScript = playerCamera.GetComponent<ChromaticAberration>();
             float duration = 0.2f;
-            float maxX = Mathf.Clamp(Random.Range(-amount, amount), -1.5f, -1.5f);
-            float maxY = Mathf.Clamp(Random.Range(-amount, amount), -1.5f, -1.5f);
-            Debug.Log($"MaxX: {maxX}, MaxY: {maxY}");
+            float maxX = Mathf.Clamp(Random.Range(-amount / 100, amount / 100), -1.5f, -1.5f);
+            float maxY = Mathf.Clamp(Random.Range(-amount / 100, amount / 100), -1.5f, -1.5f);
+            
             StartCoroutine(Utils.SmoothTransition(f =>
                 effScript.ChromaticAbberation =
                     new Vector2(Mathf.SmoothStep(0, maxX, f), Mathf.SmoothStep(0, maxY, f))

@@ -64,7 +64,7 @@ namespace Scripts.Gamemodes
                 {
                     startTimer = false;
                     
-                    Endgame();
+                    GameEnd();
                 }
             }
 
@@ -90,7 +90,7 @@ namespace Scripts.Gamemodes
 
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
-            playerManager.HUD.Init(HUDType.Deathmatch);
+            playerManager.HUD.Init(HUDType.FFA);
 
             var sortedPlayerData = PlayersData.GetSortedPlayerData();
                     
@@ -210,7 +210,7 @@ namespace Scripts.Gamemodes
 
         #endregion
         
-        void Endgame()
+        void GameEnd()
         {
             Player winner = GetWinner();
             

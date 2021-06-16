@@ -77,6 +77,7 @@ namespace Multiplayer
 
         protected PlayerManager InstantiateLocalPlayer()
         {
+            Debug.Log("Instantiating local player");
             // Instantiate the Object of the localPlayer
             // Using PhotonNetwork to make it present on the network
             var clientPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, playerStartPos, Quaternion.identity, 0);
@@ -124,6 +125,11 @@ namespace Multiplayer
             gamemodeController.OnPlayerRespawn(playerManager);
             
             return playerManager;
+        }
+
+        protected void InstantiateSpecMode(PlayerManager playerToSpec)
+        {
+            return;
         }
 
         private static void InitCameraOnUIElement(GameObject uiEl, Camera ccam)

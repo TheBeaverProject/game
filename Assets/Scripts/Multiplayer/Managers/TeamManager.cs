@@ -27,7 +27,7 @@ namespace Multiplayer
 
         #region MonoBeavhiour callbacks
 
-        private byte localPlayerTeamCode;
+        protected byte localPlayerTeamCode;
         void Start()
         {
             PhotonTeamsManager = PhotonTeamsManager.Instance;
@@ -39,7 +39,7 @@ namespace Multiplayer
         }
 
         public bool localPlayerJoinedTeam;
-        public PlayerManager PlayerManager;
+        public PlayerManager playerManager;
         void Update()
         {
             if (PlayerManager.LocalPlayerInstance == null && !localPlayerJoinedTeam )
@@ -50,7 +50,7 @@ namespace Multiplayer
 
                     playerStartPos = SelectSpawnPoint(localPlayerTeamCode);
 
-                    PlayerManager = RespawnPlayer();
+                    playerManager = RespawnPlayer();
                 }
                 else
                 {
@@ -61,11 +61,11 @@ namespace Multiplayer
                 localPlayerJoinedTeam = JoinTeam(PlayerManager.LocalPlayerInstance.GetPhotonView());
             }
             
-            if (PlayerManager != null)
+            if (playerManager != null)
             {
-                if (PlayerManager.Health <= 0)
+                if (playerManager.Health <= 0)
                 {
-                    PlayerManager = RespawnPlayer();
+                    playerManager = RespawnPlayer();
                 }
             }
         }
@@ -82,6 +82,9 @@ namespace Multiplayer
         {
             var currentTeam = View.Controller.GetPhotonTeam();
             
+            Debug.Log($"Joining team {localPlayerTeamCode}");
+
+            bool success;
             if (currentTeam != null)
             {
                 if (currentTeam.Code == localPlayerTeamCode)
@@ -89,10 +92,12 @@ namespace Multiplayer
                     return true;
                 }
 
-                return View.Controller.SwitchTeam(localPlayerTeamCode);
+                success = View.Controller.SwitchTeam(localPlayerTeamCode);
             }
-
-            bool success = View.Controller.JoinTeam(localPlayerTeamCode);
+            else
+            {
+                success = View.Controller.JoinTeam(localPlayerTeamCode);
+            }
 
             if (success)
                 gamemodeController.OnPlayerJoinedTeam();
@@ -104,8 +109,10 @@ namespace Multiplayer
         /// Selects the next team the player will join according to the player count
         /// </summary>
         /// <returns>int representing the next team</returns>
-        byte SelectNextTeam()
+        protected byte SelectNextTeam()
         {
+            Debug.Log("SelectNextTeam");
+            
             Photon.Realtime.Player[] Team1Players;
             Photon.Realtime.Player[] Team2Players;
             PhotonTeamsManager.TryGetTeamMembers(Team1, out Team1Players);
@@ -124,21 +131,29 @@ namespace Multiplayer
             }
         }
         
-        PlayerManager RespawnPlayer()
+        protected PlayerManager RespawnPlayer()
         {
+            Debug.Log("LocalPlayer Respawning");
+            
             if (PlayerManager.LocalPlayerInstance != null)
             {
-                PhotonNetwork.Destroy(PlayerManager.LocalPlayerInstance);
-                PlayerManager.LocalPlayerInstance = null;
-                PlayerManager = null;
+                DestroyLocalPlayer();
+                Debug.Log("Destroyed local player");
             }
 
-            // TODO: Buy Menu before respawning
+            // TODO: Buy Menu before respawning ?
 
             return InstantiateLocalPlayer();
         }
 
-        Vector3 SelectSpawnPoint(int team)
+        protected void DestroyLocalPlayer()
+        {
+            PhotonNetwork.Destroy(PlayerManager.LocalPlayerInstance);
+            PlayerManager.LocalPlayerInstance = null;
+            playerManager = null;
+        }
+
+        protected Vector3 SelectSpawnPoint(int team)
         {
             switch (team)
             {

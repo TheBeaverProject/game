@@ -11,8 +11,9 @@ namespace UI.HUD
 {
     public enum HUDType
     {
-        Deathmatch,
-        TeamDeathmatch,
+        FFA,
+        Teams,
+        Rounds
     }
     
     public class Controller : MonoBehaviour
@@ -59,19 +60,34 @@ namespace UI.HUD
             
             switch (type)
             {
-                case HUDType.Deathmatch:
+                case HUDType.FFA:
                     teamDisplay.gameObject.SetActive(false);
                     roundDisplay.gameObject.SetActive(false);
                     teamPointsDisplay.gameObject.SetActive(false);
                     countdownDisplay.gameObject.SetActive(true);
                     break;
-                case HUDType.TeamDeathmatch:
+                case HUDType.Teams:
                     roundDisplay.gameObject.SetActive(false);
                     teamDisplay.gameObject.SetActive(true);
                     countdownDisplay.gameObject.SetActive(true);
                     teamPointsDisplay.gameObject.SetActive(true);
                     break;
+                case HUDType.Rounds:
+                    teamPointsDisplay.gameObject.SetActive(false);
+                    teamDisplay.gameObject.SetActive(true);
+                    roundDisplay.gameObject.SetActive(true);
+                    countdownDisplay.gameObject.SetActive(true);
+                    break;
             }
+        }
+
+        public void UpdateRounds(int team1Rounds = 0, int team2Rounds = 0)
+        {
+            if (team1Rounds != 0)
+                roundDisplay.SetRounds(0, team1Rounds);
+            
+            if (team2Rounds != 0)
+                roundDisplay.SetRounds(1, team2Rounds);
         }
 
         /// <summary>
@@ -109,7 +125,7 @@ namespace UI.HUD
         /// <param name="redPoints">team red points</param>
         public void UpdateTeamPoints(int bluePoints, int redPoints)
         {
-            if (currentType != HUDType.TeamDeathmatch)
+            if (currentType != HUDType.Teams)
             {
                 return;
             }

@@ -42,7 +42,7 @@ namespace UI
                 return;
             }
             
-            if (Input.GetKeyDown(KeyCode.B) && !EscapeMenuController.EscapeMenuContainer.activeInHierarchy)
+            if (BuyMenuController != null && Input.GetKeyDown(KeyCode.B) && !EscapeMenuController.EscapeMenuContainer.activeInHierarchy)
             {
                 BuyMenuController.Container.SetActive(true);
                 UnLockCursor();

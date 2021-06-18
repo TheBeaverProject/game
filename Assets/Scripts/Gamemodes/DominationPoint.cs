@@ -6,15 +6,17 @@ using UnityEngine;
 
 public class DominationPoint : MonoBehaviour
 {
-    
-    private PhotonTeam _photonTeam;
+    private PhotonTeam _dominatingPhotonTeam;
 
-    public PhotonTeam GetPhotonTeam => _photonTeam;
+    /// <summary>
+    /// Team which currently has the most players in the zone
+    /// </summary>
+    public PhotonTeam GetDominatingPhotonTeam => _dominatingPhotonTeam;
     
     // Start is called before the first frame update
     void Start()
     {
-        _photonTeam = null;
+        _dominatingPhotonTeam = null;
     }
 
     // Update is called once per frame
@@ -36,7 +38,7 @@ public class DominationPoint : MonoBehaviour
 
             if (team2 == null)
             {
-                _photonTeam = team1;
+                _dominatingPhotonTeam = team1;
             }
             else
             {
@@ -52,11 +54,11 @@ public class DominationPoint : MonoBehaviour
 
                 if (t1 == t2)
                 {
-                    _photonTeam = null;
+                    _dominatingPhotonTeam = null;
                 }
                 else
                 {
-                    _photonTeam = t1 > t2 ? team1 : team2;
+                    _dominatingPhotonTeam = t1 > t2 ? team1 : team2;
                 }
             }
         }

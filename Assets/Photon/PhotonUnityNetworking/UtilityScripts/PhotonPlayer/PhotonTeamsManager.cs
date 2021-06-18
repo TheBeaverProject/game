@@ -54,8 +54,8 @@ namespace Photon.Pun.UtilityScripts
         [SerializeField]
         private List<PhotonTeam> teamsList = new List<PhotonTeam>
         {
-            new PhotonTeam { Name = "Beavers", Code = 1, Color = new Color(31, 235, 248)},
-            new PhotonTeam { Name = "Sharks", Code = 2, Color = new Color(229, 55, 55)}
+            new PhotonTeam { Name = "Beavers", Code = 1, Color = new Color(31, 235, 248, 255)},
+            new PhotonTeam { Name = "Sharks", Code = 2, Color = new Color(229, 55, 55, 255)}
         };
 
         private Dictionary<byte, PhotonTeam> teamsByCode;

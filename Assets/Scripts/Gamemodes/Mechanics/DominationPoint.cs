@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using PlayerManagement;
 using UnityEngine;
 
 namespace Scripts.Gamemodes.Mechanics
@@ -11,9 +12,14 @@ namespace Scripts.Gamemodes.Mechanics
         [Header("Settings")]
         public int radius = 10;
 
-        public ParticleSystem particleSystem;
-        private ParticleSystem.MainModule _mainModule;
-        private Color defaultColor = new Color(0, 0, 0, 0);
+        public int selectedLayer = 14;
+        
+        private int layerMask;
+
+        new public ParticleSystem particleSystem;
+        public Color defaultColor = new Color(0, 0, 0, 0);
+        public Color teamColor1 = new Color(0, 235, 248);
+        public Color teamColor2 = new Color(229, 0, 0);
         
         private PhotonTeam _dominatingPhotonTeam;
 
@@ -26,30 +32,37 @@ namespace Scripts.Gamemodes.Mechanics
         void Start()
         {
             _dominatingPhotonTeam = null;
-            _mainModule = particleSystem.main;
+            var _mainModule = particleSystem.main;
             _mainModule.startColor = defaultColor;
+            layerMask = 1 << selectedLayer;
         }
 
         // Update is called once per frame
         void Update()
         {
-            Collider[] surroundings = Physics.OverlapSphere(transform.position, radius, 10);
+            Collider[] surroundings = Physics.OverlapSphere(transform.position, radius, layerMask);
+            
+            PhotonTeam newDominatingTeam = _dominatingPhotonTeam;
+            
             if (surroundings.Length != 0)
             {
                 PhotonTeam team1 = surroundings[0].GetComponent<PhotonView>().Controller.GetPhotonTeam();
+
                 PhotonTeam team2 = null;
                 for (int i = 1; i < surroundings.Length; i++)
                 {
-                    if (surroundings[i].GetComponent<PhotonView>().Controller.GetPhotonTeam() != team1)
+                    var controller = surroundings[i].GetComponent<PhotonView>().Controller;
+                    if (controller.GetPhotonTeam() != team1)
                     {
-                        team2 = surroundings[i].GetComponent<PhotonView>().Controller.GetPhotonTeam();
+                        team2 = controller.GetPhotonTeam();
                         break;
                     }
                 }
 
+                
                 if (team2 == null)
                 {
-                    _dominatingPhotonTeam = team1;
+                    newDominatingTeam = team1;
                 }
                 else
                 {
@@ -64,16 +77,22 @@ namespace Scripts.Gamemodes.Mechanics
                     }
 
                     if (t1 == t2)
-                    {
-                        _dominatingPhotonTeam = null;
-                        _mainModule.startColor = defaultColor;
-                    }
+                        newDominatingTeam = null;
                     else
-                    {
-                        _dominatingPhotonTeam = t1 > t2 ? team1 : team2;
-                        _mainModule.startColor = t1 > t2 ? team1.Color : team2.Color;
-                    }
+                        newDominatingTeam = t1 > t2 ? team1 : team2;
                 }
+            }
+            else
+            {
+                newDominatingTeam = null;
+            }
+
+            if (newDominatingTeam != _dominatingPhotonTeam)
+            {
+                _dominatingPhotonTeam = newDominatingTeam;
+                var _mainModule = particleSystem.main;
+                var color = _dominatingPhotonTeam == null ? defaultColor : _dominatingPhotonTeam.Code == 1 ? teamColor1 : teamColor2;
+                _mainModule.startColor = color;
             }
         }
     }

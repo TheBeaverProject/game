@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6178358698473837854}
   - component: {fileID: 6178358698473837825}
   m_Layer: 0
-  m_Name: RoundsDeathMatch
+  m_Name: CompetitiveMatch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,6 +55,13 @@ MonoBehaviour:
   StartTime: 0
   ElapsedTime: 0
   endUnixTimestamp: 0
+  ZoneA: {fileID: 0}
+  ZoneB: {fileID: 0}
+  ZoneAPoints: 0000000000000000
+  ZoneBPoints: 0000000000000000
+  ZoneACapturedBy: 0
+  ZoneBCapturedBy: 0
+  PointsToCaptureZone: 700
   Team1Rounds: 0
   Team2Rounds: 0
   RoundsManager: {fileID: 0}

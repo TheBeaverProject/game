@@ -7,6 +7,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Scripts.Gamemodes;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Type = Scripts.Gamemodes.Type;
 
 namespace Multiplayer
 {
@@ -105,15 +106,15 @@ namespace Multiplayer
 
             if (PhotonNetwork.IsMasterClient && !PhotonNetwork.OfflineMode)
             {
-                switch ((Mode) PhotonNetwork.CurrentRoom.CustomProperties["gm"])
+                switch ((Type) PhotonNetwork.CurrentRoom.CustomProperties["gm"])
                 {
-                    case Mode.FFADeathMatch:
+                    case Type.DeathMatch:
                         PhotonNetwork.LoadLevel("FFADeathMatch" + map);
                         break;
-                    case Mode.TeamDeathMatch:
+                    case Type.CompetitiveMatch:
                         PhotonNetwork.LoadLevel("RoundsDeathMatch" + map);
                         break;
-                    case Mode.QuickTeamDeathMatch:
+                    case Type.QuickTeamMatch:
                         PhotonNetwork.LoadLevel("TeamDeathMatch" + map);
                         break;
                 }
@@ -162,7 +163,7 @@ namespace Multiplayer
             }
         }
 
-        public void JoinPhotonRoom(Mode gamemode)
+        public void JoinPhotonRoom(Type gamemode)
         {
             Hashtable expectedProperties = new Hashtable{ { GAMEMODE_PROP_KEY, (int) gamemode } };
 
@@ -170,7 +171,7 @@ namespace Multiplayer
             // OnJoinRandomFailed called if no room is found
         }
 
-        public void CreateRoom(Mode gamemode)
+        public void CreateRoom(Type gamemode)
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.CustomRoomPropertiesForLobby = new[] {GAMEMODE_PROP_KEY};

@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace Scripts.Gamemodes
 {
-    public class TeamDeathMatch : Gamemode, IOnEventCallback
+    public class QuickTeamMatch : Gamemode, IOnEventCallback
     {
         [Header("Setup")]
         public int PointsPerKill = 10;
@@ -304,7 +304,7 @@ namespace Scripts.Gamemodes
             // Publish statistics
             if (PhotonNetwork.IsMasterClient)
             {
-                StatisticsHandler.PostNewMatch(Mode.QuickTeamDeathMatch.ToString(), winner.ToString(), PlayersData, (success, document) =>
+                StatisticsHandler.PostNewMatch(Type.QuickTeamMatch.ToString(), winner.ToString(), PlayersData, (success, document) =>
                 {
                     var documentId = document.GetId();
                 

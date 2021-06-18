@@ -8,7 +8,7 @@ namespace UI.MainMenu.Tabs.MultiplayerTab
     {
         public GamemodeSelection Controller;
         public Toggle Toggle;
-        public Mode GameMode;
+        public Type GameMode;
 
         public void Select()
         {

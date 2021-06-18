@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Scripts.Gamemodes
 {
-    public class FFADeathMatch : Gamemode, IOnEventCallback
+    public class DeathMatch : Gamemode, IOnEventCallback
     {
         [Header("Setup")]
         public int PointsPerKill = 10;
@@ -237,7 +237,7 @@ namespace Scripts.Gamemodes
             // Publish stats
             if (PhotonNetwork.IsMasterClient)
             {
-                StatisticsHandler.PostNewMatch(Mode.FFADeathMatch.ToString(), winner.NickName, PlayersData, (success, document) =>
+                StatisticsHandler.PostNewMatch(Type.DeathMatch.ToString(), winner.NickName, PlayersData, (success, document) =>
                 {
                     var documentId = document.GetId();
                 

@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Scripts.Gamemodes
 {
-    public class RoundsDeathMatch : Gamemode, IOnEventCallback
+    public class CompetitiveMatch : Gamemode, IOnEventCallback
     {
         [Header("Setup")]
         public double RoundDurationInMinutes = 2.5;
@@ -346,7 +346,7 @@ namespace Scripts.Gamemodes
             // Publish statistics
             if (PhotonNetwork.IsMasterClient)
             {
-                StatisticsHandler.PostNewMatch(Mode.TeamDeathMatch.ToString(), winner.ToString(), PlayersData, (success, document) =>
+                StatisticsHandler.PostNewMatch(Type.CompetitiveMatch.ToString(), winner.ToString(), PlayersData, (success, document) =>
                 {
                     var documentId = document.GetId();
                 

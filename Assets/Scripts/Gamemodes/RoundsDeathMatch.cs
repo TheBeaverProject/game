@@ -120,6 +120,7 @@ namespace Scripts.Gamemodes
                 PlayersData.GetSortedPlayerDataByTeam(RoundsManager.Team2.Code));
             
             UpdateDiscordActivity();
+            UpdateTeammatesOnHud();
         }
 
         public override void OnPlayerJoinedTeam()
@@ -129,6 +130,8 @@ namespace Scripts.Gamemodes
             RoundsManager.playerManager.HUD.ScoreBoard.Set(
                 PlayersData.GetSortedPlayerDataByTeam(RoundsManager.Team1.Code), 
                 PlayersData.GetSortedPlayerDataByTeam(RoundsManager.Team2.Code));
+            
+            UpdateTeammatesOnHud();
         }
 
         #endregion
@@ -201,6 +204,8 @@ namespace Scripts.Gamemodes
                 PlayersData.RemovePlayerFromData(otherPlayer);
             }
             
+            UpdateTeammatesOnHud();
+            
             base.OnPlayerLeftRoom(otherPlayer);
         }
         
@@ -250,7 +255,13 @@ namespace Scripts.Gamemodes
         {
             Debug.LogWarning("--------- New round Starting ----------");
             
+            foreach (var p in PhotonNetwork.PlayerList)
+            {
+                PlayersData.SetPlayerState(p.ActorNumber, true);
+            }
+            
             RoundsManager.ResetLocalPlayer();
+            UpdateTeammatesOnHud();
         }
         
         [PunRPC]
@@ -296,12 +307,6 @@ namespace Scripts.Gamemodes
                 Team2Rounds++;
             }
 
-            foreach (var p in PhotonNetwork.PlayerList)
-            {
-                PlayersData.SetPlayerState(p.ActorNumber, true);
-            }
-
-            
             if (PhotonNetwork.IsMasterClient)
             {
                 Invoke("RoundStartMaster", 2);

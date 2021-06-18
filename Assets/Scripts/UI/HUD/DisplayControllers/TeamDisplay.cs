@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Image = UnityEngine.UIElements.Image;
 
 namespace UI.HUD.DisplayControllers
 {
@@ -10,6 +12,14 @@ namespace UI.HUD.DisplayControllers
     {
         public GameObject[] playerContainers = new GameObject[4];
 
+        public void Init()
+        {
+            foreach (var playerContainer in playerContainers)
+            {
+                playerContainer.gameObject.SetActive(false);
+            }
+        }
+        
         public void UpdatePlayerHealth(int id, int newHealth)
         {
             if (id < 0 || id >= playerContainers.Length)
@@ -25,25 +35,25 @@ namespace UI.HUD.DisplayControllers
             playerContainers[id].GetComponentInChildren<TextMeshProUGUI>().text = newName.ToUpper();
         }
         
-        public void UpdatePlayerIcon(int id, Sprite sprite)
+        public void UpdatePlayerIcon(int id, Sprite icon)
         {
             if (id < 0 || id >= playerContainers.Length)
                 return;
-            playerContainers[id].GetComponentInChildren<UnityEngine.UI.Image>().sprite = sprite;
+            
+            playerContainers[id].GetComponentInChildren<UnityEngine.UI.Image>().sprite = icon;
         }
         
         public void UpdateTeammates(List<Controller.HUDPlayerInfo> teammates)
         {
+            Init();
+            
             for (int i = 0; i < teammates.Count; i++)
             {
                 var teammate = teammates[i];
+                playerContainers[i].gameObject.SetActive(true);
                 UpdatePlayerHealth(i, teammate.health);
                 UpdatePlayerName(i, teammate.nickname);
-
-                StartCoroutine(Utils.GetSpriteFromUrl(teammate.icon, (sprite) =>
-                {
-                    UpdatePlayerIcon(i, sprite);
-                }));
+                UpdatePlayerIcon(i, teammate.icon);
             }
         }
     }

@@ -29,11 +29,11 @@ namespace Firebase
                     playerCustomProperties["firebaseId"] = AuthHandler.loggedinUser._ID;
                 else
                     playerCustomProperties.Add("firebaseId", AuthHandler.loggedinUser._ID);
-                
+
                 if (playerCustomProperties.ContainsKey("iconUrl"))
-                    playerCustomProperties["iconUrl"] = AuthHandler.loggedinUser.Email;
+                    playerCustomProperties["iconUrl"] = AuthHandler.loggedinUser.IconUrl;
                 else
-                    playerCustomProperties.Add("iconUrl", AuthHandler.loggedinUser.Email);
+                    playerCustomProperties.Add("iconUrl", AuthHandler.loggedinUser.IconUrl);
                 
                 PhotonNetwork.LocalPlayer.SetCustomProperties(playerCustomProperties);
             });

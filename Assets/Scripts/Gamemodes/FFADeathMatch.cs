@@ -57,7 +57,7 @@ namespace Scripts.Gamemodes
 
                 if (PlayerManager.LocalPlayerInstance)
                 {
-                    FFAManager.PlayerManager.HUD.UpdateCountdown(GameDurationInMinutes * 60 - ElapsedTime);
+                    FFAManager?.playerManager?.HUD.UpdateCountdown(GameDurationInMinutes * 60 - ElapsedTime);
                 }
 
                 if (ElapsedTime >= GameDurationInMinutes * 60)
@@ -70,7 +70,7 @@ namespace Scripts.Gamemodes
 
             if (Input.GetKey(KeyCode.Tab))
             {
-                FFAManager?.PlayerManager?.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
+                FFAManager?.playerManager?.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
             }
         }
 
@@ -90,6 +90,8 @@ namespace Scripts.Gamemodes
 
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
+            FFAManager.playerManager = playerManager;
+            
             playerManager.HUD.Init(HUDType.FFA);
 
             var sortedPlayerData = PlayersData.GetSortedPlayerData();
@@ -122,12 +124,11 @@ namespace Scripts.Gamemodes
                 
                 
                 // Update HUD and Killfeed
-                FFAManager.PlayerManager.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
-                FFAManager.PlayerManager.HUD.AddKillFeedElement(killer, assist, killed);
+                FFAManager.playerManager.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
+                FFAManager.playerManager.HUD.AddKillFeedElement(killer, assist, killed);
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
+                UpdateDiscordActivity();
             }
-
-            UpdateDiscordActivity();
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -171,7 +172,7 @@ namespace Scripts.Gamemodes
         void UpdateDeathmatchPlayerData(int playerActorNumber, int kills, int assists, int deaths, int points)
         {
             PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths, points);
-            FFAManager?.PlayerManager?.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());
+            FFAManager?.playerManager?.HUD.ScoreBoard.SetAsFFA(PlayersData.GetSortedPlayerData());;
         }
 
         [PunRPC]
@@ -215,7 +216,7 @@ namespace Scripts.Gamemodes
             Player winner = GetWinner();
             
             // Disable movement
-            FFAManager.PlayerManager.DisableMovement();
+            FFAManager.playerManager.DisableMovement();
             // Instantiate endgame screen
             var go = Instantiate(EndgameScreenPrefab, Vector3.zero, Quaternion.identity);
             var controller = go.GetComponent<EndGameScreenController>();

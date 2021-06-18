@@ -63,7 +63,7 @@ namespace UI.HUD
             switch (type)
             {
                 case HUDType.FFA:
-                    teamDisplay.gameObject.SetActive(false);
+                    teamDisplay.gameObject.SetActive(true);
                     roundDisplay.gameObject.SetActive(false);
                     teamPointsDisplay.gameObject.SetActive(false);
                     countdownDisplay.gameObject.SetActive(true);
@@ -145,7 +145,7 @@ namespace UI.HUD
         public struct HUDPlayerInfo
         {
             public string nickname;
-            public string icon;
+            public Sprite icon;
             public int health;
         }
 
@@ -158,10 +158,12 @@ namespace UI.HUD
                 teammatesHudInfo.Add(new HUDPlayerInfo
                 {
                     nickname = teammate.name,
-                    icon = teammate.iconUrl,
+                    icon = teammate.icon,
                     health = teammate.alive ? 100 : 0
                 });
             }
+            
+            teamDisplay.UpdateTeammates(teammatesHudInfo);
         }
     }
 }

@@ -119,7 +119,6 @@ namespace Scripts.Gamemodes
             playerManager.HUD.ScoreBoard.Set(
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
-            
             UpdateDiscordActivity();
         }
 
@@ -189,17 +188,19 @@ namespace Scripts.Gamemodes
                     PlayersData.GetSortedPlayerDataByTeam(2));
                 TeamManager.playerManager.HUD.AddKillFeedElement(killer, assist, dead);
                 UpdateTeammatesOnHud();
+                UpdateDiscordActivity();
 
                 Debug.Log($"Kill Event: {eventData["killerActorNum"]} killed {eventData["deadActorNum"]} with assist by {eventData["assistActorNum"]}");
             }
-            
-            UpdateDiscordActivity();
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             // Add the player to the Deathmatch Data
             PlayersData.AddPlayerToDataIfNotExists(newPlayer);
+            
+            // Update the HUD
+            UpdateTeammatesOnHud();
 
             if (PhotonNetwork.IsMasterClient)
             {
@@ -223,6 +224,8 @@ namespace Scripts.Gamemodes
             {
                 PlayersData.RemovePlayerFromData(otherPlayer);
             }
+            
+            UpdateTeammatesOnHud();
             
             base.OnPlayerLeftRoom(otherPlayer);
         }
@@ -249,6 +252,7 @@ namespace Scripts.Gamemodes
         void UpdatePlayerData(int playerActorNumber, int kills, int assists, int deaths, int points)
         {
             PlayersData.UpdateDataByPlayer(playerActorNumber, kills, assists, deaths, points);
+            UpdateTeammatesOnHud();
         }
 
         [PunRPC]
@@ -256,6 +260,7 @@ namespace Scripts.Gamemodes
         {
             Team1TotalPoints = team1Points;
             Team2TotalPoints = team2Points;
+            TeamManager.playerManager.HUD.UpdateTeamPoints(team1Points, team2Points);
         }
         
         [PunRPC]

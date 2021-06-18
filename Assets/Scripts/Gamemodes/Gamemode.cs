@@ -33,7 +33,12 @@ namespace Scripts.Gamemodes
                 result == EndGameScreenController.Result.Win,
                 PhotonNetwork.PlayerList.ToList());
             
-            PlayerHandler.UpdateLocalPlayerElo(eloPrevUpdate + gainloss, success => {});
+            PlayerHandler.UpdateLocalPlayerElo(eloPrevUpdate + gainloss, success => {
+                if (success)
+                {
+                    Debug.Log("Sucessfully Updated the Elo of LocalPlayer");
+                }
+            });
             controller.SetNewElo(eloPrevUpdate, gainloss);
         }
     }

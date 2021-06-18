@@ -30,14 +30,26 @@ namespace Scripts
             foreach (var roomPlayerKVP in players)
             {
                 var roomPlayer = roomPlayerKVP.Value;
-                var playerData = new PlayerData();
-                playerData.name = roomPlayer.NickName;
-                playerData.actorNumber = roomPlayer.ActorNumber;
-                playerData.alive = true;
-                playerData.iconUrl = (string) roomPlayerKVP.Value.CustomProperties["iconUrl"];
-                
-                Dictionary.Add(roomPlayer, playerData);
+                InitPlayerData(roomPlayer, playerData =>
+                {
+                    Dictionary.Add(roomPlayer, playerData);
+                });
             }
+        }
+
+        private delegate void PlayerDataCallback(PlayerData playerData);
+        private void InitPlayerData(Player roomPlayer, PlayerDataCallback callback)
+        {
+            PlayerData playerData = new PlayerData();
+            playerData.name = roomPlayer.NickName;
+            playerData.actorNumber = roomPlayer.ActorNumber;
+            playerData.alive = true;
+
+            Utils.GetSpriteFromUrlNoCoroutine((string) roomPlayer.CustomProperties["iconUrl"], (sprite) =>
+            {
+                playerData.icon = sprite;
+                callback(playerData);
+            });
         }
 
         /// <summary>
@@ -46,20 +58,18 @@ namespace Scripts
         /// <param name="roomPlayer">player to add</param>
         public void AddPlayerToDataIfNotExists(Player roomPlayer)
         {
-            var playerData = new PlayerData();
-            playerData.name = roomPlayer.NickName;
-            playerData.actorNumber = roomPlayer.ActorNumber;
-            playerData.alive = true;
-
-            foreach (var PlayerData in Dictionary)
+            InitPlayerData(roomPlayer, (playerData =>
             {
-                if (PlayerData.Key.ActorNumber == roomPlayer.ActorNumber)
+                foreach (var PlayerData in Dictionary)
                 {
-                    return;
+                    if (PlayerData.Key.ActorNumber == roomPlayer.ActorNumber)
+                    {
+                        return;
+                    }
                 }
-            }
                 
-            Dictionary.Add(roomPlayer, playerData);
+                Dictionary.Add(roomPlayer, playerData);
+            }));
         }
 
         /// <summary>
@@ -102,10 +112,12 @@ namespace Scripts
                 }
             }
             
+            // Static data
             var playerData = new PlayerData();
             playerData.name = toUpdate.Key.NickName;
             playerData.actorNumber = toUpdate.Key.ActorNumber;
             playerData.alive = toUpdate.Value.alive;
+            playerData.icon = toUpdate.Value.icon;
             
             playerData.kills = kills == -1 ? toUpdate.Value.kills : kills;
             playerData.deaths = deaths == -1 ? toUpdate.Value.deaths : deaths;
@@ -142,10 +154,12 @@ namespace Scripts
                 }
             }
             
+            // Static data
             var playerData = new PlayerData();
             playerData.name = toUpdate.Key.NickName;
             playerData.actorNumber = toUpdate.Key.ActorNumber;
             playerData.alive = toUpdate.Value.alive;
+            playerData.icon = toUpdate.Value.icon;
             
             playerData.kills = kills == -1 ? toUpdate.Value.kills : toUpdate.Value.kills + kills;
             playerData.deaths = deaths == -1 ? toUpdate.Value.deaths : toUpdate.Value.deaths + deaths;
@@ -230,10 +244,13 @@ namespace Scripts
                 }
             }
 
+            // Static data
             var playerData = new PlayerData();
             playerData.name = toUpdate.Key.NickName;
             playerData.actorNumber = toUpdate.Key.ActorNumber;
             playerData.alive = alive;
+            playerData.icon = toUpdate.Value.icon;
+            
             
             playerData.kills = toUpdate.Value.kills;
             playerData.deaths = toUpdate.Value.deaths;
@@ -271,7 +288,7 @@ namespace Scripts
     {
         public int actorNumber;
         public string name;
-        public string iconUrl;
+        public Sprite icon;
         public bool alive;
         public int kills;
         public int assists;

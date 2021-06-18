@@ -37,7 +37,7 @@ public class ScoreboardController : MonoBehaviour
         {
             if (i < 5)
             {
-                BlueTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+                BlueTeamPlayers[i].Set(playerData.name, playerData.icon, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
 
                 if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber && !playerData.alive)
                 {
@@ -65,7 +65,7 @@ public class ScoreboardController : MonoBehaviour
         {
             if (i < 5)
             {
-                RedTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+                RedTeamPlayers[i].Set(playerData.name, playerData.icon, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
                 
                 if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber && !playerData.alive)
                 {
@@ -105,7 +105,7 @@ public class ScoreboardController : MonoBehaviour
             
             if (j < 5)
             {
-                BlueTeamPlayers[i].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+                BlueTeamPlayers[i].Set(playerData.name, playerData.icon, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
 
                 if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber && !playerData.alive)
                 {
@@ -129,7 +129,7 @@ public class ScoreboardController : MonoBehaviour
 
             if (j >= 5 && j < 10)
             {
-                RedTeamPlayers[v].Set(playerData.name, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
+                RedTeamPlayers[v].Set(playerData.name, playerData.icon, playerData.kills, playerData.deaths, playerData.assists, playerData.points);
 
                 if (playerData.actorNumber == PhotonNetwork.LocalPlayer.ActorNumber && !playerData.alive)
                 {

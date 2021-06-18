@@ -11,6 +11,8 @@ namespace Firebase
         protected const string DatabaseId = "(default)";
         protected const string DatabaseUrl = "https://firestore.googleapis.com/v1";
         
+        public delegate void SuccessCallback(bool success);
+        
         public delegate void GetUserCallback(User user);
         
         /// <summary>
@@ -49,8 +51,10 @@ namespace Firebase
                     }
 
                     callback(new User(
+                        userId,
                         firebaseUserDocument.Fields.Username.StringValue,
                         firebaseUserDocument.Fields.Email.StringValue,
+                        firebaseUserDocument.Fields?.IconUrl?.StringValue != null ? firebaseUserDocument.Fields.IconUrl.StringValue : "https://thebeaverproject.tk/logo192.png",
                         firebaseUserDocument.Fields.Birthdate.TimestampValue,
                         likedNews,
                         matchHistory,

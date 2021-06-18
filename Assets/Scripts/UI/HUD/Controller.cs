@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Guns;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using Scripts;
 using Scripts.UI.HUD.DisplayControllers;
 using TMPro;
 using UI.HUD.DisplayControllers;
@@ -11,8 +13,9 @@ namespace UI.HUD
 {
     public enum HUDType
     {
-        Deathmatch,
-        TeamDeathmatch,
+        FFA,
+        Teams,
+        Rounds
     }
     
     public class Controller : MonoBehaviour
@@ -59,19 +62,34 @@ namespace UI.HUD
             
             switch (type)
             {
-                case HUDType.Deathmatch:
-                    teamDisplay.gameObject.SetActive(false);
+                case HUDType.FFA:
+                    teamDisplay.gameObject.SetActive(true);
                     roundDisplay.gameObject.SetActive(false);
                     teamPointsDisplay.gameObject.SetActive(false);
                     countdownDisplay.gameObject.SetActive(true);
                     break;
-                case HUDType.TeamDeathmatch:
+                case HUDType.Teams:
                     roundDisplay.gameObject.SetActive(false);
                     teamDisplay.gameObject.SetActive(true);
                     countdownDisplay.gameObject.SetActive(true);
                     teamPointsDisplay.gameObject.SetActive(true);
                     break;
+                case HUDType.Rounds:
+                    teamPointsDisplay.gameObject.SetActive(false);
+                    teamDisplay.gameObject.SetActive(true);
+                    roundDisplay.gameObject.SetActive(true);
+                    countdownDisplay.gameObject.SetActive(true);
+                    break;
             }
+        }
+
+        public void UpdateRounds(int team1Rounds = 0, int team2Rounds = 0)
+        {
+            if (team1Rounds != 0)
+                roundDisplay.SetRounds(0, team1Rounds);
+            
+            if (team2Rounds != 0)
+                roundDisplay.SetRounds(1, team2Rounds);
         }
 
         /// <summary>
@@ -109,7 +127,7 @@ namespace UI.HUD
         /// <param name="redPoints">team red points</param>
         public void UpdateTeamPoints(int bluePoints, int redPoints)
         {
-            if (currentType != HUDType.TeamDeathmatch)
+            if (currentType != HUDType.Teams)
             {
                 return;
             }
@@ -122,6 +140,30 @@ namespace UI.HUD
             var team = killer.GetPhotonTeam();
             Color iconColor = team == null ? new Color(246, 235, 20, 255) : team.Color;
             killFeedDisplay.AddElement(killer.NickName, killed.NickName, iconColor, killer.IsLocal, killed.IsLocal);
+        }
+
+        public struct HUDPlayerInfo
+        {
+            public string nickname;
+            public Sprite icon;
+            public int health;
+        }
+
+        public void UpdateTeammatesInfo(List<PlayerData> teammates)
+        {
+            var teammatesHudInfo = new List<HUDPlayerInfo>();
+
+            foreach (var teammate in teammates)
+            {
+                teammatesHudInfo.Add(new HUDPlayerInfo
+                {
+                    nickname = teammate.name,
+                    icon = teammate.icon,
+                    health = teammate.alive ? 100 : 0
+                });
+            }
+            
+            teamDisplay.UpdateTeammates(teammatesHudInfo);
         }
     }
 }

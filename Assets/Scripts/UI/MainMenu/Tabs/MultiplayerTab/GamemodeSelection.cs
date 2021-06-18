@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GamemodeSelection : MonoBehaviour
 {
-    public Mode SelectedGameMode;
+    public Type SelectedGameMode;
 
     public void SelectGameMode(GamemodeSelect gamemodeSelect)
     {

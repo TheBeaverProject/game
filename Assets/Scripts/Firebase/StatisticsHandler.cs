@@ -92,16 +92,13 @@ namespace Firebase
             });
         }
 
-
-        public delegate void RegisterMatchCallback(bool success);
-
         /// <summary>
         /// Associate a match with a user in its document
         /// References the matchDocument in the userDocument
         /// </summary>
         /// <param name="matchDocumentId">match document to reference</param>
         /// <param name="callback">callback with status</param>
-        public static void RegisterMatch(string matchDocumentId, RegisterMatchCallback callback)
+        public static void RegisterMatch(string matchDocumentId, SuccessCallback callback)
         {
             AuthHandler.GetIdToken(token =>
             {

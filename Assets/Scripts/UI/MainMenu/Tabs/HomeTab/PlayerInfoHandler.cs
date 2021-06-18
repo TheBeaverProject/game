@@ -1,5 +1,6 @@
 ﻿using System;
 using Firebase.Data;
+using Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,6 @@ namespace UI.MainMenu.Tabs.HomeTab
         public TextMeshProUGUI PlayerElo;
         public TextMeshProUGUI PlayerLevel;
         
-        // TODO: Profile picture handling
         public UnityEngine.UI.Image PlayerProfilePicture;
 
         public User user = Firebase.AuthHandler.loggedinUser;
@@ -24,6 +24,11 @@ namespace UI.MainMenu.Tabs.HomeTab
                 PlayerElo.text = $"Elo: {user.Elo}";
                 PlayerLevel.text = $"Level: {user.Level}";
                 PlayerName.text = user.Username;
+
+                StartCoroutine(Utils.GetSpriteFromUrl(user.IconUrl, (sprite =>
+                {
+                    PlayerProfilePicture.sprite = sprite;
+                })));
             }
             else
             {

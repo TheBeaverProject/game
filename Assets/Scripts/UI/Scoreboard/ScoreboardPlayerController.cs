@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreboardPlayerController : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class ScoreboardPlayerController : MonoBehaviour
     /// <param name="deaths">deaths num</param>
     /// <param name="assists">assists num</param>
     /// <param name="points">points num</param>
-    public void Set(string name = "", int kills = -1, int deaths = -1, int assists = -1, int points = -1)
+    public void Set(string name, Sprite icon, int kills = -1, int deaths = -1, int assists = -1, int points = -1)
     {
         this.gameObject.SetActive(true);
         if (name != "")
@@ -32,5 +33,7 @@ public class ScoreboardPlayerController : MonoBehaviour
             this.assists.text = assists.ToString();
         if (points != -1)
             this.points.text = points.ToString();
+
+        this.gameObject.GetComponentInChildren<Image>().sprite = icon;
     }
 }

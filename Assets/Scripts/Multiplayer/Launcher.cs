@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Firebase;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Scripts.Gamemodes;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Type = Scripts.Gamemodes.Type;
 
 namespace Multiplayer
 {
@@ -14,9 +16,9 @@ namespace Multiplayer
         /// <summary>
         /// Client's version number
         /// </summary>
-        private string gameVersion = "0.6.0";
-
+        public const string gameVersion = "0.6.0";
         public const string GAMEMODE_PROP_KEY = "gm";
+        public const string MAP_PROP_KEY = "map"; 
 
         public string map = "Balcony";
         
@@ -104,12 +106,15 @@ namespace Multiplayer
 
             if (PhotonNetwork.IsMasterClient && !PhotonNetwork.OfflineMode)
             {
-                switch ((Mode) PhotonNetwork.CurrentRoom.CustomProperties["gm"])
+                switch ((Type) PhotonNetwork.CurrentRoom.CustomProperties["gm"])
                 {
-                    case Mode.FFADeathMatch:
+                    case Type.DeathMatch:
                         PhotonNetwork.LoadLevel("FFADeathMatch" + map);
                         break;
-                    case Mode.TeamDeathMatch:
+                    case Type.CompetitiveMatch:
+                        PhotonNetwork.LoadLevel("RoundsDeathMatch" + map);
+                        break;
+                    case Type.QuickTeamMatch:
                         PhotonNetwork.LoadLevel("TeamDeathMatch" + map);
                         break;
                 }
@@ -122,16 +127,17 @@ namespace Multiplayer
 
         public void Connect()
         {
-            PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser?.Username != null ? Firebase.AuthHandler.loggedinUser?.Username : "OfflinePlayer";
-            
+            PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser?.Username != null ? 
+                Firebase.AuthHandler.loggedinUser?.Username : "OfflinePlayer";
+            PlayerHandler.RefreshLocalPlayerInfo();
+
             if (controlPanel != null)
             {
                 progressLabel.SetActive(true);
                 controlPanel.SetActive(false);
             }
-            else
+            else // Offline / standalone connection
             {
-                // Offline / standalone connection
                 if (PhotonNetwork.IsConnected)
                 {
                     PhotonNetwork.JoinRandomRoom();
@@ -157,14 +163,15 @@ namespace Multiplayer
             }
         }
 
-        public void JoinPhotonRoom(Mode gamemode)
+        public void JoinPhotonRoom(Type gamemode)
         {
             Hashtable expectedProperties = new Hashtable{ { GAMEMODE_PROP_KEY, (int) gamemode } };
 
             PhotonNetwork.JoinRandomRoom(expectedProperties, this.maxPlayersPerRoom);
+            // OnJoinRandomFailed called if no room is found
         }
 
-        public void CreateRoom(Mode gamemode)
+        public void CreateRoom(Type gamemode)
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.CustomRoomPropertiesForLobby = new[] {GAMEMODE_PROP_KEY};

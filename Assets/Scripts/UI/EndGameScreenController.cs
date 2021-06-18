@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Scripts;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +16,8 @@ public class EndGameScreenController : MonoBehaviour
     }
     
     public TextMeshProUGUI ResultText;
+    public TextMeshProUGUI EloText;
+    public TextMeshProUGUI EloGainText;
 
     public void SetResult(Result result)
     {
@@ -29,6 +33,23 @@ public class EndGameScreenController : MonoBehaviour
                 ResultText.text = "Draw";
                 break;
         }
+    }
+
+    public void SetNewElo(int currentElo, int gainloss)
+    {
+        EloGainText.text = gainloss > 0 ? $"+{gainloss}" : $"{gainloss}";
+        EloText.text = $"Elo: {currentElo}";
+
+        StartCoroutine(Utils.SmoothTransition(f => {}, 2, () =>
+        {
+            StartCoroutine(Utils.SmoothTransition(f =>
+            {
+                float val = Mathf.Round(Mathf.Lerp(0, gainloss, f));
+
+                EloText.text = $"Elo: {currentElo + val}";
+                EloGainText.text = gainloss - val > 0 ? $"+{gainloss - val}" : gainloss - val == 0 ? "" : $"{gainloss - val}";
+            }, 1));
+        }));
     }
     
     public void ReturnToMenu()

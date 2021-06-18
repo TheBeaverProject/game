@@ -8,6 +8,8 @@ public class DominationPoint : MonoBehaviour
 {
     
     private PhotonTeam _photonTeam;
+
+    public PhotonTeam GetPhotonTeam => _photonTeam;
     
     // Start is called before the first frame update
     void Start()
@@ -45,9 +47,7 @@ public class DominationPoint : MonoBehaviour
                     if (c.GetComponent<PhotonView>().Controller.GetPhotonTeam() == team1)
                         t1++;
                     else
-                    {
                         t2++;
-                    }
                 }
 
                 if (t1 == t2)

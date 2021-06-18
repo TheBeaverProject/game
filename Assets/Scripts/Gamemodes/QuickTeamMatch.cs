@@ -30,12 +30,17 @@ namespace Scripts.Gamemodes
         public double ElapsedTime;
         private bool startTimer;
         public long endUnixTimestamp;
-
-        [Header("Values")]
-        public int Team1TotalPoints = 0;
         
-        public int Team2TotalPoints = 0;
+        [Header("Zone Domination Mechanics")]
+        
+        public Mechanics.DominationPoint ZoneA;
+        public Mechanics.DominationPoint ZoneB;
 
+        [Header("Game Values")]
+        
+        public int Team1TotalPoints = 0;
+        public int Team2TotalPoints = 0;
+        
         public GameData PlayersData = new GameData();
         public TeamManager TeamManager;
         
@@ -113,6 +118,8 @@ namespace Scripts.Gamemodes
         
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
+            TeamManager.playerManager = playerManager;
+            
             playerManager.HUD.Init(HUDType.Teams);
             playerManager.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);
 

@@ -106,18 +106,8 @@ namespace Multiplayer
 
             if (PhotonNetwork.IsMasterClient && !PhotonNetwork.OfflineMode)
             {
-                switch ((Type) PhotonNetwork.CurrentRoom.CustomProperties["gm"])
-                {
-                    case Type.DeathMatch:
-                        PhotonNetwork.LoadLevel("FFADeathMatch" + map);
-                        break;
-                    case Type.CompetitiveMatch:
-                        PhotonNetwork.LoadLevel("RoundsDeathMatch" + map);
-                        break;
-                    case Type.QuickTeamMatch:
-                        PhotonNetwork.LoadLevel("TeamDeathMatch" + map);
-                        break;
-                }
+                var gamemode = (Type) PhotonNetwork.CurrentRoom.CustomProperties["gm"];
+                PhotonNetwork.LoadLevel(gamemode.ToString() + map);
             }
         }
 

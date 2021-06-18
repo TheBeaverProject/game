@@ -31,8 +31,14 @@ namespace Scripts.Gamemodes
         public double ElapsedTime;
         private bool startTimer;
         public long endUnixTimestamp;
+
+        [Header("Zone Domination Mechanics")]
         
-        [Header("Values")]
+        public Mechanics.DominationPoint ZoneA;
+        public Mechanics.DominationPoint ZoneB;
+        
+        [Header("Game Values")]
+        
         public int Team1Rounds = 0;
         public int Team2Rounds = 0;
         
@@ -112,6 +118,8 @@ namespace Scripts.Gamemodes
         
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
+            RoundsManager.playerManager = playerManager;
+            
             playerManager.HUD.Init(HUDType.Rounds);
             playerManager.HUD.UpdateRounds(Team1Rounds, Team2Rounds);
 

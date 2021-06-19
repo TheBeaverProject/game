@@ -8,12 +8,13 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using PlayerManagement;
+using Scripts.Gamemodes.Mechanics;
 using UI.HUD;
 using UnityEngine;
 
 namespace Scripts.Gamemodes
 {
-    public class CompetitiveMatch : Gamemode, IOnEventCallback
+    public class CompetitiveMatch : DominationGamemode, IOnEventCallback
     {
         [Header("Setup")]
         public double RoundDurationInMinutes = 2.5;
@@ -32,19 +33,6 @@ namespace Scripts.Gamemodes
         private bool startTimer;
         public long endUnixTimestamp;
 
-        [Header("Zone Domination Mechanics")]
-        
-        public Mechanics.DominationPoint ZoneA;
-        public Mechanics.DominationPoint ZoneB;
-
-        public int[] ZoneAPoints = {0, 0};
-        public int[] ZoneBPoints = {0, 0};
-
-        public byte ZoneACapturedBy = 0;
-        public byte ZoneBCapturedBy = 0;
-
-        public int PointsToCaptureZone = 700;
-        
         [Header("Game Values")]
         
         public int Team1Rounds = 0;
@@ -112,7 +100,8 @@ namespace Scripts.Gamemodes
 
         private void FixedUpdate()
         {
-            ComputeZonePoints();
+            HandleZones();
+            RoundsManager?.playerManager?.HUD.UpdateZones(ZoneAPoints, ZoneBPoints, PointsToCaptureZone);
         }
 
         public override void OnEnable()
@@ -213,6 +202,10 @@ namespace Scripts.Gamemodes
                 
                 // If we are the master client, update the points for everyone
                 photonView.RPC("UpdateRounds", RpcTarget.Others, Team1Rounds, Team2Rounds);
+                photonView.RPC("UpdateZones", RpcTarget.All, 
+                    ZoneAPoints[0], ZoneAPoints[1],
+                    ZoneBPoints[0], ZoneBPoints[1],
+                    ZoneACapturedBy, ZoneBCapturedBy);
             }
 
             UpdateTeammatesOnHud();
@@ -259,6 +252,17 @@ namespace Scripts.Gamemodes
         {
             Team1Rounds = team1Rounds;
             Team2Rounds = team2Rounds;
+        }
+
+        [PunRPC]
+        void UpdateZones(int ZoneAPointsT1, int ZoneAPointsT2,
+            int ZoneBPointsT1, int ZoneBPointsT2,
+            byte ZoneACapturedBy, byte ZoneBCapturedBy)
+        {
+            this.ZoneAPoints = new []{ZoneAPointsT1, ZoneAPointsT2};
+            this.ZoneBPoints = new []{ZoneBPointsT1, ZoneBPointsT2};
+            this.ZoneACapturedBy = ZoneACapturedBy;
+            this.ZoneBCapturedBy = ZoneBCapturedBy;
         }
         
         [PunRPC]
@@ -430,59 +434,6 @@ namespace Scripts.Gamemodes
 
         #endregion
 
-        #region Zone Mechanics
-
-        private void ComputeZonePoints()
-        {
-            if (ZoneACapturedBy == 0)
-            {
-                ZoneAPoints[0] = ZoneAPoints[0] > 0 ? ZoneAPoints[0] - 1 : 0;
-                ZoneAPoints[1] = ZoneAPoints[1] > 0 ? ZoneAPoints[1] - 1 : 0;
-
-                if (ZoneA.GetDominatingPhotonTeam != null)
-                {
-                    int teamI = ZoneA.GetDominatingPhotonTeam.Code - 1;
-                    ZoneAPoints[teamI] += 2;
-                    ZoneACapturedBy = ZoneAPoints[teamI] >= PointsToCaptureZone ? ZoneA.GetDominatingPhotonTeam.Code : (byte) 0;
-                }
-            }
-            else
-            {
-                ZoneA.defaultColor = ZoneACapturedBy == 1 ? ZoneA.teamColor1 : ZoneA.teamColor2;
-            }
-
-            if (ZoneBCapturedBy == 0)
-            {
-                ZoneBPoints[0] = ZoneBPoints[0] > 0 ? ZoneBPoints[0] - 1 : 0;
-                ZoneBPoints[1] = ZoneBPoints[1] > 0 ? ZoneBPoints[1] - 1 : 0;
-
-                if (ZoneB.GetDominatingPhotonTeam != null)
-                {
-                    int teamI = ZoneB.GetDominatingPhotonTeam.Code - 1;
-                    ZoneBPoints[teamI] += 2;
-                    ZoneBCapturedBy = ZoneBPoints[teamI] >= PointsToCaptureZone ? ZoneB.GetDominatingPhotonTeam.Code : (byte) 0;
-                }
-            }
-            else
-            {
-                ZoneB.defaultColor = ZoneBCapturedBy == 1 ? ZoneB.teamColor1 : ZoneB.teamColor2;
-            }
-        }
-
-        private bool AreZoneCaptured => ZoneACapturedBy != 0 && ZoneACapturedBy == ZoneBCapturedBy;
-
-        private void ResetZones()
-        {
-            ZoneA.defaultColor = new Color(0, 0, 0, 0);
-            ZoneB.defaultColor = new Color(0, 0, 0, 0);
-            ZoneAPoints = new []{0, 0};
-            ZoneBPoints = new []{0, 0};
-            ZoneACapturedBy = 0;
-            ZoneBCapturedBy = 0;
-        }
-
-        #endregion
-        
         void UpdateDiscordActivity()
         {
             var discordController = this.gameObject.GetComponent<DiscordController>();
@@ -492,10 +443,14 @@ namespace Scripts.Gamemodes
         
         void UpdateTeammatesOnHud()
         {
-            var teammates = PlayersData.GetPlayerDataByTeam(PhotonNetwork.LocalPlayer.GetPhotonTeam().Code);
-            teammates.Remove(teammates.Find(data => data.name == PhotonNetwork.NickName));
+            PhotonTeam team;
+            if ((team = PhotonNetwork.LocalPlayer.GetPhotonTeam()) != null)
+            {
+                var teammates = PlayersData?.GetPlayerDataByTeam(team.Code);
+                teammates.Remove(teammates.Find(data => data.name == PhotonNetwork.NickName));
             
-            RoundsManager.playerManager.HUD.UpdateTeammatesInfo(teammates);
+                RoundsManager.playerManager.HUD.UpdateTeammatesInfo(teammates);
+            }
         }
 
         void StartTimer()

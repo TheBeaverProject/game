@@ -49,11 +49,7 @@ namespace Scripts.Gamemodes
 
         public double LastAddedPoints;
         public double TickInterval;
-        private void Start()
-        {
-        }
 
-        
         private void Update()
         {
             if (startTimer)
@@ -81,21 +77,9 @@ namespace Scripts.Gamemodes
                         GameEnd(winner);
                     }
                 }
-
-                TickInterval = PhotonNetwork.Time - LastAddedPoints;
-                if (TickInterval >= ZoneTickDuration)
+                else
                 {
-                    Team1TotalPoints += ZoneACapturedBy == 1 && ZoneBCapturedBy == 1 ? // Two zones are captured by the team
-                        PointsPerTickZoneDomination * 3 : ZoneACapturedBy == 1 || ZoneBCapturedBy == 1 ? // One zone is captured by the team
-                        PointsPerTickZoneDomination : 0;
-            
-                    Team2TotalPoints += ZoneACapturedBy == 2 && ZoneBCapturedBy == 2 ? // Two zones are captured by the team
-                        PointsPerTickZoneDomination * 3 : ZoneACapturedBy == 2 || ZoneBCapturedBy == 2 ? // One zone is captured by the team
-                        PointsPerTickZoneDomination : 0;
-
-                    LastAddedPoints = PhotonNetwork.Time;
-                    
-                    TeamManager?.playerManager?.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);
+                    UpdateZonePoints();
                 }
             }
             else
@@ -103,8 +87,7 @@ namespace Scripts.Gamemodes
                 if (PhotonNetwork.IsConnectedAndReady)
                 {
                     PlayersData.SetupData(PhotonNetwork.CurrentRoom.Players);
-            
-                    UpdateTeammatesOnHud();
+                    
                     LastAddedPoints = PhotonNetwork.Time;
             
                     if (PhotonNetwork.IsMasterClient)
@@ -117,10 +100,12 @@ namespace Scripts.Gamemodes
                         endUnixTimestamp = long.Parse(PhotonNetwork.CurrentRoom.CustomProperties["EndTimeUnix"].ToString());
                         startTimer = true;
                     }
+                    
+                    UpdateTeammatesOnHud();
                 }
                 else
                 {
-                    Debug.Log("NOT READY!!!!!!!");
+                    Debug.LogError("NOT READY!!!!!!!");
                 }
             }
             
@@ -131,6 +116,8 @@ namespace Scripts.Gamemodes
                     PlayersData.GetSortedPlayerDataByTeam(2));
             }
         }
+
+        
 
         private void FixedUpdate()
         {
@@ -172,6 +159,7 @@ namespace Scripts.Gamemodes
             TeamManager.playerManager.HUD.ScoreBoard.Set(
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
+            UpdateTeammatesOnHud();
         }
 
         #endregion
@@ -371,6 +359,27 @@ namespace Scripts.Gamemodes
             }
         }
         
+        private void UpdateZonePoints()
+        {
+            TickInterval = PhotonNetwork.Time - LastAddedPoints;
+            if (TickInterval >= ZoneTickDuration)
+            {
+                Team1TotalPoints += ZoneACapturedBy == 1 && ZoneBCapturedBy == 1 ? // Two zones are captured by the team
+                    PointsPerTickZoneDomination * 3 :
+                    ZoneACapturedBy == 1 || ZoneBCapturedBy == 1 ? // One zone is captured by the team
+                    PointsPerTickZoneDomination : 0;
+
+                Team2TotalPoints += ZoneACapturedBy == 2 && ZoneBCapturedBy == 2 ? // Two zones are captured by the team
+                    PointsPerTickZoneDomination * 3 :
+                    ZoneACapturedBy == 2 || ZoneBCapturedBy == 2 ? // One zone is captured by the team
+                    PointsPerTickZoneDomination : 0;
+
+                LastAddedPoints = PhotonNetwork.Time;
+
+                TeamManager?.playerManager?.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);
+            }
+        }
+        
         void UpdateDiscordActivity()
         {
             var discordController = this.gameObject.GetComponent<DiscordController>();
@@ -385,8 +394,23 @@ namespace Scripts.Gamemodes
             {
                 var teammates = PlayersData?.GetPlayerDataByTeam(team.Code);
                 teammates.Remove(teammates.Find(data => data.name == PhotonNetwork.NickName));
-            
-                TeamManager.playerManager.HUD.UpdateTeammatesInfo(teammates);
+
+                if (TeamManager.playerManager != null)
+                {
+                    TeamManager.playerManager.HUD.UpdateTeammatesInfo(teammates);
+                    
+                    Debug.Log("Successfully updated teammates");
+                }
+                else
+                {
+                    Debug.LogError("TeamManager.playerManager is NULL");
+                    startTimer = false;
+                }
+            } 
+            else
+            {
+                Debug.LogError("PhotonNetwork.LocalPlayer.GetPhotonTeam() is NULL");
+                startTimer = false;
             }
         }
 

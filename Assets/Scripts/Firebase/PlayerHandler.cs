@@ -13,33 +13,38 @@ namespace Firebase
 {
     public class PlayerHandler : DatabaseHandler
     {
-        public static void RefreshLocalPlayerInfo()
+        public static void RefreshLocalPlayerInfo(SuccessCallback callback)
         {
-            if (PhotonNetwork.IsConnected)
+            GetUserById(AuthHandler.loggedinUser._ID, user =>
             {
-                GetUserById(AuthHandler.loggedinUser._ID, user =>
-                {
-                    AuthHandler.loggedinUser = user;
+                AuthHandler.loggedinUser = user;
                 
-                    Hashtable playerCustomProperties = PhotonNetwork.LocalPlayer.CustomProperties;
-                    if (playerCustomProperties.ContainsKey("elo"))
-                        playerCustomProperties["elo"] = AuthHandler.loggedinUser.Elo;
-                    else
-                        playerCustomProperties.Add("elo", AuthHandler.loggedinUser.Elo);
+                Hashtable playerCustomProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+                if (playerCustomProperties.ContainsKey("elo"))
+                    playerCustomProperties["elo"] = AuthHandler.loggedinUser.Elo;
+                else
+                    playerCustomProperties.Add("elo", AuthHandler.loggedinUser.Elo);
                 
-                    if (playerCustomProperties.ContainsKey("firebaseId"))
-                        playerCustomProperties["firebaseId"] = AuthHandler.loggedinUser._ID;
-                    else
-                        playerCustomProperties.Add("firebaseId", AuthHandler.loggedinUser._ID);
+                if (playerCustomProperties.ContainsKey("firebaseId"))
+                    playerCustomProperties["firebaseId"] = AuthHandler.loggedinUser._ID;
+                else
+                    playerCustomProperties.Add("firebaseId", AuthHandler.loggedinUser._ID);
 
-                    if (playerCustomProperties.ContainsKey("iconUrl"))
-                        playerCustomProperties["iconUrl"] = AuthHandler.loggedinUser.IconUrl;
-                    else
-                        playerCustomProperties.Add("iconUrl", AuthHandler.loggedinUser.IconUrl);
+                if (playerCustomProperties.ContainsKey("iconUrl"))
+                    playerCustomProperties["iconUrl"] = AuthHandler.loggedinUser.IconUrl;
+                else
+                    playerCustomProperties.Add("iconUrl", AuthHandler.loggedinUser.IconUrl);
                 
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(playerCustomProperties);
-                });
-            }
+                PhotonNetwork.LocalPlayer.SetCustomProperties(playerCustomProperties);
+                    
+                Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["elo"]);
+                    
+                Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["firebaseId"]);
+                    
+                Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["iconUrl"]);
+
+                callback(true);
+            });
         }
 
         public static void UpdateLocalPlayerElo(int newElo, SuccessCallback callback)
@@ -67,8 +72,7 @@ namespace Firebase
                 {
                     if (res.StatusCode == 200)
                     {
-                        callback(true);
-                        PlayerHandler.RefreshLocalPlayerInfo();
+                        PlayerHandler.RefreshLocalPlayerInfo((success =>  callback(success)));
                     }
                     else
                     {

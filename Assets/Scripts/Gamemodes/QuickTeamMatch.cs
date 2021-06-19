@@ -26,6 +26,8 @@ namespace Scripts.Gamemodes
 
         public int PointsPerTickZoneDomination = 1;
 
+        public double ZoneTickDuration = 0.5;
+
         public int GameDurationInMinutes = 10;
         
         [Header("Timer")]
@@ -45,23 +47,12 @@ namespace Scripts.Gamemodes
         
         #region MonoBehaviours callbacks
 
+        public double LastAddedPoints;
+        public double TickInterval;
         private void Start()
         {
-            PlayersData.SetupData(PhotonNetwork.CurrentRoom.Players);
-            
-            UpdateTeammatesOnHud();
-            
-            if (PhotonNetwork.IsMasterClient)
-            {
-                StartTimer();
-            }
-            else
-            {
-                StartTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
-                endUnixTimestamp = long.Parse(PhotonNetwork.CurrentRoom.CustomProperties["EndTimeUnix"].ToString());
-                startTimer = true;
-            }
         }
+
         
         private void Update()
         {
@@ -90,6 +81,47 @@ namespace Scripts.Gamemodes
                         GameEnd(winner);
                     }
                 }
+
+                TickInterval = PhotonNetwork.Time - LastAddedPoints;
+                if (TickInterval >= ZoneTickDuration)
+                {
+                    Team1TotalPoints += ZoneACapturedBy == 1 && ZoneBCapturedBy == 1 ? // Two zones are captured by the team
+                        PointsPerTickZoneDomination * 3 : ZoneACapturedBy == 1 || ZoneBCapturedBy == 1 ? // One zone is captured by the team
+                        PointsPerTickZoneDomination : 0;
+            
+                    Team2TotalPoints += ZoneACapturedBy == 2 && ZoneBCapturedBy == 2 ? // Two zones are captured by the team
+                        PointsPerTickZoneDomination * 3 : ZoneACapturedBy == 2 || ZoneBCapturedBy == 2 ? // One zone is captured by the team
+                        PointsPerTickZoneDomination : 0;
+
+                    LastAddedPoints = PhotonNetwork.Time;
+                    
+                    TeamManager?.playerManager?.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);
+                }
+            }
+            else
+            {
+                if (PhotonNetwork.IsConnectedAndReady)
+                {
+                    PlayersData.SetupData(PhotonNetwork.CurrentRoom.Players);
+            
+                    UpdateTeammatesOnHud();
+                    LastAddedPoints = PhotonNetwork.Time;
+            
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        StartTimer();
+                    }
+                    else
+                    {
+                        StartTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
+                        endUnixTimestamp = long.Parse(PhotonNetwork.CurrentRoom.CustomProperties["EndTimeUnix"].ToString());
+                        startTimer = true;
+                    }
+                }
+                else
+                {
+                    Debug.Log("NOT READY!!!!!!!");
+                }
             }
             
             if (Input.GetKey(KeyCode.Tab))
@@ -103,6 +135,7 @@ namespace Scripts.Gamemodes
         private void FixedUpdate()
         {
             HandleZones();
+            TeamManager?.playerManager?.HUD.UpdateZones(ZoneAPoints, ZoneBPoints, PointsToCaptureZone);
         }
 
         public override void OnEnable()
@@ -223,6 +256,10 @@ namespace Scripts.Gamemodes
                 
                 // If we are the master client, update the points for everyone
                 photonView.RPC("UpdateTeamPoints", RpcTarget.Others, Team1TotalPoints, Team2TotalPoints);
+                photonView.RPC("UpdateZones", RpcTarget.All, 
+                    ZoneAPoints[0], ZoneAPoints[1],
+                    ZoneBPoints[0], ZoneBPoints[1],
+                    ZoneACapturedBy, ZoneBCapturedBy);
             }
 
             base.OnPlayerEnteredRoom(newPlayer);
@@ -281,6 +318,17 @@ namespace Scripts.Gamemodes
                 if (success)
                     Debug.Log("Successfully registered in the finished match");
             });
+        }
+        
+        [PunRPC]
+        void UpdateZones(int ZoneAPointsT1, int ZoneAPointsT2,
+            int ZoneBPointsT1, int ZoneBPointsT2,
+            byte ZoneACapturedBy, byte ZoneBCapturedBy)
+        {
+            this.ZoneAPoints = new []{ZoneAPointsT1, ZoneAPointsT2};
+            this.ZoneBPoints = new []{ZoneBPointsT1, ZoneBPointsT2};
+            this.ZoneACapturedBy = ZoneACapturedBy;
+            this.ZoneBCapturedBy = ZoneBCapturedBy;
         }
 
         #endregion

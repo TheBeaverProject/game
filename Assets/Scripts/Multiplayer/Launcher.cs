@@ -128,7 +128,7 @@ namespace Multiplayer
             }
             else // Offline / standalone connection
             {
-                if (PhotonNetwork.IsConnected)
+                if (PhotonNetwork.IsConnectedAndReady)
                 {
                     PhotonNetwork.JoinRandomRoom();
                 }
@@ -141,7 +141,7 @@ namespace Multiplayer
             }
             
             // Checks if the client is connected
-            if (PhotonNetwork.IsConnected)
+            if (PhotonNetwork.IsConnectedAndReady)
             {
                 JoinPhotonRoom(GamemodeSelection.SelectedGameMode);
             }

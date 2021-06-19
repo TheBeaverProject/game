@@ -15,28 +15,31 @@ namespace Firebase
     {
         public static void RefreshLocalPlayerInfo()
         {
-            DatabaseHandler.GetUserById(AuthHandler.loggedinUser._ID, user =>
+            if (PhotonNetwork.IsConnected)
             {
-                AuthHandler.loggedinUser = user;
+                GetUserById(AuthHandler.loggedinUser._ID, user =>
+                {
+                    AuthHandler.loggedinUser = user;
                 
-                Hashtable playerCustomProperties = PhotonNetwork.LocalPlayer.CustomProperties;
-                if (playerCustomProperties.ContainsKey("elo"))
-                    playerCustomProperties["elo"] = AuthHandler.loggedinUser.Elo;
-                else
-                    playerCustomProperties.Add("elo", AuthHandler.loggedinUser.Elo);
+                    Hashtable playerCustomProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+                    if (playerCustomProperties.ContainsKey("elo"))
+                        playerCustomProperties["elo"] = AuthHandler.loggedinUser.Elo;
+                    else
+                        playerCustomProperties.Add("elo", AuthHandler.loggedinUser.Elo);
                 
-                if (playerCustomProperties.ContainsKey("firebaseId"))
-                    playerCustomProperties["firebaseId"] = AuthHandler.loggedinUser._ID;
-                else
-                    playerCustomProperties.Add("firebaseId", AuthHandler.loggedinUser._ID);
+                    if (playerCustomProperties.ContainsKey("firebaseId"))
+                        playerCustomProperties["firebaseId"] = AuthHandler.loggedinUser._ID;
+                    else
+                        playerCustomProperties.Add("firebaseId", AuthHandler.loggedinUser._ID);
 
-                if (playerCustomProperties.ContainsKey("iconUrl"))
-                    playerCustomProperties["iconUrl"] = AuthHandler.loggedinUser.IconUrl;
-                else
-                    playerCustomProperties.Add("iconUrl", AuthHandler.loggedinUser.IconUrl);
+                    if (playerCustomProperties.ContainsKey("iconUrl"))
+                        playerCustomProperties["iconUrl"] = AuthHandler.loggedinUser.IconUrl;
+                    else
+                        playerCustomProperties.Add("iconUrl", AuthHandler.loggedinUser.IconUrl);
                 
-                PhotonNetwork.LocalPlayer.SetCustomProperties(playerCustomProperties);
-            });
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(playerCustomProperties);
+                });
+            }
         }
 
         public static void UpdateLocalPlayerElo(int newElo, SuccessCallback callback)

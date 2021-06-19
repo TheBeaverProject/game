@@ -30,6 +30,7 @@ namespace UI.HUD
         public WeaponDisplay weaponDisplay;
         public TeamPointsDisplay teamPointsDisplay;
         public KillFeedDisplay killFeedDisplay;
+        public ZoneDominationDisplay zoneDominationDisplay;
         public GameObject crossHair;
 
         public HUDType currentType;
@@ -66,6 +67,7 @@ namespace UI.HUD
                     teamDisplay.gameObject.SetActive(true);
                     roundDisplay.gameObject.SetActive(false);
                     teamPointsDisplay.gameObject.SetActive(false);
+                    zoneDominationDisplay.gameObject.SetActive(false);
                     countdownDisplay.gameObject.SetActive(true);
                     break;
                 case HUDType.Teams:
@@ -73,12 +75,14 @@ namespace UI.HUD
                     teamDisplay.gameObject.SetActive(true);
                     countdownDisplay.gameObject.SetActive(true);
                     teamPointsDisplay.gameObject.SetActive(true);
+                    zoneDominationDisplay.gameObject.SetActive(true);
                     break;
                 case HUDType.Rounds:
                     teamPointsDisplay.gameObject.SetActive(false);
                     teamDisplay.gameObject.SetActive(true);
                     roundDisplay.gameObject.SetActive(true);
                     countdownDisplay.gameObject.SetActive(true);
+                    zoneDominationDisplay.gameObject.SetActive(true);
                     break;
             }
         }
@@ -149,6 +153,10 @@ namespace UI.HUD
             public int health;
         }
 
+        /// <summary>
+        /// Updates the teammate fields according to a list of playerData
+        /// </summary>
+        /// <param name="teammates"></param>
         public void UpdateTeammatesInfo(List<PlayerData> teammates)
         {
             var teammatesHudInfo = new List<HUDPlayerInfo>();
@@ -164,6 +172,18 @@ namespace UI.HUD
             }
             
             teamDisplay.UpdateTeammates(teammatesHudInfo);
+        }
+
+        /// <summary>
+        /// Updates the capture progress of zones
+        /// </summary>
+        /// <param name="ZoneAPoints"></param>
+        /// <param name="ZoneBPoints"></param>
+        /// <param name="PointsToCaptureZone"></param>
+        public void UpdateZones(int[] ZoneAPoints, int[] ZoneBPoints, int PointsToCaptureZone)
+        {
+            zoneDominationDisplay.SetZoneA((float) ZoneAPoints[1] / (float) PointsToCaptureZone, (float) ZoneAPoints[0] / (float) PointsToCaptureZone);
+            zoneDominationDisplay.SetZoneB((float) ZoneBPoints[1] / (float) PointsToCaptureZone, (float) ZoneBPoints[0] / (float) PointsToCaptureZone);
         }
     }
 }

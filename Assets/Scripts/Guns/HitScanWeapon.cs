@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace Guns
 {
-    public class HitScanWeapon : Gunnable 
+    public class HitScanWeapon : Gunnable
     {
         //Raycast hit
         protected RaycastHit rayHit;
@@ -60,7 +60,7 @@ namespace Guns
             // The raycast starting from the camera with the spread added
             if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range))
             {
-                photonView.RPC("SetLineRenderer", RpcTarget.All, 2, new Vector3[] { barrelTip.transform.position, rayHit.point });
+                photonView.RPC("SpawnBulletTrail", RpcTarget.All, new Vector3[] { barrelTip.transform.position, rayHit.point });
 
                 //Damages the player if raycast catch a player
                 if (rayHit.collider.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayerManager))
@@ -75,7 +75,7 @@ namespace Guns
             }
             else
             {
-                //Debug.DrawRay(holder.playerCamera.transform.position, direction * 1000, Color.red);
+                photonView.RPC("SpawnBulletTrail", RpcTarget.All, new Vector3[] { barrelTip.transform.position, barrelTip.transform.position + direction * range });
             }
             
             bulletsLeft--;
@@ -93,7 +93,6 @@ namespace Guns
 
         protected override void ResetShot()
         {
-            photonView.RPC("SetLineRenderer", RpcTarget.All, 0, null);
             readyToShoot = true;
         }
 
@@ -106,21 +105,16 @@ namespace Guns
         }
 
         [PunRPC]
-        void SetLineRenderer(int count, Vector3[] pos = null)
+        void SpawnBulletTrail(Vector3[] pos = null)
         {
-            lineRenderer.positionCount = count;
+            GameObject bulletTrailEffect = Instantiate(bulletTrail.gameObject, pos[0], Quaternion.identity);
 
-            if (pos == null)
-            {
-                return;
-            }
+            LineRenderer lineRenderer = bulletTrailEffect.GetComponent<LineRenderer>();
             
-            int i = 0;
-            foreach (var vector3 in pos)
-            {
-                lineRenderer.SetPosition(i, vector3);
-                i++;
-            }
+            lineRenderer.SetPosition(0, pos[0]);
+            lineRenderer.SetPosition(1, pos[1]);
+            
+            Destroy(bulletTrailEffect, 1);
         }
         
         #endregion

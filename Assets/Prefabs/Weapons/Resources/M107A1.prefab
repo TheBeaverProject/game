@@ -537,7 +537,8 @@ MonoBehaviour:
   allowScope: 1
   scopedFOV: 15
   ScopeType: 0
-  lineRenderer: {fileID: 0}
+  bulletTrail: {fileID: 120648884187509030, guid: d2ec70c814159504cb3e12e99b00b151,
+    type: 3}
   allowButtonHold: 0
   timeBetweenShooting: 1.5
   reloadTime: 4

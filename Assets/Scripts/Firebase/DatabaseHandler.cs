@@ -52,17 +52,17 @@ namespace Firebase
 
                     callback(new User(
                         userId,
-                        firebaseUserDocument.Fields.Username.StringValue,
-                        firebaseUserDocument.Fields.Email.StringValue,
-                        firebaseUserDocument.Fields?.IconUrl?.StringValue != null ? firebaseUserDocument.Fields.IconUrl.StringValue : "https://thebeaverproject.tk/logo192.png",
-                        firebaseUserDocument.Fields.Birthdate.TimestampValue,
+                        firebaseUserDocument?.Fields?.Username?.StringValue,
+                        firebaseUserDocument?.Fields.Email.StringValue,
+                        firebaseUserDocument?.Fields?.IconUrl?.StringValue != null ? firebaseUserDocument.Fields.IconUrl.StringValue : "https://thebeaverproject.tk/logo192.png",
+                        firebaseUserDocument.Fields.Birthdate.TimestampValue.Value,
                         likedNews,
                         matchHistory,
-                        (int) firebaseUserDocument.Fields.Elo.IntegerValue,
-                        firebaseUserDocument.Fields.RegisterDate.TimestampValue,
-                        (Status) firebaseUserDocument.Fields.Status.IntegerValue,
+                        (int) firebaseUserDocument?.Fields?.Elo?.IntegerValue,
+                        firebaseUserDocument.Fields.RegisterDate.TimestampValue.Value,
+                        (Status) firebaseUserDocument?.Fields?.Status?.IntegerValue,
                         null,
-                        (int) firebaseUserDocument.Fields.Level.IntegerValue
+                        (int) firebaseUserDocument?.Fields?.Level?.IntegerValue
                     ));
                 })
                 .Catch(err =>

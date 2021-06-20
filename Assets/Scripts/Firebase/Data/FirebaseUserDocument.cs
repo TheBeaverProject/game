@@ -70,16 +70,16 @@ namespace Firebase.Data
             
             Fields = new UserFields
             {
-                Birthdate = new Date(),
-                Elo = new Number(),
-                Email = new String(),
-                Items = new FirestoreStringList(),
-                Level = new Number(),
-                LikedNews = new FirestoreStringList(),
-                MatchHistory = new FirestoreStringList(),
-                RegisterDate = new Date(),
-                Status = new Number(),
-                Username = new String()
+                Birthdate = null,
+                Elo = null,
+                Email = null,
+                Items = null,
+                Level = null,
+                LikedNews = null,
+                MatchHistory = null,
+                RegisterDate = null,
+                Status = null,
+                Username = null
             };
             
             CreateTime = DateTimeOffset.Now;

@@ -17,12 +17,12 @@ namespace DiscordRPC
 
         private void Update()
         {
-            discord.RunCallbacks();
+            discord?.RunCallbacks();
         }
 
         private void OnDestroy()
         {
-            discord.Dispose();
+            discord?.Dispose();
         }
 
         public void ClearActivity()

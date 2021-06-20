@@ -135,8 +135,8 @@ namespace Guns
             GameObject hitParticleEffect = Instantiate(hitParticles, hitPos, Quaternion.FromToRotation(Vector3.up, hitNormal));
             GameObject bulletHole = Instantiate(bulletImpact, hitPos, Quaternion.FromToRotation(Vector3.forward, hitNormal));
             
-            Destroy(hitParticleEffect, 10);
-            Destroy(bulletHole, 30);
+            Destroy(hitParticleEffect, 2);
+            Destroy(bulletHole, 2);
         }
 
         #endregion

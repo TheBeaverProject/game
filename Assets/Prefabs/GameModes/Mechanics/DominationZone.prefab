@@ -600,7 +600,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 2000
+    maxNumParticles: 4000
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -865,7 +865,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1000
+      scalar: 2000
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -4709,7 +4709,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 89ff19d667a6a5d4bb76df1fcb718402, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -4800,4 +4800,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 10
   selectedLayer: 14
-  particleSystem: {fileID: 1667133662}
+  _particleSystem: {fileID: 1667133662}
+  defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  teamColor1: {r: 0, g: 235, b: 248, a: 1}
+  teamColor2: {r: 229, g: 0, b: 0, a: 1}

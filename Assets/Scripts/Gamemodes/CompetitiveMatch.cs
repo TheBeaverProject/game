@@ -8,12 +8,13 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using PlayerManagement;
+using Scripts.Gamemodes.Mechanics;
 using UI.HUD;
 using UnityEngine;
 
 namespace Scripts.Gamemodes
 {
-    public class CompetitiveMatch : Gamemode, IOnEventCallback
+    public class CompetitiveMatch : DominationGamemode, IOnEventCallback
     {
         [Header("Setup")]
         public double RoundDurationInMinutes = 2.5;
@@ -31,8 +32,9 @@ namespace Scripts.Gamemodes
         public double ElapsedTime;
         private bool startTimer;
         public long endUnixTimestamp;
+
+        [Header("Game Values")]
         
-        [Header("Values")]
         public int Team1Rounds = 0;
         public int Team2Rounds = 0;
         
@@ -79,10 +81,10 @@ namespace Scripts.Gamemodes
                     }
                 }
                 
-                if (ElapsedTime >= RoundDurationInMinutes * 60) // End of the round
+                if (ElapsedTime >= RoundDurationInMinutes * 60 || AreZoneCaptured) // End of the round
                 {
                     startTimer = false;
-                    byte winner = GetRoundWinner();
+                    byte winner = AreZoneCaptured ? ZoneACapturedBy : GetRoundWinner();
                     
                     RoundEnd(winner);
                 }
@@ -95,7 +97,13 @@ namespace Scripts.Gamemodes
                     PlayersData.GetSortedPlayerDataByTeam(2));
             }
         }
-        
+
+        private void FixedUpdate()
+        {
+            HandleZones();
+            RoundsManager?.playerManager?.HUD.UpdateZones(ZoneAPoints, ZoneBPoints, PointsToCaptureZone);
+        }
+
         public override void OnEnable()
         {
             PhotonNetwork.AddCallbackTarget(this);
@@ -112,6 +120,8 @@ namespace Scripts.Gamemodes
         
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
+            RoundsManager.playerManager = playerManager;
+            
             playerManager.HUD.Init(HUDType.Rounds);
             playerManager.HUD.UpdateRounds(Team1Rounds, Team2Rounds);
 
@@ -192,6 +202,10 @@ namespace Scripts.Gamemodes
                 
                 // If we are the master client, update the points for everyone
                 photonView.RPC("UpdateRounds", RpcTarget.Others, Team1Rounds, Team2Rounds);
+                photonView.RPC("UpdateZones", RpcTarget.All, 
+                    ZoneAPoints[0], ZoneAPoints[1],
+                    ZoneBPoints[0], ZoneBPoints[1],
+                    ZoneACapturedBy, ZoneBCapturedBy);
             }
 
             UpdateTeammatesOnHud();
@@ -239,6 +253,17 @@ namespace Scripts.Gamemodes
             Team1Rounds = team1Rounds;
             Team2Rounds = team2Rounds;
         }
+
+        [PunRPC]
+        void UpdateZones(int ZoneAPointsT1, int ZoneAPointsT2,
+            int ZoneBPointsT1, int ZoneBPointsT2,
+            byte ZoneACapturedBy, byte ZoneBCapturedBy)
+        {
+            this.ZoneAPoints = new []{ZoneAPointsT1, ZoneAPointsT2};
+            this.ZoneBPoints = new []{ZoneBPointsT1, ZoneBPointsT2};
+            this.ZoneACapturedBy = ZoneACapturedBy;
+            this.ZoneBCapturedBy = ZoneBCapturedBy;
+        }
         
         [PunRPC]
         void RegisterMatch(string documentId)
@@ -254,6 +279,8 @@ namespace Scripts.Gamemodes
         void RoundStart()
         {
             Debug.LogWarning("--------- New round Starting ----------");
+            
+            ResetZones();
             
             foreach (var p in PhotonNetwork.PlayerList)
             {
@@ -295,7 +322,9 @@ namespace Scripts.Gamemodes
         }
 
         #endregion
-        
+
+        #region Management
+
         private void RoundEnd(byte winnerTeamCode)
         {
             if (winnerTeamCode == 1)
@@ -355,32 +384,6 @@ namespace Scripts.Gamemodes
             }
         }
         
-        void UpdateDiscordActivity()
-        {
-            var discordController = this.gameObject.GetComponent<DiscordController>();
-            var localPlayerData = PlayersData.GetSinglePlayerData(PhotonNetwork.LocalPlayer.ActorNumber);
-            discordController.UpdateActivity($"Rounds Deathmatch | {Team1Rounds} - {Team2Rounds}", $"KDA: {localPlayerData.kills}/{localPlayerData.deaths}/{localPlayerData.assists} - Score: {localPlayerData.points}", endTimestamp: endUnixTimestamp);
-        }
-        
-        void UpdateTeammatesOnHud()
-        {
-            var teammates = PlayersData.GetPlayerDataByTeam(PhotonNetwork.LocalPlayer.GetPhotonTeam().Code);
-            teammates.Remove(teammates.Find(data => data.name == PhotonNetwork.NickName));
-            
-            RoundsManager.playerManager.HUD.UpdateTeammatesInfo(teammates);
-        }
-
-        void StartTimer()
-        {
-            var CustomValue = new Hashtable();
-            StartTime = PhotonNetwork.Time;
-            endUnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + (long) (RoundDurationInMinutes * 60);
-            startTimer = true;
-            CustomValue.Add("StartTime", StartTime);
-            CustomValue.Add("EndTimeUnix", endUnixTimestamp);
-            PhotonNetwork.CurrentRoom.SetCustomProperties(CustomValue);
-        }
-
         /// <summary>
         /// 1 = team1 | 2 = team2 | 0 = draw
         /// </summary>
@@ -427,6 +430,38 @@ namespace Scripts.Gamemodes
             }
 
             return winner;
+        }
+
+        #endregion
+
+        void UpdateDiscordActivity()
+        {
+            var discordController = this.gameObject.GetComponent<DiscordController>();
+            var localPlayerData = PlayersData.GetSinglePlayerData(PhotonNetwork.LocalPlayer.ActorNumber);
+            discordController.UpdateActivity($"Rounds Deathmatch | {Team1Rounds} - {Team2Rounds}", $"KDA: {localPlayerData.kills}/{localPlayerData.deaths}/{localPlayerData.assists} - Score: {localPlayerData.points}", endTimestamp: endUnixTimestamp);
+        }
+        
+        void UpdateTeammatesOnHud()
+        {
+            PhotonTeam team;
+            if ((team = PhotonNetwork.LocalPlayer.GetPhotonTeam()) != null)
+            {
+                var teammates = PlayersData?.GetPlayerDataByTeam(team.Code);
+                teammates.Remove(teammates.Find(data => data.name == PhotonNetwork.NickName));
+            
+                RoundsManager.playerManager.HUD.UpdateTeammatesInfo(teammates);
+            }
+        }
+
+        void StartTimer()
+        {
+            var CustomValue = new Hashtable();
+            StartTime = PhotonNetwork.Time;
+            endUnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds() + (long) (RoundDurationInMinutes * 60);
+            startTimer = true;
+            CustomValue.Add("StartTime", StartTime);
+            CustomValue.Add("EndTimeUnix", endUnixTimestamp);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(CustomValue);
         }
 
         #endregion

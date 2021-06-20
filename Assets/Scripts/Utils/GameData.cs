@@ -30,10 +30,7 @@ namespace Scripts
             foreach (var roomPlayerKVP in players)
             {
                 var roomPlayer = roomPlayerKVP.Value;
-                InitPlayerData(roomPlayer, playerData =>
-                {
-                    Dictionary.Add(roomPlayer, playerData);
-                });
+                AddPlayerToDataIfNotExists(roomPlayer);
             }
         }
 

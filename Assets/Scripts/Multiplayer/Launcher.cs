@@ -92,34 +92,41 @@ namespace Multiplayer
             Debug.LogWarningFormat("Multiplayer/Launcher: OnDisconnected was called by PUN with reason {0}", cause);
         }
 
-        void IMatchmakingCallbacks.OnJoinRandomFailed(short returnCode, string message)
-        {
-            Debug.Log($"Multiplayer/Launcher: OnJoinRandomFailed was called by PUN. No random room were found. returnCode: {returnCode}, message: {message}");
-
-            // #Critical: We failed to join a random room, so we create a new one.
-            CreateRoom(GamemodeSelection.SelectedGameMode);
-        }
-
         void IMatchmakingCallbacks.OnJoinedRoom()
         {
             Debug.Log($"Multiplayer/Launcher: OnJoinedRoom called by PUN.");
 
             if (PhotonNetwork.IsMasterClient && !PhotonNetwork.OfflineMode)
             {
-                switch ((Type) PhotonNetwork.CurrentRoom.CustomProperties["gm"])
-                {
-                    case Type.DeathMatch:
-                        PhotonNetwork.LoadLevel("FFADeathMatch" + map);
-                        break;
-                    case Type.CompetitiveMatch:
-                        PhotonNetwork.LoadLevel("RoundsDeathMatch" + map);
-                        break;
-                    case Type.QuickTeamMatch:
-                        PhotonNetwork.LoadLevel("TeamDeathMatch" + map);
-                        break;
-                }
+                var gamemode = (Type) PhotonNetwork.CurrentRoom.CustomProperties["gm"];
+                PhotonNetwork.LoadLevel(gamemode.ToString() + map);
             }
         }
+
+        #region Fail Handlers
+
+        void IMatchmakingCallbacks.OnJoinRandomFailed(short returnCode, string message)
+        {
+            Debug.LogWarning($"Multiplayer/Launcher: OnJoinRandomFailed was called by PUN. No random room were found. returnCode: {returnCode}, message: {message}");
+
+            // #Critical: We failed to join a random room, so we create a new one.
+            CreateRoom(GamemodeSelection.SelectedGameMode);
+        }
+
+        void IMatchmakingCallbacks.OnCreateRoomFailed(short returnCode, string message)
+        {
+            Debug.LogWarning($"Multiplayer/Launcher: OnCreateRoomFailed was called by PUN. returnCode: {returnCode}, message: {message}");
+        }
+
+        void IMatchmakingCallbacks.OnJoinRoomFailed(short returnCode, string message)
+        {
+            Debug.LogWarning($"Multiplayer/Launcher: OnJoinRoomFailed was called by PUN. returnCode: {returnCode}, message: {message}");
+            
+            // #Critical: We failed to join a room, so we create a new one.
+            CreateRoom(GamemodeSelection.SelectedGameMode);
+        }
+
+        #endregion
 
         #endregion
 
@@ -129,38 +136,40 @@ namespace Multiplayer
         {
             PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser?.Username != null ? 
                 Firebase.AuthHandler.loggedinUser?.Username : "OfflinePlayer";
-            PlayerHandler.RefreshLocalPlayerInfo();
-
-            if (controlPanel != null)
+            
+            PlayerHandler.RefreshLocalPlayerInfo((success =>
             {
-                progressLabel.SetActive(true);
-                controlPanel.SetActive(false);
-            }
-            else // Offline / standalone connection
-            {
-                if (PhotonNetwork.IsConnected)
+                if (controlPanel != null)
                 {
-                    PhotonNetwork.JoinRandomRoom();
+                    progressLabel.SetActive(true);
+                    controlPanel.SetActive(false);
+                }
+                else // Offline / standalone connection
+                {
+                    if (PhotonNetwork.IsConnectedAndReady)
+                    {
+                        PhotonNetwork.JoinRandomRoom();
+                    }
+                    else
+                    {
+                        isConnecting = PhotonNetwork.ConnectUsingSettings();
+                        PhotonNetwork.GameVersion = gameVersion;
+                    }
+                    return;
+                }
+            
+                // Checks if the client is connected
+                if (PhotonNetwork.IsConnectedAndReady)
+                {
+                    JoinPhotonRoom(GamemodeSelection.SelectedGameMode);
                 }
                 else
                 {
+                    // keep track of the will to join a room
                     isConnecting = PhotonNetwork.ConnectUsingSettings();
                     PhotonNetwork.GameVersion = gameVersion;
                 }
-                return;
-            }
-            
-            // Checks if the client is connected
-            if (PhotonNetwork.IsConnected)
-            {
-                JoinPhotonRoom(GamemodeSelection.SelectedGameMode);
-            }
-            else
-            {
-                // keep track of the will to join a room
-                isConnecting = PhotonNetwork.ConnectUsingSettings();
-                PhotonNetwork.GameVersion = gameVersion;
-            }
+            }));
         }
 
         public void JoinPhotonRoom(Type gamemode)

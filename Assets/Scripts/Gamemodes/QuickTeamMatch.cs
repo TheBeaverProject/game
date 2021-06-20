@@ -9,12 +9,13 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using PlayerManagement;
+using Scripts.Gamemodes.Mechanics;
 using UI.HUD;
 using UnityEngine;
 
 namespace Scripts.Gamemodes
 {
-    public class QuickTeamMatch : Gamemode, IOnEventCallback
+    public class QuickTeamMatch : DominationGamemode, IOnEventCallback
     {
         [Header("Setup")]
         public int PointsPerKill = 10;
@@ -22,6 +23,10 @@ namespace Scripts.Gamemodes
         public int PointsPerAssist = 4;
 
         public int PointsPerTeamKill = -5;
+
+        public int PointsPerTickZoneDomination = 1;
+
+        public double ZoneTickDuration = 0.5;
 
         public int GameDurationInMinutes = 10;
         
@@ -31,35 +36,20 @@ namespace Scripts.Gamemodes
         private bool startTimer;
         public long endUnixTimestamp;
 
-        [Header("Values")]
-        public int Team1TotalPoints = 0;
+        [Header("Game Values")]
         
+        public int Team1TotalPoints = 0;
         public int Team2TotalPoints = 0;
-
+        
         public GameData PlayersData = new GameData();
         public TeamManager TeamManager;
         
         
         #region MonoBehaviours callbacks
 
-        private void Start()
-        {
-            PlayersData.SetupData(PhotonNetwork.CurrentRoom.Players);
-            
-            UpdateTeammatesOnHud();
-            
-            if (PhotonNetwork.IsMasterClient)
-            {
-                StartTimer();
-            }
-            else
-            {
-                StartTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
-                endUnixTimestamp = long.Parse(PhotonNetwork.CurrentRoom.CustomProperties["EndTimeUnix"].ToString());
-                startTimer = true;
-            }
-        }
-        
+        public double LastAddedPoints;
+        public double TickInterval;
+
         private void Update()
         {
             if (startTimer)
@@ -87,6 +77,36 @@ namespace Scripts.Gamemodes
                         GameEnd(winner);
                     }
                 }
+                else
+                {
+                    UpdateZonePoints();
+                }
+            }
+            else
+            {
+                if (PhotonNetwork.IsConnectedAndReady)
+                {
+                    PlayersData.SetupData(PhotonNetwork.CurrentRoom.Players);
+                    
+                    LastAddedPoints = PhotonNetwork.Time;
+            
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        StartTimer();
+                    }
+                    else
+                    {
+                        StartTime = double.Parse(PhotonNetwork.CurrentRoom.CustomProperties["StartTime"].ToString());
+                        endUnixTimestamp = long.Parse(PhotonNetwork.CurrentRoom.CustomProperties["EndTimeUnix"].ToString());
+                        startTimer = true;
+                    }
+                    
+                    UpdateTeammatesOnHud();
+                }
+                else
+                {
+                    Debug.LogError("NOT READY!!!!!!!");
+                }
             }
             
             if (Input.GetKey(KeyCode.Tab))
@@ -96,7 +116,15 @@ namespace Scripts.Gamemodes
                     PlayersData.GetSortedPlayerDataByTeam(2));
             }
         }
+
         
+
+        private void FixedUpdate()
+        {
+            HandleZones();
+            TeamManager?.playerManager?.HUD.UpdateZones(ZoneAPoints, ZoneBPoints, PointsToCaptureZone);
+        }
+
         public override void OnEnable()
         {
             PhotonNetwork.AddCallbackTarget(this);
@@ -113,6 +141,8 @@ namespace Scripts.Gamemodes
         
         public override void OnPlayerRespawn(PlayerManager playerManager)
         {
+            TeamManager.playerManager = playerManager;
+            
             playerManager.HUD.Init(HUDType.Teams);
             playerManager.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);
 
@@ -129,6 +159,7 @@ namespace Scripts.Gamemodes
             TeamManager.playerManager.HUD.ScoreBoard.Set(
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team1.Code), 
                 PlayersData.GetSortedPlayerDataByTeam(TeamManager.Team2.Code));
+            UpdateTeammatesOnHud();
         }
 
         #endregion
@@ -213,6 +244,10 @@ namespace Scripts.Gamemodes
                 
                 // If we are the master client, update the points for everyone
                 photonView.RPC("UpdateTeamPoints", RpcTarget.Others, Team1TotalPoints, Team2TotalPoints);
+                photonView.RPC("UpdateZones", RpcTarget.All, 
+                    ZoneAPoints[0], ZoneAPoints[1],
+                    ZoneBPoints[0], ZoneBPoints[1],
+                    ZoneACapturedBy, ZoneBCapturedBy);
             }
 
             base.OnPlayerEnteredRoom(newPlayer);
@@ -272,6 +307,17 @@ namespace Scripts.Gamemodes
                     Debug.Log("Successfully registered in the finished match");
             });
         }
+        
+        [PunRPC]
+        void UpdateZones(int ZoneAPointsT1, int ZoneAPointsT2,
+            int ZoneBPointsT1, int ZoneBPointsT2,
+            byte ZoneACapturedBy, byte ZoneBCapturedBy)
+        {
+            this.ZoneAPoints = new []{ZoneAPointsT1, ZoneAPointsT2};
+            this.ZoneBPoints = new []{ZoneBPointsT1, ZoneBPointsT2};
+            this.ZoneACapturedBy = ZoneACapturedBy;
+            this.ZoneBCapturedBy = ZoneBCapturedBy;
+        }
 
         #endregion
 
@@ -313,6 +359,27 @@ namespace Scripts.Gamemodes
             }
         }
         
+        private void UpdateZonePoints()
+        {
+            TickInterval = PhotonNetwork.Time - LastAddedPoints;
+            if (TickInterval >= ZoneTickDuration)
+            {
+                Team1TotalPoints += ZoneACapturedBy == 1 && ZoneBCapturedBy == 1 ? // Two zones are captured by the team
+                    PointsPerTickZoneDomination * 3 :
+                    ZoneACapturedBy == 1 || ZoneBCapturedBy == 1 ? // One zone is captured by the team
+                    PointsPerTickZoneDomination : 0;
+
+                Team2TotalPoints += ZoneACapturedBy == 2 && ZoneBCapturedBy == 2 ? // Two zones are captured by the team
+                    PointsPerTickZoneDomination * 3 :
+                    ZoneACapturedBy == 2 || ZoneBCapturedBy == 2 ? // One zone is captured by the team
+                    PointsPerTickZoneDomination : 0;
+
+                LastAddedPoints = PhotonNetwork.Time;
+
+                TeamManager?.playerManager?.HUD.UpdateTeamPoints(Team1TotalPoints, Team2TotalPoints);
+            }
+        }
+        
         void UpdateDiscordActivity()
         {
             var discordController = this.gameObject.GetComponent<DiscordController>();
@@ -322,10 +389,29 @@ namespace Scripts.Gamemodes
 
         void UpdateTeammatesOnHud()
         {
-            var teammates = PlayersData.GetPlayerDataByTeam(PhotonNetwork.LocalPlayer.GetPhotonTeam().Code);
-            teammates.Remove(teammates.Find(data => data.name == PhotonNetwork.NickName));
-            
-            TeamManager.playerManager.HUD.UpdateTeammatesInfo(teammates);
+            PhotonTeam team;
+            if ((team = PhotonNetwork.LocalPlayer.GetPhotonTeam()) != null)
+            {
+                var teammates = PlayersData?.GetPlayerDataByTeam(team.Code);
+                teammates.Remove(teammates.Find(data => data.name == PhotonNetwork.NickName));
+
+                if (TeamManager.playerManager != null)
+                {
+                    TeamManager.playerManager.HUD.UpdateTeammatesInfo(teammates);
+                    
+                    Debug.Log("Successfully updated teammates");
+                }
+                else
+                {
+                    Debug.LogError("TeamManager.playerManager is NULL");
+                    startTimer = false;
+                }
+            } 
+            else
+            {
+                Debug.LogError("PhotonNetwork.LocalPlayer.GetPhotonTeam() is NULL");
+                startTimer = false;
+            }
         }
 
         void StartTimer()

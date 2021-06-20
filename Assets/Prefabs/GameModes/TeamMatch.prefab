@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -5912690600415349947}
   - component: {fileID: 3827035785023815094}
   m_Layer: 0
-  m_Name: TeamDeathMatch
+  m_Name: TeamMatch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,13 +45,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e86e2ce0b434db197aaaa89b0bb3f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EndgameScreenPrefab: {fileID: 0}
+  EndgameScreenPrefab: {fileID: 2603762395528671364, guid: c1bc93e8ba85489488a720dfd545b790,
+    type: 3}
+  ZoneA: {fileID: 0}
+  ZoneB: {fileID: 0}
+  ZoneAPoints: 0000000000000000
+  ZoneBPoints: 0000000000000000
+  ZoneACapturedBy: 0
+  ZoneBCapturedBy: 0
+  PointsToCaptureZone: 500
   PointsPerKill: 10
   PointsPerAssist: 4
   PointsPerTeamKill: -5
+  PointsPerTickZoneDomination: 1
   GameDurationInMinutes: 10
   StartTime: 0
   ElapsedTime: 0
+  endUnixTimestamp: 0
   Team1TotalPoints: 0
   Team2TotalPoints: 0
   TeamManager: {fileID: 0}

@@ -108,6 +108,14 @@ namespace Firebase
                 {
                     var document = new FirebaseUserDocument();
 
+                    document.Fields.MatchHistory = new FirestoreStringList
+                    {
+                        ArrayValue = new StringListArrayValue
+                        {
+                            Values = new List<String>()
+                        }
+                    };
+                    
                     // Add current matches to new array value
                     foreach (var str in user.MatchHistory)
                     {
@@ -126,29 +134,32 @@ namespace Firebase
                     RestClient.Request(new RequestHelper
                     {
                         Uri = $"{DatabaseUrl}/projects/{ProjectId}/databases/{DatabaseId}/documents/users/{userId}" +
-                              $"?updateMask.fieldPaths=matchHistory",
+                              $"?updateMask.fieldPaths=matchHistory&mask.fieldPaths=matchHistory",
                         Method = "PATCH",
                         BodyString = documentStr,
                         Headers = new Dictionary<string, string>
                         {
                             {"Authorization", "Bearer " + token}
-                        }
+                        },
+                        Timeout = 10,
+                        ContentType = "application/json",
                     }).Then(res =>
                     {
                         if (res.StatusCode == 200)
                         {
+                            Debug.Log("Firebase.StatisticsHandler: Success");
                             callback(true);
                         }
                         else
                         {
-                            Debug.Log(res.StatusCode);
-                            Debug.Log(res.Error);
-                            Debug.Log(res.Text);
+                            Debug.LogErrorFormat(res.StatusCode.ToString());
+                            Debug.LogErrorFormat(res.Error);
+                            Debug.LogErrorFormat(res.Text);
                             callback(false);
                         }
                     }).Catch(err =>
                     {
-                        Debug.LogErrorFormat($"Firebase.StatisticsHandler: Exception when trying to register a new match for the user {userId}: {err}");
+                        Debug.LogErrorFormat($"Firebase.StatisticsHandler: Exception when trying to register a new match for the user {userId}: {err}\nBody: {documentStr}");
                         callback(false);
                     });
                 });

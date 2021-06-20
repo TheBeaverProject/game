@@ -115,18 +115,23 @@ namespace Multiplayer
             
             Photon.Realtime.Player[] Team1Players;
             Photon.Realtime.Player[] Team2Players;
-            PhotonTeamsManager.TryGetTeamMembers(Team1, out Team1Players);
-            PhotonTeamsManager.TryGetTeamMembers(Team2, out Team2Players);
-
-            if (Team1Players.Length > Team2Players.Length)
+            if (PhotonTeamsManager.TryGetTeamMembers(Team1, out Team1Players) && PhotonTeamsManager.TryGetTeamMembers(Team2, out Team2Players))
             {
-                return 2;
+                if (Team1Players.Length > Team2Players.Length)
+                {
+                    return 2;
+                }
+                else if (Team1Players.Length < Team2Players.Length)
+                {
+                    return 1;
+                } else
+                {
+                    return (byte) Random.Range(1, 2);
+                }
             }
-            else if (Team1Players.Length < Team2Players.Length)
+            else
             {
-                return 1;
-            } else
-            {
+                Debug.LogWarning("SelectNextTeam: PhotonTeamsManager.TryGetTeamMembers returned false. Returning a random team.");
                 return (byte) Random.Range(1, 2);
             }
         }

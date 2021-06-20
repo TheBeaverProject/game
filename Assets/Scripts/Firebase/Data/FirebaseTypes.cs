@@ -8,11 +8,11 @@ namespace Firebase.Data
     {
         [JsonProperty("integerValue")]
         [JsonConverter(typeof(ParseStringConverter))]
-        public long IntegerValue { get; set; }
+        public Nullable<long> IntegerValue { get; set; }
 
         public Number()
         {
-            IntegerValue = 0;
+            IntegerValue = null;
         }
     }
 
@@ -22,18 +22,18 @@ namespace Firebase.Data
 
         public String()
         {
-            StringValue = "";
+            StringValue = null;
         }
     }
     
     public class Date
     {
         [JsonProperty("timestampValue")]
-        public DateTimeOffset TimestampValue { get; set; }
+        public Nullable<DateTimeOffset> TimestampValue { get; set; }
 
         public Date()
         {
-            TimestampValue = DateTimeOffset.Now;
+            TimestampValue = null;
         }
     }
     

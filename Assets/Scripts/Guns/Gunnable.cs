@@ -34,11 +34,9 @@ namespace Guns
         
         [SerializeField]
         public float scopedFOV = 30f;
-        
+
         [SerializeField]
         public ScopeHUDController.scopeType ScopeType;
-        [FormerlySerializedAs("lineRenderer")]
-        public LineRenderer bulletTrail;
         
         // Weapon Behavior
         [Header("Weapon Behavior")]
@@ -83,6 +81,19 @@ namespace Guns
 
         [Tooltip("Position of extremity of the barrel")]
         public GameObject barrelTip;
+
+        // Visual Effects
+        [Header("Visual Effects")] 
+        [FormerlySerializedAs("lineRenderer")]
+        public LineRenderer bulletTrail;
+        
+        public GameObject bulletImpact;
+
+        public GameObject hitParticles;
+        
+        public GameObject bloodParticles;
+        
+        public GameObject MuzzleFlash;
 
         // Sound Effects
         [Header("Sound Effects")]

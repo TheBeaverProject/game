@@ -12,6 +12,7 @@ namespace Guns
     {
         //Raycast hit
         protected RaycastHit rayHit;
+        protected int layerMask = ~(1 << 12);
 
         protected override void MyInput()
         {
@@ -45,7 +46,7 @@ namespace Guns
         protected override void Shoot()
         {
             // Plays shoot sound
-            photonView.RPC("PlayShotSound", RpcTarget.All);
+            photonView.RPC("SpawnShotEffects", RpcTarget.All);
             
             readyToShoot = false;
             
@@ -58,19 +59,24 @@ namespace Guns
             Vector3 direction = holder.playerCamera.transform.forward;
             
             // The raycast starting from the camera with the spread added
-            if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range))
+            if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range, layerMask))
             {
                 photonView.RPC("SpawnBulletTrail", RpcTarget.All, new Vector3[] { barrelTip.transform.position, rayHit.point });
 
                 //Damages the player if raycast catch a player
                 if (rayHit.collider.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayerManager))
                 {
-                    //Debug.Log($"Took Damage: {damagedPlayerManager.GetInstanceID()} - Health: {damagedPlayerManager.Health}");
                     //Damages the player
                     if (damagedPlayerManager != holder)
                     {
                         damagedPlayerManager.TakeDamage(damage, rayHit.collider.gameObject.layer, photonView.Owner);
                     }
+                    
+                    // TODO: Spawn blood effect
+                }
+                else // Not a player -> Spawn bullet hit effect
+                {
+                    photonView.RPC("SpawnBulletImpact", RpcTarget.All, rayHit.point, rayHit.normal);
                 }
             }
             else
@@ -99,9 +105,15 @@ namespace Guns
         #region RPC Methods
 
         [PunRPC]
-        void PlayShotSound()
+        void SpawnShotEffects()
         {
            weaponAudioSource.PlayOneShot(singleShotSoundEffect);
+
+           if (MuzzleFlash != null)
+           {
+               var mFlash = Instantiate(MuzzleFlash, barrelTip.transform.position, Quaternion.FromToRotation(Vector3.right, barrelTip.transform.right), barrelTip.transform);
+               Destroy(mFlash, 0.12f);
+           }
         }
 
         [PunRPC]
@@ -116,7 +128,17 @@ namespace Guns
             
             Destroy(bulletTrailEffect, 1);
         }
-        
+
+        [PunRPC]
+        void SpawnBulletImpact(Vector3 hitPos, Vector3 hitNormal)
+        {
+            GameObject hitParticleEffect = Instantiate(hitParticles, hitPos, Quaternion.FromToRotation(Vector3.up, hitNormal));
+            GameObject bulletHole = Instantiate(bulletImpact, hitPos, Quaternion.FromToRotation(Vector3.forward, hitNormal));
+            
+            Destroy(hitParticleEffect, 10);
+            Destroy(bulletHole, 30);
+        }
+
         #endregion
     }
 }

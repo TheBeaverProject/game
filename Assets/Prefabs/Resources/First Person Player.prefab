@@ -234,7 +234,6 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   weaponCamera: {fileID: 0}
   playerText: {fileID: 4056857790444228352}
-  lineRenderer: {fileID: 0}
   health: 100
   playerWeapon: {fileID: 0}
 --- !u!114 &5542504120066630004

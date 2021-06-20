@@ -186,8 +186,6 @@ MonoBehaviour:
   allowScope: 1
   scopedFOV: 50
   ScopeType: 2
-  bulletTrail: {fileID: 120648884187509030, guid: d2ec70c814159504cb3e12e99b00b151,
-    type: 3}
   allowButtonHold: 1
   timeBetweenShooting: 0.05
   reloadTime: 2
@@ -203,6 +201,16 @@ MonoBehaviour:
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   weaponAimingPlacement: {x: 0, y: -0.1, z: 0.1}
   barrelTip: {fileID: 5889173860051828954}
+  bulletTrail: {fileID: 120648884187509030, guid: d2ec70c814159504cb3e12e99b00b151,
+    type: 3}
+  bulletImpact: {fileID: 1235035097298946, guid: 13a41486f54c3634fb3e501928c77d9d,
+    type: 3}
+  hitParticles: {fileID: 1617700753897852, guid: 2fc51477906b5d44b93e53cc25b2d012,
+    type: 3}
+  bloodParticles: {fileID: 3339151769097160234, guid: be3f73e8fb6be27418fb7f2174f5828a,
+    type: 3}
+  MuzzleFlash: {fileID: 2835476056740822244, guid: 9aa30b651a3b3724aa540dcfd54709ea,
+    type: 3}
   weaponAudioSource: {fileID: 95758515374081467}
   singleShotSoundEffect: {fileID: 8300000, guid: cf32c12791a313549af7642f5f8fd998,
     type: 3}

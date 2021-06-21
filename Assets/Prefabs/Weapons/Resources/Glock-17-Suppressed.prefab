@@ -230,8 +230,9 @@ MonoBehaviour:
     type: 3}
   hitParticles: {fileID: 1930985349805526, guid: d2ec70c814159504cb3e12e99b00b151,
     type: 3}
-  bloodParticles: {fileID: 3339151769097160234, guid: be3f73e8fb6be27418fb7f2174f5828a,
+  bloodParticles: {fileID: 1796324323749053357, guid: cd20b2b7cdb3c5740abeb0d34c5325b1,
     type: 3}
+  MuzzleFlash: {fileID: 0}
   weaponAudioSource: {fileID: 3293267076768699719}
   singleShotSoundEffect: {fileID: 8300000, guid: 5ac9d7f3dd20b3c4392998f903682b97,
     type: 3}

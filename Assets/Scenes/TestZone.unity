@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3320,7 +3320,7 @@ PrefabInstance:
         type: 3}
       propertyPath: playerCamera
       value: 
-      objectReference: {fileID: 2014587405}
+      objectReference: {fileID: 0}
     - target: {fileID: 7261727423731255463, guid: 8cd203564bb27dc4cae380d3bf51963e,
         type: 3}
       propertyPath: HUD
@@ -3330,7 +3330,7 @@ PrefabInstance:
         type: 3}
       propertyPath: playerCamera
       value: 
-      objectReference: {fileID: 2014587405}
+      objectReference: {fileID: 0}
     - target: {fileID: 7261727423731255463, guid: 8cd203564bb27dc4cae380d3bf51963e,
         type: 3}
       propertyPath: playerCameraHolder
@@ -4726,12 +4726,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1cdaf4c36e5ee454a86182dd4f5024a1, type: 3}
---- !u!20 &2014587405 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 5078431293897895293, guid: 1cdaf4c36e5ee454a86182dd4f5024a1,
-    type: 3}
-  m_PrefabInstance: {fileID: 2014587404}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2014587406 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4683654419636010163, guid: 1cdaf4c36e5ee454a86182dd4f5024a1,

@@ -72,7 +72,7 @@ namespace Guns
                         damagedPlayerManager.TakeDamage(damage, rayHit.collider.gameObject.layer, photonView.Owner);
                     }
                     
-                    // TODO: Spawn blood effect
+                    photonView.RPC("SpawnBlood", RpcTarget.All, rayHit.point, rayHit.normal);
                 }
                 else // Not a player -> Spawn bullet hit effect
                 {
@@ -137,6 +137,14 @@ namespace Guns
             
             Destroy(hitParticleEffect, 2);
             Destroy(bulletHole, 2);
+        }
+
+        [PunRPC]
+        void SpawnBlood(Vector3 hitPos, Vector3 hitNormal)
+        {
+            GameObject bloodEffect = Instantiate(bloodParticles, hitPos, Quaternion.FromToRotation(Vector3.up, hitNormal));
+            
+            Destroy(bloodEffect, 2);
         }
 
         #endregion

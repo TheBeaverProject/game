@@ -132,7 +132,7 @@ MonoBehaviour:
     type: 3}
   hitParticles: {fileID: 1617700753897852, guid: 2fc51477906b5d44b93e53cc25b2d012,
     type: 3}
-  bloodParticles: {fileID: 3339151769097160234, guid: be3f73e8fb6be27418fb7f2174f5828a,
+  bloodParticles: {fileID: 1796324323749053357, guid: cd20b2b7cdb3c5740abeb0d34c5325b1,
     type: 3}
   MuzzleFlash: {fileID: 8528491135857124846, guid: 092f10139c9efac4cab9d6865fb8c5c1,
     type: 3}

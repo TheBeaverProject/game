@@ -64,18 +64,23 @@ namespace Guns
                 photonView.RPC("SpawnBulletTrail", RpcTarget.All, new Vector3[] { barrelTip.transform.position, rayHit.point });
 
                 //Damages the player if raycast catch a player
-                if (rayHit.collider.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayerManager))
+                PlayerManager damagedPlayerManager;
+                damagedPlayerManager = 
+                    (damagedPlayerManager = rayHit.collider.GetComponent<PlayerManager>()) == null ? 
+                        damagedPlayerManager = rayHit.collider.GetComponentInParent<PlayerManager>() : damagedPlayerManager;
+                
+                if (damagedPlayerManager != null) // PlayerManager found => we hit a player
                 {
-                    //Damages the player
+                    // Damages the player
                     if (damagedPlayerManager != holder)
                     {
                         damagedPlayerManager.TakeDamage(damage, rayHit.collider.gameObject.layer, photonView.Owner);
+                        photonView.RPC("SpawnBlood", RpcTarget.All, rayHit.point, rayHit.normal);
                     }
-                    
-                    photonView.RPC("SpawnBlood", RpcTarget.All, rayHit.point, rayHit.normal);
                 }
-                else // Not a player -> Spawn bullet hit effect
+                else
                 {
+                    // Not a player -> Spawn bullet hit effect
                     photonView.RPC("SpawnBulletImpact", RpcTarget.All, rayHit.point, rayHit.normal);
                 }
             }

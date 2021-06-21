@@ -145,6 +145,7 @@ namespace Scripts.Gamemodes.Mechanics
                         
                         // dominating team captures the zone
                         ZoneCapturedBy = dTeam.Code;
+                        OnZoneCaptured(Zone, ZoneCapturedBy);
                     }
                 }
             }
@@ -177,6 +178,8 @@ namespace Scripts.Gamemodes.Mechanics
             Zone.defaultColor = ZoneCapturedBy == 0 ? new Color(0, 0, 0, 0) :
                 ZoneCapturedBy == 1 ? Zone.teamColor1 : Zone.teamColor2;
         }
+
+        protected virtual void OnZoneCaptured(DominationPoint Zone, byte zoneCapturedBy) {}
 
         protected bool AreZoneCaptured => ZoneACapturedBy != 0 && ZoneACapturedBy == ZoneBCapturedBy;
 

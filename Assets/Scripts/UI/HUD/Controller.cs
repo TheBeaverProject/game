@@ -31,6 +31,7 @@ namespace UI.HUD
         public TeamPointsDisplay teamPointsDisplay;
         public KillFeedDisplay killFeedDisplay;
         public ZoneDominationDisplay zoneDominationDisplay;
+        public AnnouncementsDisplay announcementsDisplay;
         public GameObject crossHair;
 
         public HUDType currentType;
@@ -184,6 +185,11 @@ namespace UI.HUD
         {
             zoneDominationDisplay.SetZoneA((float) ZoneAPoints[1] / (float) PointsToCaptureZone, (float) ZoneAPoints[0] / (float) PointsToCaptureZone);
             zoneDominationDisplay.SetZoneB((float) ZoneBPoints[1] / (float) PointsToCaptureZone, (float) ZoneBPoints[0] / (float) PointsToCaptureZone);
+        }
+
+        public void DisplayAnnouncement(string text)
+        {
+            announcementsDisplay.AddAnnouncement(text);
         }
     }
 }

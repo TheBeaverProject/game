@@ -380,6 +380,15 @@ namespace Scripts.Gamemodes
             }
         }
         
+        protected override void OnZoneCaptured(DominationPoint Zone, byte zoneCapturedBy)
+        {
+            if (PhotonTeamsManager.Instance.TryGetTeamByCode(zoneCapturedBy, out PhotonTeam team))
+            {
+                var zoneName = Zone == ZoneA ? "A" : "B";
+                TeamManager.playerManager.HUD.DisplayAnnouncement($"{team.Name} captured zone {zoneName}!");
+            }
+        }
+        
         void UpdateDiscordActivity()
         {
             var discordController = this.gameObject.GetComponent<DiscordController>();

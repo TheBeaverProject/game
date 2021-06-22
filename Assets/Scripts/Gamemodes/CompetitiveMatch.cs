@@ -352,11 +352,11 @@ namespace Scripts.Gamemodes
 
             WinnerTeamCode = winnerTeamCode;
 
-            Invoke("ResetZones", 2);
+            Invoke("ResetZones", 4);
 
             if (PhotonNetwork.IsMasterClient)
             {
-                Invoke("RoundStartMaster", 2);
+                Invoke("RoundStartMaster", 4);
             }
         }
 

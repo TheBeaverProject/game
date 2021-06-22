@@ -43,7 +43,7 @@ namespace Scripts.Gamemodes.Mechanics
         void Update()
         {
             Collider[] surroundings = Physics.OverlapSphere(transform.position, radius, layerMask);
-            
+
             PhotonTeam newDominatingTeam = _dominatingPhotonTeam;
             
             if (surroundings.Length != 0)

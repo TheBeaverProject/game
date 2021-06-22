@@ -15,7 +15,6 @@ namespace Multiplayer
 
         public bool LocalPlayerReadyToSpawn = false;
         public bool LocalPlayerInSpecMode = false;
-        private Camera specCamera;
 
         void Update()
         {
@@ -40,17 +39,17 @@ namespace Multiplayer
             
             if (playerManager != null)
             {
-                if (playerManager.Health <= 0) // Player is dead
+                if (playerManager.Health <= 0 && !LocalPlayerInSpecMode) // Player is dead
                 {
-                    // TODO: Enter spec mode
                     playerManager.EnterSpecMode();
+                    LocalPlayerInSpecMode = true;
                 }
             }
         }
 
         public void ResetLocalPlayer()
         {
-            // TODO: Reset spec mode
+            LocalPlayerInSpecMode = false;
             playerManager = RespawnPlayer();
         }
         

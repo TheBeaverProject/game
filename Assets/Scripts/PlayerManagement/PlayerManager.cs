@@ -150,8 +150,39 @@ namespace PlayerManagement
 
         public void EnterSpecMode()
         {
-            DisableMovement();
             DisableShooting();
+            this.gameObject.GetComponent<PlayerMovementManager>().enabled = false;
+
+            // Remove the layers so player does not interact with zones and grenades
+            Utils.SetLayerRecursively(this.gameObject, 0);
+
+            GameObject playerModel = null;
+
+            foreach (var go in this.GetComponentsInChildren<Animator>())
+            {
+                Debug.Log("found " + go.name);
+                
+                if (go.name == "French")
+                {
+                    playerModel = go.gameObject;
+                }
+            }
+
+            if (playerModel == null)
+            {
+                Debug.LogWarning("PlayerManager.EnterSpecMode: Could not find the player model");
+            }
+            else
+            {
+                playerModel.SetActive(false);
+            
+                if (playerWeapon != null)
+                {
+                    playerWeapon.SetActive(false);
+                }
+            
+                HUD.DisplayAnnouncement("You've entered spec mode until the round ends.");
+            }
         }
         
         // List to hold the actor number of the players who dealt damage to this player and the dealt damage

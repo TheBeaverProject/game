@@ -52,9 +52,7 @@ namespace Guns
                 {
                     if (hit.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayer))
                     {
-                        //To fix
                         Rigidbody rb = hit.GetComponent<Rigidbody>();
-                        Debug.Log($"Grenade Explosion On Player - RigidBody: {rb.gameObject.name}");
                         damagedPlayer.TakeDamage(60, 10, photonView.Controller);
                     }
                 }

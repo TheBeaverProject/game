@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class ExplosionLight : MonoBehaviour
 {
-    private Light light;
+    private Light _light;
     
     void Start()
     {
-        if (TryGetComponent<Light>(out light))
+        if (TryGetComponent<Light>(out _light))
         {
-            StartCoroutine(Utils.SmoothTransition(f => light.intensity = Mathf.Lerp(1000, 0, f), 0.8f));
+            StartCoroutine(Utils.SmoothTransition(f => _light.intensity = Mathf.Lerp(1000, 0, f), 0.8f));
         }
     }
 }

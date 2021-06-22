@@ -44,6 +44,7 @@ namespace Guns
             }
             
             Rigidbody rb = grenade.GetComponent<Rigidbody>();
+            grenade.transform.localScale = new Vector3(2f, 2f, 2f);
             
             rb.AddForce(forward * throwForce, ForceMode.VelocityChange);
         }

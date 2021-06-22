@@ -7,16 +7,16 @@ namespace Guns
 {
     public class Grenade : MonoBehaviourPun
     {
-        private float delay = 3f;
-        private float countDown;
+        public float delay = 3f;
+        public float countDown;
         private bool hasExploded;
-        private float radius = 5f;
-        private float force = 400f;
-        //private GameObject effect;
+        public float radius = 5f;
+        public float force = 400f;
+        public GameObject effect;
 
         // Sound Effects
         public AudioClip explosionSound;
-        
+
         private void Start()
         {
             //Starts grenade countdown
@@ -37,25 +37,29 @@ namespace Guns
 
         private void Explode()
         {
-            //Instantiate(effect, transform.position, transform.rotation);
-            //Plays Sound
-            AudioSource.PlayClipAtPoint(explosionSound, transform.position);
-            //Gets all collider in radius range
-            Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+            var eff = Instantiate(effect, transform.position, Quaternion.identity);
+            Destroy(eff, delay + 3);
 
-            foreach (Collider hit in colliders)
+            //Plays Sound
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position, 10);
+
+            if (photonView.IsMine) // Execute explosions damages only if we are the owner of the grenade
             {
-                if (hit.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayer))
+                //Gets all collider in radius range
+                Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+
+                foreach (Collider hit in colliders)
                 {
-                    //To fix
-                    Rigidbody rb = hit.GetComponent<Rigidbody>();
-                    Debug.Log($"Grenade Explosion On Player - RigidBody: {rb.gameObject.name}");
-                    rb.AddExplosionForce(force,transform.position,radius); //TODO: Explosion force not working
-                    //TODO: Grenade Damages
+                    if (hit.TryGetComponent<PlayerManager>(out PlayerManager damagedPlayer))
+                    {
+                        Rigidbody rb = hit.GetComponent<Rigidbody>();
+                        damagedPlayer.TakeDamage(60, 10, photonView.Controller);
+                    }
                 }
+
+                //Destroys object
+                PhotonNetwork.Destroy(gameObject);
             }
-            //Destroys object
-            PhotonNetwork.Destroy(gameObject);
         }
     }
 }

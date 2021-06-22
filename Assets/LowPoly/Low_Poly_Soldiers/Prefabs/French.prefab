@@ -257,10 +257,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.06637464
-  m_Height: 0.5731246
+  m_Radius: 0.07264385
+  m_Height: 0.3471775
   m_Direction: 1
-  m_Center: {x: 0.00240242, y: 0.23303752, z: 0.00000006528866}
+  m_Center: {x: 0.008671667, y: 0.120063916, z: 0.000000034555242}
 --- !u!1 &1167105511582858
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,6 +362,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4698032794636048}
+  - component: {fileID: 3272004490021252259}
   m_Layer: 0
   m_Name: mixamorig_LeftForeArm
   m_TagString: Untagged
@@ -385,6 +386,20 @@ Transform:
   m_Father: {fileID: 4619832577997530}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &3272004490021252259
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196223000161022}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.07264385
+  m_Height: 0.3471775
+  m_Direction: 1
+  m_Center: {x: 0.008671667, y: 0.120063916, z: 0.000000034555242}
 --- !u!1 &1207438209513302
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,6 +1405,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4719629652112740}
+  - component: {fileID: 5679597368800191366}
   m_Layer: 0
   m_Name: mixamorig_RightForeArm
   m_TagString: Untagged
@@ -1413,6 +1429,20 @@ Transform:
   m_Father: {fileID: 4290645259892524}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5679597368800191366
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689222609192830}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.07264385
+  m_Height: 0.3471775
+  m_Direction: 1
+  m_Center: {x: 0.008671667, y: 0.120063916, z: 0.000000034555242}
 --- !u!1 &1693076025024150
 GameObject:
   m_ObjectHideFlags: 0
@@ -2320,9 +2350,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.07264385
-  m_Height: 0.5731246
+  m_Height: 0.3471775
   m_Direction: 1
-  m_Center: {x: 0.008671648, y: 0.2330375, z: 0.0000000675226}
+  m_Center: {x: 0.008671667, y: 0.120063916, z: 0.000000034555242}
 --- !u!1 &1974103488070144
 GameObject:
   m_ObjectHideFlags: 0

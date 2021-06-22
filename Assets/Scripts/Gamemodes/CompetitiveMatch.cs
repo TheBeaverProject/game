@@ -276,7 +276,7 @@ namespace Scripts.Gamemodes
         }
 
         [PunRPC]
-        void RoundStart()
+        void RoundStart(byte winnerTeamCode)
         {
             Debug.LogWarning("--------- New round Starting ----------");
             
@@ -289,6 +289,10 @@ namespace Scripts.Gamemodes
             
             RoundsManager.ResetLocalPlayer();
             UpdateTeammatesOnHud();
+            if (PhotonTeamsManager.Instance.TryGetTeamByCode(winnerTeamCode, out PhotonTeam winnerTeam))
+            {
+                RoundsManager.playerManager.HUD.DisplayAnnouncement($"{winnerTeam.Name} won the round!");
+            }
         }
         
         [PunRPC]
@@ -334,6 +338,7 @@ namespace Scripts.Gamemodes
 
         #region Management
 
+        private byte WinnerTeamCode;
         private void RoundEnd(byte winnerTeamCode)
         {
             if (winnerTeamCode == 1)
@@ -345,21 +350,20 @@ namespace Scripts.Gamemodes
                 Team2Rounds++;
             }
 
-            if (PhotonTeamsManager.Instance.TryGetTeamByCode(winnerTeamCode, out PhotonTeam winnerTeam))
-            {
-                RoundsManager.playerManager.HUD.DisplayAnnouncement($"{winnerTeam.Name} won the round!");
-            }
+            WinnerTeamCode = winnerTeamCode;
+
+            Invoke("ResetZones", 4);
 
             if (PhotonNetwork.IsMasterClient)
             {
-                Invoke("RoundStartMaster", 2);
+                Invoke("RoundStartMaster", 4);
             }
         }
 
         private void RoundStartMaster()
         {
             photonView.RPC("RestartTimer", RpcTarget.AllBufferedViaServer, PhotonNetwork.Time, DateTimeOffset.Now.ToUnixTimeSeconds() + (long) (RoundDurationInMinutes * 60));
-            photonView.RPC("RoundStart", RpcTarget.AllViaServer);
+            photonView.RPC("RoundStart", RpcTarget.AllViaServer, WinnerTeamCode);
         }
 
         void GameEnd(byte winner)

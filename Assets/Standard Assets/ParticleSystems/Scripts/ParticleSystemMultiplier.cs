@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 
 namespace UnityStandardAssets.Effects
 {
@@ -9,7 +10,7 @@ namespace UnityStandardAssets.Effects
 
         public float multiplier = 1;
 
-
+        
         private void Start()
         {
             var systems = GetComponentsInChildren<ParticleSystem>();

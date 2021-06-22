@@ -1613,12 +1613,12 @@ GameObject:
   - component: {fileID: 3411205110741679233}
   - component: {fileID: 3411205110741679232}
   m_Layer: 5
-  m_Name: Dash
+  m_Name: Grenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3411205110741679233
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1655,7 +1655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldownSlider: {fileID: 3411205110536451418}
-  dashIcon: {fileID: 3411205111015995145}
+  grenadeIcon: {fileID: 3411205111015995145}
   cdText: {fileID: 3411205110864373917}
   keyText: {fileID: 3411205112152293119}
 --- !u!1 &3411205110781045788
@@ -2304,17 +2304,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3411205111015995145}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.009005015, w: -0.99995947}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3411205110741679233}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.0320001}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.35502, y: 8.62}
-  m_SizeDelta: {x: 45.310303, y: 45.81424}
+  m_AnchoredPosition: {x: -2.2899933, y: 7.990013}
+  m_SizeDelta: {x: 54.5112, y: 55.11747}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3411205111015995146
 CanvasRenderer:
@@ -2343,7 +2343,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d2481684df040da47afd43376fc9396a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 35339db8d2679cf4aaba83023a5b288b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4444,6 +4444,7 @@ MonoBehaviour:
   killFeedDisplay: {fileID: 829303362755936740}
   zoneDominationDisplay: {fileID: 361959249771384889}
   announcementsDisplay: {fileID: 2067152393246962507}
+  grenadeDisplay: {fileID: 3411205110741679232}
   crossHair: {fileID: 3411205110877576565}
   currentType: 0
 --- !u!1 &3411205111931128616
@@ -5274,7 +5275,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SHIFT
+  m_text: G
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}

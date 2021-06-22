@@ -92,11 +92,11 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430369683734204}
   serializedVersion: 2
-  m_Mass: 10
+  m_Mass: 1
   m_Drag: 1
   m_AngularDrag: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -112,7 +112,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 30
+  m_CookingOptions: -1
   m_Mesh: {fileID: 4300000, guid: 13edc69e817b78247adf940e49955f64, type: 3}
 --- !u!114 &-3367261770944334274
 MonoBehaviour:
@@ -148,6 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc6ef726cc7447abcde6e64e442e634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delay: 3
+  countDown: 0
+  radius: 15
+  force: 400
+  effect: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 3}
   explosionSound: {fileID: 8300000, guid: 5a92d956602d4cc418b4e487360b5e3c, type: 3}
 --- !u!1 &1811364333216238
 GameObject:

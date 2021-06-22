@@ -1,5 +1,6 @@
 ﻿using System;
 using Photon.Pun;
+using PlayerManagement;
 using UnityEngine;
 
 namespace Guns
@@ -8,6 +9,12 @@ namespace Guns
     {
         public float throwForce = 20f;
         public GameObject grenadePrefab;
+        public PlayerManager holder;
+
+        private void Start()
+        {
+            holder = GetComponentInParent<PlayerManager>();
+        }
 
         private void Update()
         {
@@ -19,9 +26,26 @@ namespace Guns
 
         private void ThrowGrenade()
         {
-            GameObject grenade = PhotonNetwork.Instantiate(grenadePrefab.name, transform.position, transform.rotation);
+            GameObject grenade;
+
+            Vector3 forward = holder != null
+                ? holder.playerCamera.transform.forward
+                : transform.forward;
+            
+            Vector3 pos = transform.position + (forward *  1.5f);
+            
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+                grenade = PhotonNetwork.Instantiate(grenadePrefab.name, pos, transform.rotation);
+            }
+            else
+            {
+                grenade = Instantiate(grenadePrefab, pos, transform.rotation);
+            }
+            
             Rigidbody rb = grenade.GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * throwForce, ForceMode.VelocityChange);
+            
+            rb.AddForce(forward * throwForce, ForceMode.VelocityChange);
         }
     }
 }

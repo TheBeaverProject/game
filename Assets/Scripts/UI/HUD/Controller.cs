@@ -7,6 +7,7 @@ using Scripts;
 using Scripts.UI.HUD.DisplayControllers;
 using TMPro;
 using UI.HUD.DisplayControllers;
+using UI.HUD.DisplayControllers.Abilities;
 using UnityEngine;
 
 namespace UI.HUD
@@ -32,6 +33,7 @@ namespace UI.HUD
         public KillFeedDisplay killFeedDisplay;
         public ZoneDominationDisplay zoneDominationDisplay;
         public AnnouncementsDisplay announcementsDisplay;
+        public GrenadeDisplay grenadeDisplay;
         public GameObject crossHair;
 
         public HUDType currentType;
@@ -52,6 +54,8 @@ namespace UI.HUD
             {
                 ScoreBoard.Container.SetActive(false);
             }
+            
+            grenadeDisplay.UpdateCooldownDisplay();
         }
 
         /// <summary>

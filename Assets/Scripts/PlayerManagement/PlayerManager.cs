@@ -8,8 +8,10 @@ using Photon.Realtime;
 using Scripts;
 using TMPro;
 using UI;
-using UI.Effects;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using ChromaticAberration = UI.Effects.ChromaticAberration;
 using Random = UnityEngine.Random;
 
 namespace PlayerManagement
@@ -69,6 +71,16 @@ namespace PlayerManagement
                 playerText.text = $"{photonView.Controller.NickName}";
                 return;
             }
+
+            _volume = FindObjectOfType<Volume>();
+            _volume.profile.TryGet(out _chromaticAberration);
+            _volume.profile.TryGet(out _colorAdjustments);
+            
+            // Fix a l'arrache pour avoir les bonnes valeurs quand on spawn
+            _chromaticAberration.intensity.value = 0;
+            _colorAdjustments.saturation.value = 8.3f;
+            
+            satPrevValue = _colorAdjustments.saturation.value;
 
             HUD.playerName.text = PhotonNetwork.NickName;
         }
@@ -148,6 +160,8 @@ namespace PlayerManagement
             this.gameObject.GetComponent<PlayerMovementManager>().enabled = true;
         }
 
+        private ColorAdjustments _colorAdjustments;
+        private float satPrevValue;
         public void EnterSpecMode()
         {
             DisableShooting();
@@ -155,6 +169,12 @@ namespace PlayerManagement
 
             // Remove the layers so player does not interact with zones and grenades
             Utils.SetLayerRecursively(this.gameObject, 0);
+
+            // Set the screen in surveillance camera like
+            _colorAdjustments.saturation.value = -100f;
+            _chromaticAberration.intensity.value = 1f;
+            
+            playerText.text = "[Spec] " + playerText.text;
 
             GameObject playerModel = null;
 
@@ -183,6 +203,13 @@ namespace PlayerManagement
             
                 HUD.DisplayAnnouncement("You've entered spec mode until the round ends.");
             }
+        }
+
+        public void ExitSpecMode()
+        {
+            // Reset the screen effects
+            _colorAdjustments.saturation.value = satPrevValue;
+            _chromaticAberration.intensity.value = 0f;
         }
         
         // List to hold the actor number of the players who dealt damage to this player and the dealt damage
@@ -250,26 +277,27 @@ namespace PlayerManagement
             photonView.RPC("UpdateHealth", RpcTarget.AllViaServer, newHealth, dealer.ActorNumber);
         }
 
+        private Volume _volume;
+        private UnityEngine.Rendering.Universal.ChromaticAberration _chromaticAberration;
         [PunRPC] 
         void DamageEffect(float amount)
         {
             if (!photonView.IsMine) return;   
             
             var effScript = playerCamera.GetComponent<ChromaticAberration>();
-            float duration = 0.2f;
-            float maxX = Mathf.Clamp(Random.Range(-amount / 100, amount / 100), -1.5f, -1.5f);
-            float maxY = Mathf.Clamp(Random.Range(-amount / 100, amount / 100), -1.5f, -1.5f);
-            
+            float duration = 0.4f;
+            float clampedAmout = amount / 100;
+
             StartCoroutine(Utils.SmoothTransition(f =>
-                effScript.ChromaticAbberation =
-                    new Vector2(Mathf.SmoothStep(0, maxX, f), Mathf.SmoothStep(0, maxY, f))
-                , duration / 2, () =>
             {
-                StartCoroutine(Utils.SmoothTransition(f => 
-                    effScript.ChromaticAbberation =
-                        new Vector2(Mathf.SmoothStep(maxX, 0, f), Mathf.SmoothStep(maxY, 0, f))
-                    , duration / 2));
-            }));
+                _chromaticAberration.intensity.value = Mathf.SmoothStep(0, clampedAmout, f);
+            }, duration / 4, (() =>
+            {
+                StartCoroutine(Utils.SmoothTransition(f =>
+                {
+                    _chromaticAberration.intensity.value = Mathf.SmoothStep(clampedAmout, 0, f);
+                }, duration / 2 + duration / 4));
+            })));
         }
 
         [PunRPC] 

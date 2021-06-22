@@ -8,19 +8,25 @@ namespace Guns
     public class GrenadeThrow : MonoBehaviourPun
     {
         public float throwForce = 20f;
+        public float cooldown = 20;
         public GameObject grenadePrefab;
         public PlayerManager holder;
 
+        private float nextThrowIn = 0;
+        
         private void Start()
         {
             holder = GetComponentInParent<PlayerManager>();
+            nextThrowIn = Time.time;
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.G))
+            if (Input.GetKeyDown(KeyCode.G) && nextThrowIn <= Time.time)
             {
+                nextThrowIn = Time.time + cooldown;
                 ThrowGrenade();
+                holder.HUD.grenadeDisplay.DisplayCooldown(cooldown);
             }
         }
 

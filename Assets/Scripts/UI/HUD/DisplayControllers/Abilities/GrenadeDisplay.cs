@@ -1,14 +1,16 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI.HUD.DisplayControllers.Abilities
 {
-    public class DashDisplay : MonoBehaviour
+    public class GrenadeDisplay : MonoBehaviour
     {
         public Slider cooldownSlider;
-        public GameObject dashIcon;
+        [FormerlySerializedAs("dashIcon")]
+        public GameObject grenadeIcon;
         public TextMeshProUGUI cdText;
         public TextMeshProUGUI keyText;
 
@@ -24,10 +26,12 @@ namespace UI.HUD.DisplayControllers.Abilities
             this.endTime = startTime + cooldown;
             
             // Hide icon
-            dashIcon.SetActive(false);
+            grenadeIcon.SetActive(false);
 
             cooldownSlider.maxValue = cooldown;
         }
+        
+        
 
         // TODO: better way to display the keys from the config
         public void UpdateAssignedKey(KeyCode key)
@@ -35,7 +39,7 @@ namespace UI.HUD.DisplayControllers.Abilities
             keyText.text = key.ToString().ToUpper();
         }
 
-        private void UpdateCooldownDisplay()
+        public void UpdateCooldownDisplay()
         {
             float currentTime = Time.time - this.startTime;
             float elapsedTime = this.endTime - Time.time;
@@ -51,7 +55,7 @@ namespace UI.HUD.DisplayControllers.Abilities
                 // Resetting Slider, Text and Icon
                 cdText.text = "";
                 cooldownSlider.value = cooldownSlider.maxValue;
-                dashIcon.SetActive(true);
+                grenadeIcon.SetActive(true);
             }
         }
     }

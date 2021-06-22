@@ -46,8 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 40
+  cooldown: 20
   grenadePrefab: {fileID: 3640159830457496505, guid: 1fdada0efd4a6f8468e0aa764f17aa23,
     type: 3}
+  holder: {fileID: 0}
 --- !u!114 &2986529213311322837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,7 +77,6 @@ GameObject:
   - component: {fileID: 2077438405598926987}
   - component: {fileID: 5852214580758678154}
   - component: {fileID: 5104762957095764515}
-  - component: {fileID: 2065686576478854396}
   - component: {fileID: 4034143548837725689}
   - component: {fileID: 1315786308640906350}
   m_Layer: 12
@@ -122,21 +123,6 @@ MonoBehaviour:
   mouseSensitivity: 100
   playerBody: {fileID: 0}
   followCursor: 1
---- !u!114 &2065686576478854396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7097845439246918892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f61278e438c8824c98bea6b20d32c62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Enable: 1
-  curShader: {fileID: 4800000, guid: e0e6bba3c414a4340bee6142df0710ab, type: 3}
-  ChromaticAbberation: {x: 0, y: 0}
 --- !u!20 &4034143548837725689
 Camera:
   m_ObjectHideFlags: 0

@@ -41,7 +41,7 @@ namespace Guns
             Destroy(eff, delay + 3);
 
             //Plays Sound
-            AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position, 10);
 
             if (photonView.IsMine) // Execute explosions damages only if we are the owner of the grenade
             {

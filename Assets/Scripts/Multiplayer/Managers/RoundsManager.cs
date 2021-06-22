@@ -49,6 +49,7 @@ namespace Multiplayer
 
         public void ResetLocalPlayer()
         {
+            playerManager.ExitSpecMode();
             LocalPlayerInSpecMode = false;
             playerManager = RespawnPlayer();
         }

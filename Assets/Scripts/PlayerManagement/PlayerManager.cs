@@ -117,22 +117,33 @@ namespace PlayerManagement
                 PhotonNetwork.Destroy(playerWeapon);
             }
             
-            var transform = playerCamera.transform;
-            playerWeapon = PhotonNetwork.Instantiate(gunPrefab.name, transform.position, transform.rotation, 0);
+            if (Type == PlayerType.IA)
+            {
+                playerWeapon = PhotonNetwork.Instantiate(gunPrefab.name, this.transform.position, this.transform.rotation);
+                
+                // Sets the gun as the children of the playerManager holder
+                playerWeapon.transform.SetParent(this.transform);
+                
+                
+            }
+            else
+            {
+                var transform = playerCamera.transform;
+                playerWeapon = PhotonNetwork.Instantiate(gunPrefab.name, transform.position, transform.rotation, 0);
             
-            // Sets the gun as the children of the camera
-            playerWeapon.transform.SetParent(transform);
+                // Sets the gun as the children of the camera
+                playerWeapon.transform.SetParent(transform);
             
-            // Sets the layer so it is rendered by the weaponCamera
-            Utils.SetLayerRecursively(playerWeapon, 12);
-            playerWeapon.layer = 12;
-            
+                // Sets the layer so it is rendered by the weaponCamera
+                Utils.SetLayerRecursively(playerWeapon, 12);
+                playerWeapon.layer = 12;
 
-            // Position correctly the gun
-            // Local values so it looks good on camera
-            playerWeapon.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
-            playerWeapon.transform.localPosition = playerWeapon.GetComponent<Gunnable>().weaponCameraPlacement;
-            playerWeapon.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                // Position correctly the gun
+                // Local values so it looks good on camera
+                playerWeapon.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
+                playerWeapon.transform.localPosition = playerWeapon.GetComponent<Gunnable>().weaponCameraPlacement;
+                playerWeapon.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            }
 
             // Sets the holder of the gun
             var GunnableScript = playerWeapon.GetComponent<Gunnable>();

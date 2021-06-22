@@ -317,7 +317,7 @@ namespace PlayerManagement
         [PunRPC] 
         void DamageEffect(float amount)
         {
-            if (!photonView.IsMine) return;   
+            if (!photonView.IsMine || Type == PlayerType.IA) return;   
             
             var effScript = playerCamera.GetComponent<ChromaticAberration>();
             float duration = 0.4f;
@@ -342,7 +342,7 @@ namespace PlayerManagement
             
             Health = newHealth;
             
-            if (PhotonNetwork.IsConnected && photonView.IsMine)
+            if (PhotonNetwork.IsConnected && photonView.IsMine && Type != PlayerType.IA)
             {
                 HUD.healthDisplay.SetHUDHealth(Health);
             }

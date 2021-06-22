@@ -5,6 +5,7 @@ using PlayerManagement;
 using Scripts;
 using UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Guns
 {
@@ -33,10 +34,9 @@ namespace Guns
         
         [SerializeField]
         public float scopedFOV = 30f;
-        
+
         [SerializeField]
         public ScopeHUDController.scopeType ScopeType;
-        public LineRenderer lineRenderer;
         
         // Weapon Behavior
         [Header("Weapon Behavior")]
@@ -81,6 +81,19 @@ namespace Guns
 
         [Tooltip("Position of extremity of the barrel")]
         public GameObject barrelTip;
+
+        // Visual Effects
+        [Header("Visual Effects")] 
+        [FormerlySerializedAs("lineRenderer")]
+        public LineRenderer bulletTrail;
+        
+        public GameObject bulletImpact;
+
+        public GameObject hitParticles;
+        
+        public GameObject bloodParticles;
+        
+        public GameObject MuzzleFlash;
 
         // Sound Effects
         [Header("Sound Effects")]
@@ -256,8 +269,6 @@ namespace Guns
                 {
                     // Sets the parent if the gun is not ours
                     transform.SetParent(holder.transform);
-
-                    this.lineRenderer = holder.lineRenderer;
 
                     transform.position = holder.transform.position;
                     transform.rotation = holder.transform.rotation;

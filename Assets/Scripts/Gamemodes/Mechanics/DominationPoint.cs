@@ -4,6 +4,7 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using PlayerManagement;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scripts.Gamemodes.Mechanics
 {
@@ -16,7 +17,8 @@ namespace Scripts.Gamemodes.Mechanics
         
         private int layerMask;
 
-        new public ParticleSystem particleSystem;
+        [FormerlySerializedAs("particleSystem")]
+        public ParticleSystem _particleSystem;
         public Color defaultColor = new Color(0, 0, 0, 0);
         public Color teamColor1 = new Color(0, 235, 248);
         public Color teamColor2 = new Color(229, 0, 0);
@@ -32,7 +34,7 @@ namespace Scripts.Gamemodes.Mechanics
         void Start()
         {
             _dominatingPhotonTeam = null;
-            var _mainModule = particleSystem.main;
+            var _mainModule = _particleSystem.main;
             _mainModule.startColor = defaultColor;
             layerMask = 1 << selectedLayer;
         }
@@ -90,7 +92,7 @@ namespace Scripts.Gamemodes.Mechanics
             if (newDominatingTeam != _dominatingPhotonTeam)
             {
                 _dominatingPhotonTeam = newDominatingTeam;
-                var _mainModule = particleSystem.main;
+                var _mainModule = _particleSystem.main;
                 var color = _dominatingPhotonTeam == null ? defaultColor : _dominatingPhotonTeam.Code == 1 ? teamColor1 : teamColor2;
                 _mainModule.startColor = color;
             }
@@ -143,6 +145,7 @@ namespace Scripts.Gamemodes.Mechanics
                         
                         // dominating team captures the zone
                         ZoneCapturedBy = dTeam.Code;
+                        OnZoneCaptured(Zone, ZoneCapturedBy);
                     }
                 }
             }
@@ -175,6 +178,8 @@ namespace Scripts.Gamemodes.Mechanics
             Zone.defaultColor = ZoneCapturedBy == 0 ? new Color(0, 0, 0, 0) :
                 ZoneCapturedBy == 1 ? Zone.teamColor1 : Zone.teamColor2;
         }
+
+        protected virtual void OnZoneCaptured(DominationPoint Zone, byte zoneCapturedBy) {}
 
         protected bool AreZoneCaptured => ZoneACapturedBy != 0 && ZoneACapturedBy == ZoneBCapturedBy;
 

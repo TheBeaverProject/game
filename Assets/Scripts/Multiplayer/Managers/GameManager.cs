@@ -7,6 +7,7 @@ using UI;
 using UI.BuyMenu;
 using UI.HUD;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 namespace Multiplayer
@@ -102,15 +103,17 @@ namespace Multiplayer
             playerManager.playerCameraHolder = clientCameraHolder;
             playerManager.playerCamera = clientCamera;
             playerManager.weaponCamera = clientWeaponCamera;
-            
+
             // Assign the HUD to the playerManager
             playerManager.HUD = clientHUD.GetComponent<Controller>();
 
             // Place the camera correctly and set the FOV according to the Player's settings
             clientCamera.GetComponent<MouseLook>().playerBody = clientPlayer.transform;
-            clientCameraHolder.transform.position += new Vector3(0, 0.8f);
+            clientCameraHolder.transform.position += new Vector3(0, 0.7f);
             clientCamera.fieldOfView = PlayerPrefs.HasKey(PlayerPrefKeys.FOV) ? PlayerPrefs.GetInt(PlayerPrefKeys.FOV) : 70;
-
+            var cameraData = clientCamera.GetUniversalAdditionalCameraData();
+            cameraData.cameraStack.Add(clientWeaponCamera);
+            
             // Associate the HUD to the Render Camera
             InitCameraOnUIElement(clientHUD, clientCamera);
             clientESCMenu.GetComponent<Canvas>().worldCamera = clientCamera;

@@ -321,6 +321,15 @@ namespace Scripts.Gamemodes
             PlayersData.SetPlayerState(eventData["deadActorNum"], false);
         }
 
+        protected override void OnZoneCaptured(DominationPoint Zone, byte zoneCapturedBy)
+        {
+            if (PhotonTeamsManager.Instance.TryGetTeamByCode(zoneCapturedBy, out PhotonTeam team))
+            {
+                var zoneName = Zone == ZoneA ? "A" : "B";
+                RoundsManager.playerManager.HUD.DisplayAnnouncement($"{team.Name} captured zone {zoneName}!");
+            }
+        }
+
         #endregion
 
         #region Management
@@ -334,6 +343,11 @@ namespace Scripts.Gamemodes
             else if (winnerTeamCode == 2)
             {
                 Team2Rounds++;
+            }
+
+            if (PhotonTeamsManager.Instance.TryGetTeamByCode(winnerTeamCode, out PhotonTeam winnerTeam))
+            {
+                RoundsManager.playerManager.HUD.DisplayAnnouncement($"{winnerTeam.Name} won the round!");
             }
 
             if (PhotonNetwork.IsMasterClient)

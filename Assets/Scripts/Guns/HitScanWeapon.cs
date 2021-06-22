@@ -43,6 +43,22 @@ namespace Guns
             }
         }
 
+        protected override void AIInput()
+        {
+            if (holder == null)
+                return;
+
+            if (!reloading && bulletsLeft <= 0)
+                Reload();
+
+            if (AIShooting && readyToShoot && !reloading && bulletsLeft > 0)
+            {
+                AIShooting = false; // Reset the state of AIShooting so only one bullet is fired.
+                bulletsShot = bulletsPerTap;
+                Shoot();
+            }
+        }
+
         protected override void Shoot()
         {
             // Plays shoot sound

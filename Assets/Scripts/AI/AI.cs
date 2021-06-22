@@ -146,6 +146,7 @@ public class AI : MonoBehaviour
             state = State.Follow;
         }
         LookTarget();
+        weapon.GetComponent<Gunnable>().AIShooting = true;
     }
 
     void LookTarget()
@@ -155,8 +156,7 @@ public class AI : MonoBehaviour
         
         Quaternion lookRotation = Quaternion.LookRotation(lookDirection);
         transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation,Time.deltaTime*agent.angularSpeed);
-
-        weapon.GetComponent<Gunnable>().AIShooting = true;
+        
     }
     
 }

@@ -99,6 +99,8 @@ namespace Guns
         [Header("Sound Effects")]
         public AudioSource weaponAudioSource;
         public AudioClip singleShotSoundEffect;
+
+        [Header("AI related")] public bool AIShooting;
         
         protected int bulletsLeft, bulletsShot, magazineUsed = 0;
         public int GetMagSize => magazineSize;
@@ -150,8 +152,10 @@ namespace Guns
             if (!AllowShooting)
                 return;
 
-            //MyInput dictates weapon beahvior
-            MyInput();
+            if (holder.Type == PlayerType.Client)
+                MyInput();
+            else
+                AIInput();
         }
 
         private void OnDestroy()
@@ -168,6 +172,8 @@ namespace Guns
         #region Input Mechanics
         
         protected abstract void MyInput();
+
+        protected abstract void AIInput();
 
         #endregion
         

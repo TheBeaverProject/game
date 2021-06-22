@@ -16,6 +16,11 @@ using Random = UnityEngine.Random;
 
 namespace PlayerManagement
 {
+    public enum PlayerType
+    {
+        Client,
+        IA
+    }
     public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         #region Public Fields
@@ -46,6 +51,8 @@ namespace PlayerManagement
 
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
+        
+        public PlayerType Type;
 
         #endregion
 

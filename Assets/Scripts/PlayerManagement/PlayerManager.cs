@@ -54,6 +54,8 @@ namespace PlayerManagement
         
         public PlayerType Type;
 
+        public Transform shootingTransform;
+
         #endregion
 
 
@@ -89,7 +91,17 @@ namespace PlayerManagement
             
             satPrevValue = _colorAdjustments.saturation.value;
 
-            HUD.playerName.text = PhotonNetwork.NickName;
+            if (Type == PlayerType.Client)
+            {
+                HUD.playerName.text = PhotonNetwork.NickName;
+                this.gameObject.name = PhotonNetwork.NickName;
+            }
+            else
+            {
+                int numberOfBot = FindObjectsOfType<AI>().Length;
+                playerText.text = $"Bot #{numberOfBot + 1}";
+                this.gameObject.name = $"Bot #{numberOfBot + 1}";
+            }
         }
 
         #endregion
@@ -182,6 +194,11 @@ namespace PlayerManagement
         private float satPrevValue;
         public void EnterSpecMode()
         {
+            if (Type == PlayerType.IA)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+                return;
+            }
             DisableShooting();
             this.gameObject.GetComponent<PlayerMovementManager>().enabled = false;
 

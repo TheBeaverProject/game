@@ -133,7 +133,7 @@ namespace Guns
             if (photonView.Owner == null)
                 return;
 
-            if (photonView.IsMine)
+            if (photonView.IsMine && holder.Type == PlayerType.Client)
             {
                 // Update the HUD
                 holder.HUD.UpdateWeaponDisplay(this);

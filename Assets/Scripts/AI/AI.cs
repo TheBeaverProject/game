@@ -41,11 +41,12 @@ public class AI : MonoBehaviour
 
     private Vector3 directionToTarget;
     
+    
     private void Start()
     {
         PlayerManager = GetComponent<PlayerManager>();
         dest = Destinations.GetComponentsInChildren<Transform>();
-        state = State.Patrol;
+        state = State.Attack;
     }
 
     
@@ -65,12 +66,12 @@ public class AI : MonoBehaviour
         CheckForPlayer();
         switch (state)
         {
-            case State.Patrol:
-                Patrol();
-                break;
-            case State.Follow:
-                Follow();
-                break;
+            //case State.Patrol:
+            //    Patrol();
+            //    break;
+            //case State.Follow:
+            //    Follow();
+            //    break;
             case State.Attack:
                 Attack();
                 break;
@@ -88,7 +89,7 @@ public class AI : MonoBehaviour
 
     void CheckForPlayer()
     {
-        Collider[] allPlayers = Physics.OverlapSphere(transform.position, 70, 1<<10);
+        Collider[] allPlayers = Physics.OverlapSphere(transform.position, 70, LayerMask.GetMask("playerMain"));
         List<Transform> ennemies = new List<Transform>();
         foreach (Collider col in allPlayers)
         {
@@ -146,7 +147,7 @@ public class AI : MonoBehaviour
             state = State.Follow;
         }
         LookTarget();
-        weapon.GetComponent<Gunnable>().AIShooting = true;
+        PlayerManager.playerWeapon.GetComponent<Gunnable>().AIShooting = true;
     }
 
     void LookTarget()

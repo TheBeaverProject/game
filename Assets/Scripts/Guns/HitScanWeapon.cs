@@ -72,10 +72,12 @@ namespace Guns
                 holder.playerCameraHolder.GetComponent<CameraRecoil>().Recoil(aiming);
             }
             
-            Vector3 direction = holder.playerCamera.transform.forward;
+            var shootOriginTransform = holder.playerCamera == null ? holder.shootingTransform : holder.playerCamera.transform;
+
+            Vector3 direction = shootOriginTransform.forward;
             
             // The raycast starting from the camera with the spread added
-            if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range, layerMask))
+            if (Physics.Raycast(shootOriginTransform.position, direction, out rayHit, range, layerMask))
             {
                 photonView.RPC("SpawnBulletTrail", RpcTarget.All, new Vector3[] { barrelTip.transform.position, rayHit.point });
 

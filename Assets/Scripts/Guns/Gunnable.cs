@@ -155,16 +155,18 @@ namespace Guns
                 Debug.Log($"{holder.gameObject.name}: Shooting Disallowed");
                 return;
             }
-                
 
-            if (holder.Type == PlayerType.Client)
+            if (holder != null)
             {
-                MyInput();
-            }
-            else
-            {
-                Debug.Log("Executing AIInput");
-                AIInput();
+                if (holder.Type == PlayerType.Client)
+                {
+                    MyInput();
+                }
+                else
+                {
+                    Debug.Log("Executing AIInput");
+                    AIInput();
+                }
             }
         }
 
@@ -214,10 +216,10 @@ namespace Guns
             //Finishes the reload
             bulletsLeft = magazineSize;
             reloading = false;
-            magazineUsed++;
 
             if (holder.Type != PlayerType.IA)
             {
+                magazineUsed++; // AI have infinite magazines because we are lazy
                 // Update the HUD
                 holder.HUD.UpdateWeaponDisplay(this);
             }

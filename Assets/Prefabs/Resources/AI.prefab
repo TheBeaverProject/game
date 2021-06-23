@@ -252,7 +252,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  Destinations: {fileID: 0}
+  Destinations: {fileID: 874408020650457079, guid: f88abbcb2448914408673b3191f1c11d,
+    type: 3}
   dest: []
   agent: {fileID: 6378301397214641576}
   PlayerManager: {fileID: 0}

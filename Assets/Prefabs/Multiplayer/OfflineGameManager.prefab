@@ -58,8 +58,15 @@ MonoBehaviour:
     type: 3}
   ScopePrefab: {fileID: 280414213823712970, guid: 8374ba47168c5814c936e93d8dcaeaa0,
     type: 3}
-  playerStartPos: {x: 0, y: 2, z: 0}
+  gamemodeController: {fileID: 0}
   launcher: {fileID: 9160655185963145094}
+  AIPlayer: {fileID: 4419865850928438867, guid: 79a2837f006cbce408d5d2d5fcdda7ea,
+    type: 3}
+  AISpawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  ReadyToSpawn: 0
+  playerManager: {fileID: 0}
 --- !u!114 &9160655185963145094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,6 +79,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f127dfa133b36e4e84a9d6f498e2ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  map: Balcony
   maxPlayersPerRoom: 10
   controlPanel: {fileID: 0}
   progressLabel: {fileID: 0}
+  GamemodeSelection: {fileID: 0}

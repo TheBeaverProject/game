@@ -200,7 +200,7 @@ namespace PlayerManagement
         {
             if (Type == PlayerType.IA)
             {
-                PhotonNetwork.Destroy(this.gameObject);
+                this.gameObject.SetActive(false);
                 return;
             }
             DisableShooting();

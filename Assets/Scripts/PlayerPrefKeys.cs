@@ -1,5 +1,7 @@
 ﻿public static class PlayerPrefKeys
 {
+    public static string HasDoneTutorial = "HasDoneTutorial";
+    
     /// <summary>
     /// Contains the player name used for multiplayer
     /// </summary>

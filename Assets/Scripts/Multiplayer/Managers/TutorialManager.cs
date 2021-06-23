@@ -217,6 +217,7 @@ namespace Scripts.Gamemodes
             yield return new WaitForSeconds(4);
             
             LeaveRoom();
+            PhotonNetwork.OfflineMode = false;
             SceneManager.LoadScene("MainMenu");
         }
     }

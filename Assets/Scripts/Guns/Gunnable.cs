@@ -141,8 +141,7 @@ namespace Guns
                 
                 // Set the recoil values on the camera script
                 holder.playerCameraHolder.GetComponent<CameraRecoil>().SetValues(this);
-            }
-            else if (holder.Type != PlayerType.IA)
+            } else if (!photonView.IsMine && !(holder?.Type == PlayerType.IA))
             {
                 FindWeaponParent();
             }

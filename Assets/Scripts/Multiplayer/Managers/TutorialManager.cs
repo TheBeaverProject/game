@@ -4,6 +4,7 @@ using Guns;
 using Multiplayer;
 using Photon.Pun;
 using PlayerManagement;
+using Scripts.Gamemodes.Mechanics;
 using UI;
 using UI.BuyMenu;
 using UI.HUD;
@@ -46,6 +47,7 @@ namespace Scripts.Gamemodes
 
                 if (PlayerPrefs.GetInt(PlayerPrefKeys.HasDoneTutorial) == 0 && !Step1Finished)
                 {
+                    Debug.Log("Starting tutorial");
                     StartCoroutine(TutorialStep1());
                 }
             }
@@ -72,7 +74,9 @@ namespace Scripts.Gamemodes
                 StartCoroutine(TutorialStep3());
             } else if (Step3Finished && !EndStarted)
             {
-                if (!Bot1.activeInHierarchy && !Bot2.activeInHierarchy)
+                var gm = gamemodeController as DominationGamemode;
+                if (!Bot1.activeInHierarchy && !Bot2.activeInHierarchy ||
+                    (gm.ZoneACapturedBy != 0 && gm.ZoneACapturedBy == gm.ZoneBCapturedBy))
                 {
                     PlayerPrefs.SetInt(PlayerPrefKeys.HasDoneTutorial, 1);
                     StartCoroutine(TutorialEnd());
@@ -108,7 +112,7 @@ namespace Scripts.Gamemodes
         {
             ReadyToSpawn = true;
             videoPlayer.Stop();
-            videoPlayer.GetComponentInParent<Canvas>().gameObject.SetActive(false);
+            videoPlayer.GetComponentInParent<Canvas>()?.gameObject.SetActive(false);
         }
 
         private bool Step1Finished = false;
@@ -154,11 +158,12 @@ namespace Scripts.Gamemodes
 
             if (playerManager.playerCameraHolder.GetComponent<GrenadeThrow>().cooldown < 20)
             {
-                // Grenade launched
+                Debug.Log("Grenade launched. Finishing Step 2");
                 Step2Finished = true;
             }
             else
             {
+                Debug.Log("Grenade not launched. Restarting Step 2");
                 StartCoroutine(TutorialStep3());
             }
         }
@@ -184,7 +189,7 @@ namespace Scripts.Gamemodes
             
             playerManager.HUD.DisplayAnnouncement("Spawning the Bots.");
 
-            Bot1 = PhotonNetwork.Instantiate(AIPlayer.name, 
+            Bot1 = PhotonNetwork.Instantiate(AIPlayer.name,
                 AISpawnPoints[0].position, AISpawnPoints[0].rotation);
             
             Bot2 = PhotonNetwork.Instantiate(AIPlayer.name, 

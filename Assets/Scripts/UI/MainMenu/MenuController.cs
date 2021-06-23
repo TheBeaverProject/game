@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using PlayerManagement;
 using Scripts;
 using TMPro;
 using UnityEngine;
@@ -88,6 +89,9 @@ namespace UI.MainMenu
 
         private void Start()
         {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            
             currentTab = HomeTab;
             currentButton = HomeButton;
             PlayTab.transform.position += new Vector3(Screen.width, 0);

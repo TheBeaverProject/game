@@ -1,4 +1,5 @@
-﻿using Guns;
+﻿using System;
+using Guns;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,6 +43,11 @@ namespace UI.BuyMenu
                 weaponScript.allowButtonHold ?
                     "Automatic" : weaponScript.bulletsPerTap > 1 ?
                         $"Burst x{weaponScript.bulletsPerTap}" : "Semi Automatic";
+        }
+
+        private void OnDestroy()
+        {
+            ClosePreview();
         }
 
         public void ClosePreview()

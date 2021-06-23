@@ -210,7 +210,8 @@ MonoBehaviour:
   MuzzleFlash: {fileID: 2835476056740822244, guid: 9aa30b651a3b3724aa540dcfd54709ea,
     type: 3}
   weaponAudioSource: {fileID: 2355722927813505470}
-  singleShotSoundEffect: {fileID: 0}
+  singleShotSoundEffect: {fileID: 8300000, guid: 0ad03c2d38d8c6046867aff413ba9d01,
+    type: 3}
   aiming: 0
   AllowShooting: 0
   holder: {fileID: 0}

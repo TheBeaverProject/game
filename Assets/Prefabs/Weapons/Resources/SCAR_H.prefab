@@ -358,8 +358,7 @@ MonoBehaviour:
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   weaponAimingPlacement: {x: 0, y: -0.14, z: 0.32}
-  barrelTip: {fileID: 355783316386710404, guid: d83ce67c6122e314d8a8eba47e3d6b3b,
-    type: 3}
+  barrelTip: {fileID: 3015874239733794290}
   bulletTrail: {fileID: 120648884187509030, guid: d2ec70c814159504cb3e12e99b00b151,
     type: 3}
   bulletImpact: {fileID: 1235035097298946, guid: 13a41486f54c3634fb3e501928c77d9d,
@@ -372,7 +371,7 @@ MonoBehaviour:
     type: 3}
   weaponAudioSource: {fileID: 4640369964523755329, guid: d83ce67c6122e314d8a8eba47e3d6b3b,
     type: 3}
-  singleShotSoundEffect: {fileID: 8300000, guid: 52ebddf3728a76746973aed9c7c0e90d,
+  singleShotSoundEffect: {fileID: 8300000, guid: ab6414533fc18eb4fa524d03a242c84d,
     type: 3}
   aiming: 0
   AllowShooting: 0

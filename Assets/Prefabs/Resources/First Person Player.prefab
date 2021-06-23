@@ -239,6 +239,7 @@ MonoBehaviour:
   BuyMenu: {fileID: 0}
   HUD: {fileID: 0}
   playerCamera: {fileID: 0}
+  allowBuy: 1
 --- !u!114 &7256758337403257194
 MonoBehaviour:
   m_ObjectHideFlags: 0

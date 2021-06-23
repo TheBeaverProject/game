@@ -694,7 +694,6 @@ MonoBehaviour:
   - {fileID: 924397973067062058, guid: 35dcd41215d31b0418f071c29d93683b, type: 3}
   - {fileID: 4221617674686306928, guid: 6c9e2b866fe4fcb49bbcecb48b0fc9b2, type: 3}
   - {fileID: 8733454776496846757, guid: d83ce67c6122e314d8a8eba47e3d6b3b, type: 3}
-  - {fileID: 825070749297733896, guid: fba21fae758aec54d99615cb808ef772, type: 3}
   HMGsList:
   - {fileID: 4847508099293230872, guid: a1f32346766e36542807309df9ff3bac, type: 3}
   ShotgunsList:
@@ -703,8 +702,7 @@ MonoBehaviour:
   SnipersList:
   - {fileID: 7898734623884308151, guid: c957c479916cd4c4a98843804ecf4ec6, type: 3}
   - {fileID: 1198812445287890, guid: 543532c11a4433d4ba152dc54082c84b, type: 3}
-  GrenadesList:
-  - {fileID: 3640159830457496505, guid: 1fdada0efd4a6f8468e0aa764f17aa23, type: 3}
+  GrenadesList: []
 --- !u!1 &5410824786014997134
 GameObject:
   m_ObjectHideFlags: 0

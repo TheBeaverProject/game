@@ -111,7 +111,7 @@ namespace Guns
 
         public bool aiming;
 
-        public bool AllowShooting = true;
+        public bool AllowShooting = false;
         
         #endregion
 
@@ -126,7 +126,6 @@ namespace Guns
         private void Start()
         {
             readyToShoot = true;
-            AllowShooting = true;
             bulletsLeft = magazineSize;
 
             if (!PhotonNetwork.IsConnected) return;

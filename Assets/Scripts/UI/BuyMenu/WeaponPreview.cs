@@ -1,5 +1,6 @@
 ﻿using System;
 using Guns;
+using Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,7 +23,7 @@ namespace UI.BuyMenu
         public void DisplayWeapon(GameObject weaponPrefab, Gunnable weaponScript)
         {
             var rotation = Quaternion.identity;
-            
+
             if (instancied != null)
             {
                 rotation = instancied.transform.rotation;
@@ -34,6 +35,8 @@ namespace UI.BuyMenu
             instancied.transform.localScale = new Vector3(2, 2, 2);
             instancied.transform.rotation = rotation;
 
+            Utils.SetLayerRecursively(instancied, 12);
+            
             weaponName.text = weaponScript.weaponName;
             damageSlider.value = weaponScript.damage;
             spreadSlider.value = weaponScript.returnSpeed + weaponScript.rotationSpeed;

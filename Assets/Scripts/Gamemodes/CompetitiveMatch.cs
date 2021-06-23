@@ -60,9 +60,10 @@ namespace Scripts.Gamemodes
             }
         }
 
+        private bool gameEnded;
         private void Update()
         {
-            if (startTimer)
+            if (startTimer && !gameEnded)
             {
                 if (PlayerManager.LocalPlayerInstance != null)
                 {
@@ -74,7 +75,7 @@ namespace Scripts.Gamemodes
                 {
                     byte winner = GetOverallWinner();
 
-                    if (winner != 0) // Game is finished
+                    if (winner != 0 && !gameEnded) // Game is finished
                     {
                         startTimer = false;
                         GameEnd(winner);
@@ -370,6 +371,9 @@ namespace Scripts.Gamemodes
         {
             // Disable movement
             RoundsManager.playerManager.DisableMovement();
+            startTimer = false;
+            gameEnded = true;
+                
             // Instantiate endgame screen
             var go = Instantiate(EndgameScreenPrefab, Vector3.zero, Quaternion.identity);
             var controller = go.GetComponent<EndGameScreenController>();

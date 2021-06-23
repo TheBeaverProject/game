@@ -152,7 +152,6 @@ namespace Guns
         {
             if (!AllowShooting)
             {
-                Debug.Log($"{holder.gameObject.name}: Shooting Disallowed");
                 return;
             }
 
@@ -164,7 +163,6 @@ namespace Guns
                 }
                 else
                 {
-                    Debug.Log("Executing AIInput");
                     AIInput();
                 }
             }

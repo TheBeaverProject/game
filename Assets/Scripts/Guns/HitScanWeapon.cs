@@ -45,32 +45,21 @@ namespace Guns
 
         protected override void AIInput()
         {
-            Debug.Log("AIInput");
-            
             if (holder == null)
             {
-                Debug.LogWarning("holder is null");
                 return;
             }
-
-
+            
             if (!reloading && bulletsLeft <= 0)
             {
-                Debug.Log($"{holder.gameObject.name}: No bullet - Reloading");
                 Reload();
             }
-                
 
             if (AIShooting && readyToShoot && !reloading && bulletsLeft > 0)
             {
-                Debug.Log($"{holder.gameObject.name}: Shooting");
                 AIShooting = false; // Reset the state of AIShooting so only one bullet is fired.
                 bulletsShot = bulletsPerTap;
                 Shoot();
-            }
-            else
-            {
-                Debug.Log($"{holder.gameObject.name}: Cannot Shoot");
             }
         }
 

@@ -43,6 +43,26 @@ namespace Guns
             }
         }
 
+        protected override void AIInput()
+        {
+            if (holder == null)
+            {
+                return;
+            }
+            
+            if (!reloading && bulletsLeft <= 0)
+            {
+                Reload();
+            }
+
+            if (AIShooting && readyToShoot && !reloading && bulletsLeft > 0)
+            {
+                AIShooting = false; // Reset the state of AIShooting so only one bullet is fired.
+                bulletsShot = bulletsPerTap;
+                Shoot();
+            }
+        }
+
         protected override void Shoot()
         {
             // Plays shoot sound
@@ -56,10 +76,12 @@ namespace Guns
                 holder.playerCameraHolder.GetComponent<CameraRecoil>().Recoil(aiming);
             }
             
-            Vector3 direction = holder.playerCamera.transform.forward;
+            var shootOriginTransform = holder.playerCamera == null ? holder.shootingTransform : holder.playerCamera.transform;
+
+            Vector3 direction = shootOriginTransform.forward;
             
             // The raycast starting from the camera with the spread added
-            if (Physics.Raycast(holder.playerCamera.transform.position, direction, out rayHit, range, layerMask))
+            if (Physics.Raycast(shootOriginTransform.position, direction, out rayHit, range, layerMask))
             {
                 photonView.RPC("SpawnBulletTrail", RpcTarget.All, new Vector3[] { barrelTip.transform.position, rayHit.point });
 
@@ -91,9 +113,12 @@ namespace Guns
             
             bulletsLeft--;
             bulletsShot--;
-            
-            // Update the HUD
-            holder.HUD.UpdateWeaponDisplay(this);
+
+            if (holder.Type != PlayerType.IA)
+            {
+                // Update the HUD
+                holder.HUD.UpdateWeaponDisplay(this);
+            }
             
             //Calls ResetShot method after timeBetweenShooting time
             Invoke("ResetShot", timeBetweenShooting);

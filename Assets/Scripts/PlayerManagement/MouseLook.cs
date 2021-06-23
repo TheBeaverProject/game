@@ -19,7 +19,7 @@ namespace PlayerManagement
         void Start()
         {
             // Returns is this is not instancied by the controlled player
-            if (PhotonNetwork.IsConnected && photonView.IsMine == false)
+            if (!PhotonNetwork.OfflineMode && PhotonNetwork.IsConnected && photonView.IsMine == false)
             {
                 return;
             }
@@ -32,7 +32,7 @@ namespace PlayerManagement
         void Update()
         {
             // Returns is this is not instancied by the controlled player
-            if (PhotonNetwork.IsConnected && photonView.IsMine == false)
+            if (!PhotonNetwork.OfflineMode && PhotonNetwork.IsConnected && photonView.IsMine == false)
             {
                 return;
             }

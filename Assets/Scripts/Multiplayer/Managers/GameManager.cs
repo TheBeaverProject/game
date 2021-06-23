@@ -125,7 +125,8 @@ namespace Multiplayer
             playerMenusHandler.playerCamera = clientCamera;
             playerMenusHandler.HUD = clientHUD;
 
-            gamemodeController.OnPlayerRespawn(playerManager);
+            if (gamemodeController != null)
+                gamemodeController.OnPlayerRespawn(playerManager);
             
             return playerManager;
         }

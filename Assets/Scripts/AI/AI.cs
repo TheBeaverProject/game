@@ -33,6 +33,8 @@ public class AI : MonoBehaviour
 
     private float shootDistance = 20f;
 
+    private float maxFollowDistance = 30f;
+
     public GameObject weapon;
 
     private bool inSight;
@@ -46,7 +48,7 @@ public class AI : MonoBehaviour
     {
         PlayerManager = GetComponent<PlayerManager>();
         dest = Destinations.GetComponentsInChildren<Transform>();
-        state = State.Attack;
+        state = State.Patrol;
     }
 
     
@@ -66,12 +68,12 @@ public class AI : MonoBehaviour
         CheckForPlayer();
         switch (state)
         {
-            //case State.Patrol:
-            //    Patrol();
-            //    break;
-            //case State.Follow:
-            //    Follow();
-            //    break;
+            case State.Patrol:
+                Patrol();
+                break;
+            case State.Follow:
+                Follow();
+                break;
             case State.Attack:
                 Attack();
                 break;
@@ -85,6 +87,11 @@ public class AI : MonoBehaviour
             int choice = _random.Next(dest.Length);
             agent.SetDestination(dest[choice].position);
         }
+
+        if (inSight)
+        {
+            state = State.Follow;
+        }
     }
 
     void CheckForPlayer()
@@ -93,11 +100,10 @@ public class AI : MonoBehaviour
         List<Transform> ennemies = new List<Transform>();
         foreach (Collider col in allPlayers)
         {
-            if (col.GetComponent<PhotonView>().Controller.GetPhotonTeam() !=
-                GetComponent<PhotonView>().Controller.GetPhotonTeam())
-            {
+            
+            
                 ennemies.Add(col.transform);
-            }
+            
         }
 
         List<Transform> inView = new List<Transform>();
@@ -126,7 +132,7 @@ public class AI : MonoBehaviour
 
     void Follow()
     {
-        if (agent.remainingDistance <= shootDistance && inSight)
+        if (directionToTarget.magnitude <= shootDistance && inSight)
         {
             agent.ResetPath();
             state = State.Attack;
@@ -137,12 +143,17 @@ public class AI : MonoBehaviour
             {
                 agent.SetDestination(target.position);
             }
+
+            if (directionToTarget.magnitude > maxFollowDistance)
+            {
+                state = State.Patrol;
+            }
         }
     }
 
     void Attack()
     {
-        if (!inSight)
+        if (!inSight || directionToTarget.magnitude > shootDistance)
         {
             state = State.Follow;
         }

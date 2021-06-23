@@ -219,10 +219,7 @@ namespace Guns
                 holder.HUD.DisplayCrosshair(true);
                 holder.GetComponentInChildren<ScopeHUDController>().Toggle(ScopeType);
                 
-                if (ScopeType != ScopeHUDController.scopeType.RedDot)
-                {
-                    holder.weaponCamera.gameObject.SetActive(true);
-                }
+                holder.weaponCamera.gameObject.SetActive(true);
 
                 StartCoroutine(Utils.SmoothTransition(
                     f => transform.localPosition = Vector3.Lerp(this.transform.localPosition, weaponCameraPlacement, f)
@@ -238,7 +235,7 @@ namespace Guns
                 baseFov = holder.playerCamera.fieldOfView;
                 holder.HUD.DisplayCrosshair(false);
                 
-                if (ScopeType != ScopeHUDController.scopeType.RedDot)
+                if (ScopeType != ScopeHUDController.scopeType.RedDot && ScopeType != ScopeHUDController.scopeType.None)
                 {
                     holder.weaponCamera.gameObject.SetActive(false);
                 }

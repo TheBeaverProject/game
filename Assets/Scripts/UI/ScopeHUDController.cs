@@ -11,6 +11,7 @@ namespace UI
             LR,
             Acog,
             RedDot,
+            None
         }
         
         public GameObject LRImg;
@@ -37,7 +38,6 @@ namespace UI
                 case scopeType.RedDot:
                     RedDotImg.SetActive(!RedDotImg.activeInHierarchy);
                     break;
-                    
             }
         }
     }

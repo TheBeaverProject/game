@@ -7,7 +7,9 @@ using Photon.Pun.UtilityScripts;
 using PlayerManagement;
 using UnityEngine;
 using UnityEngine.AI;
-using Random = System.Random;
+using Random = UnityEngine.Random;
+using Random2 = System.Random;
+
 
 public class AI : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class AI : MonoBehaviour
 
     public NavMeshAgent agent;
 
-    private Random _random = new Random();
+    private Random2 _random = new Random2();
 
     public PlayerManager PlayerManager;
 
@@ -42,8 +44,8 @@ public class AI : MonoBehaviour
     private Transform target;
 
     private Vector3 directionToTarget;
-    
-    
+
+
     private void Start()
     {
         PlayerManager = GetComponent<PlayerManager>();
@@ -100,10 +102,7 @@ public class AI : MonoBehaviour
         List<Transform> ennemies = new List<Transform>();
         foreach (Collider col in allPlayers)
         {
-            
-            
-                ennemies.Add(col.transform);
-            
+            ennemies.Add(col.transform);
         }
 
         List<Transform> inView = new List<Transform>();
@@ -158,18 +157,17 @@ public class AI : MonoBehaviour
             state = State.Follow;
         }
         LookTarget();
-        
-        PlayerManager.playerWeapon.GetComponent<Gunnable>().AIShooting = true;
+        float a = Random.Range(0f,20f);
+        if (a < 1)
+            PlayerManager.playerWeapon.GetComponent<Gunnable>().AIShooting = true;
     }
 
     void LookTarget()
     {
         Vector3 lookDirection = directionToTarget;
-        lookDirection.y = 0f;
-        
         Quaternion lookRotation = Quaternion.LookRotation(lookDirection);
-        transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation,Time.deltaTime*agent.angularSpeed);
         
+        transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * agent.angularSpeed);
     }
-    
+
 }

@@ -80,6 +80,8 @@ namespace Guns
 
             Vector3 direction = shootOriginTransform.forward;
             
+            if (holder.Type == PlayerType.IA)
+                direction += new Vector3(Random.Range(-0.1f,0.1f),Random.Range(-0.1f,0.1f),Random.Range(-0.1f,0.1f));
             // The raycast starting from the camera with the spread added
             if (Physics.Raycast(shootOriginTransform.position, direction, out rayHit, range, layerMask))
             {

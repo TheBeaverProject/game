@@ -158,6 +158,7 @@ public class AI : MonoBehaviour
             state = State.Follow;
         }
         LookTarget();
+        
         PlayerManager.playerWeapon.GetComponent<Gunnable>().AIShooting = true;
     }
 

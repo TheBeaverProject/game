@@ -126,6 +126,7 @@ namespace Guns
         private void Start()
         {
             readyToShoot = true;
+            AllowShooting = true;
             bulletsLeft = magazineSize;
 
             if (!PhotonNetwork.IsConnected) return;
@@ -150,12 +151,21 @@ namespace Guns
         private void Update()
         {
             if (!AllowShooting)
+            {
+                Debug.Log($"{holder.gameObject.name}: Shooting Disallowed");
                 return;
+            }
+                
 
             if (holder.Type == PlayerType.Client)
+            {
                 MyInput();
+            }
             else
+            {
+                Debug.Log("Executing AIInput");
                 AIInput();
+            }
         }
 
         private void OnDestroy()
@@ -205,9 +215,12 @@ namespace Guns
             bulletsLeft = magazineSize;
             reloading = false;
             magazineUsed++;
-            
-            // Update the HUD
-            holder.HUD.UpdateWeaponDisplay(this);
+
+            if (holder.Type != PlayerType.IA)
+            {
+                // Update the HUD
+                holder.HUD.UpdateWeaponDisplay(this);
+            }
         }
 
         #endregion
@@ -284,6 +297,18 @@ namespace Guns
                     transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
                 }
             }
+        }
+
+        public void PlaceAIWeapon()
+        {
+            transform.SetParent(holder.transform);
+            
+            transform.position = holder.transform.position;
+            transform.rotation = holder.transform.rotation;
+            transform.Rotate(0, 180, 0);
+            transform.localPosition = weaponBodyPlacement + new Vector3(0, 0.7f, 0);
+            transform.RotateAround(transform.position, Vector3.up, -2);
+            transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
         }
 
         #endregion

@@ -99,8 +99,8 @@ namespace PlayerManagement
             else
             {
                 int numberOfBot = FindObjectsOfType<AI>().Length;
-                playerText.text = $"Bot #{numberOfBot + 1}";
-                this.gameObject.name = $"Bot #{numberOfBot + 1}";
+                playerText.text = $"Bot #{numberOfBot}";
+                this.gameObject.name = $"Bot #{numberOfBot}";
             }
         }
 
@@ -128,15 +128,19 @@ namespace PlayerManagement
             {
                 PhotonNetwork.Destroy(playerWeapon);
             }
+
+            Gunnable gunnable;
             
             if (Type == PlayerType.IA)
             {
-                playerWeapon = PhotonNetwork.Instantiate(gunPrefab.name, this.transform.position, this.transform.rotation);
                 
-                // Sets the gun as the children of the playerManager holder
-                playerWeapon.transform.SetParent(this.transform);
-                
-                
+                playerWeapon = PhotonNetwork.Instantiate(gunPrefab.name, new Vector3(0, 0.7f, 0), this.transform.rotation);
+                var gunnableScript = playerWeapon.GetComponent<Gunnable>();
+
+                // Sets the holder of the gun
+                gunnable = playerWeapon.GetComponent<Gunnable>();
+                gunnable.holder = this;
+                gunnable.PlaceAIWeapon();
             }
             else
             {
@@ -155,11 +159,11 @@ namespace PlayerManagement
                 playerWeapon.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
                 playerWeapon.transform.localPosition = playerWeapon.GetComponent<Gunnable>().weaponCameraPlacement;
                 playerWeapon.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                
+                // Sets the holder of the gun
+                gunnable = playerWeapon.GetComponent<Gunnable>();
+                gunnable.holder = this;
             }
-
-            // Sets the holder of the gun
-            var GunnableScript = playerWeapon.GetComponent<Gunnable>();
-            GunnableScript.holder = this;
         }
 
         public void DisableShooting()

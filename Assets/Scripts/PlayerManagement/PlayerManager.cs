@@ -75,9 +75,19 @@ namespace PlayerManagement
 
         private void Start()
         {
-            if (PhotonNetwork.IsConnected && !photonView.IsMine)
+            if (PhotonNetwork.IsConnected)
             {
                 playerText.text = $"{photonView.Controller.NickName}";
+
+                PhotonTeam team = photonView.Controller.GetPhotonTeam();
+                if (team != null)
+                {
+                    playerText.color = team.Color;
+                }
+            }
+
+            if (PhotonNetwork.IsConnected && !photonView.IsMine)
+            {
                 return;
             }
 
@@ -203,18 +213,37 @@ namespace PlayerManagement
                 this.gameObject.SetActive(false);
                 return;
             }
+            
             DisableShooting();
             this.gameObject.GetComponent<PlayerMovementManager>().enabled = false;
-
-            // Remove the layers so player does not interact with zones and grenades
-            Utils.SetLayerRecursively(this.gameObject, 0);
+            this.gameObject.GetComponent<PlayerMenusHandler>().allowBuy = false;
 
             // Set the screen in surveillance camera like
             _colorAdjustments.saturation.value = -100f;
             _chromaticAberration.intensity.value = 1f;
             
-            playerText.text = "[Spec] " + playerText.text;
+            photonView.RPC("SpecMode", RpcTarget.All);
+            
+            HUD.DisplayAnnouncement("You've entered spec mode until the round ends.");
+        }
 
+        public void ExitSpecMode()
+        {
+            // Reset the screen effects
+            _colorAdjustments.saturation.value = satPrevValue;
+            _chromaticAberration.intensity.value = 0f;
+            this.gameObject.GetComponent<PlayerMenusHandler>().allowBuy = true;
+            this.gameObject.GetComponent<PlayerMovementManager>().enabled = true;
+        }
+
+        [PunRPC]
+        void SpecMode()
+        {
+            // Remove the layers so player does not interact with zones and grenades
+            Utils.SetLayerRecursively(this.gameObject, 0);
+            
+            playerText.text = "[Spec] " + playerText.text;
+            
             GameObject playerModel = null;
 
             foreach (var go in this.GetComponentsInChildren<Animator>())
@@ -239,16 +268,7 @@ namespace PlayerManagement
                 {
                     playerWeapon.SetActive(false);
                 }
-            
-                HUD.DisplayAnnouncement("You've entered spec mode until the round ends.");
             }
-        }
-
-        public void ExitSpecMode()
-        {
-            // Reset the screen effects
-            _colorAdjustments.saturation.value = satPrevValue;
-            _chromaticAberration.intensity.value = 0f;
         }
         
         // List to hold the actor number of the players who dealt damage to this player and the dealt damage

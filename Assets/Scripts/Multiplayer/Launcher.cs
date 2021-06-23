@@ -16,7 +16,7 @@ namespace Multiplayer
         /// <summary>
         /// Client's version number
         /// </summary>
-        public const string gameVersion = "0.6.0";
+        public const string gameVersion = "0.7.0";
         public const string GAMEMODE_PROP_KEY = "gm";
         public const string MAP_PROP_KEY = "map"; 
 

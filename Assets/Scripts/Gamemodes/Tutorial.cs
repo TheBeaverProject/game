@@ -9,10 +9,14 @@ namespace Scripts.Gamemodes
 
         private void FixedUpdate()
         {
-            _manager.playerManager.HUD.UpdateZones(ZoneAPoints, ZoneBPoints, PointsToCaptureZone);
+            if (_manager.ReadyToSpawn)
+            {
+                HandleZones();
+                _manager.playerManager.HUD.UpdateZones(ZoneAPoints, ZoneBPoints, PointsToCaptureZone);
+            }
         }
 
-        protected void OnZoneCaptured(DominationPoint Zone, byte zoneCapturedBy)
+        protected override void OnZoneCaptured(DominationPoint Zone, byte zoneCapturedBy)
         {
             _manager.playerManager.HUD.DisplayAnnouncement($"You've captured zone {Zone.gameObject.name}");
         }

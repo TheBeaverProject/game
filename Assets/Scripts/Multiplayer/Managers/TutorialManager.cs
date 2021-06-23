@@ -3,6 +3,8 @@ using System.Collections;
 using Guns;
 using Multiplayer;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using PlayerManagement;
 using Scripts.Gamemodes.Mechanics;
 using UI;
@@ -23,6 +25,8 @@ namespace Scripts.Gamemodes
         public Transform[] AISpawnPoints;
 
         public VideoPlayer videoPlayer;
+        
+        public PhotonTeamsManager PhotonTeamsManager;
 
         private void Start()
         {
@@ -30,7 +34,11 @@ namespace Scripts.Gamemodes
             
             launcher.Connect();
 
+            PhotonTeamsManager = PhotonTeamsManager.Instance;
+
             videoPlayer = FindObjectOfType<VideoPlayer>();
+
+            photonView.Controller.JoinTeam(1);
 
             StartCoroutine(PlayTrailer());
         }

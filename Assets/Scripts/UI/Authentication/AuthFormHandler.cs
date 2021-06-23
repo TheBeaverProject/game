@@ -46,7 +46,14 @@ namespace UI.Authentication
 
         private void NextStep()
         {
-            SceneManager.LoadScene("MainMenu");
+            if (PlayerPrefs.GetInt(PlayerPrefKeys.HasDoneTutorial) == 1)
+            {
+                SceneManager.LoadScene("MainMenu");
+            }
+            else
+            {
+                SceneManager.LoadScene("Balcony Navmesh");
+            }
         }
     }
 }

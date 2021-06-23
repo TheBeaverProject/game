@@ -15,7 +15,8 @@ public class AI : MonoBehaviour
     {
         Patrol,
         Follow,
-        Attack
+        Attack,
+        Dead
     }
 
     public State state;
@@ -50,9 +51,7 @@ public class AI : MonoBehaviour
         dest = Destinations.GetComponentsInChildren<Transform>();
         state = State.Patrol;
     }
-
     
-
     private bool initialized;
     void Update()
     {
@@ -60,6 +59,12 @@ public class AI : MonoBehaviour
         {
             PlayerManager.AddGunPrefabToPlayer(weapon);
             initialized = true;
+        }
+
+        if (PlayerManager.Health <= 0)
+        {
+            state = State.Dead;
+            PlayerManager.EnterSpecMode();
         }
     }
     // Update is called once per frame

@@ -644,6 +644,7 @@ MonoBehaviour:
   weaponAudioSource: {fileID: 6009243868524343462}
   singleShotSoundEffect: {fileID: 8300000, guid: e7d3aa7bc05a9434da2f95e41c62450b,
     type: 3}
+  AIShooting: 0
   aiming: 0
   AllowShooting: 0
   holder: {fileID: 0}

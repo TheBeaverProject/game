@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Maps/CompetitiveMatchBalcony.unity
     guid: 35e703d1c4d515c4d8309f7feae0a71d
+  - enabled: 1
+    path: Assets/Scenes/Raw Maps/Balcony Navmesh.unity
+    guid: ad514532c94f00a4184c1b6b790bdf3d
   m_configObjects: {}

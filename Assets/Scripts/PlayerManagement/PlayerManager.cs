@@ -103,6 +103,9 @@ namespace PlayerManagement
 
             if (Type == PlayerType.Client)
             {
+                // Set this to avoid the camera crashing into the walls
+                GetComponent<CharacterController>().radius = 1;
+                
                 HUD.playerName.text = PhotonNetwork.NickName;
                 this.gameObject.name = PhotonNetwork.NickName;
             }

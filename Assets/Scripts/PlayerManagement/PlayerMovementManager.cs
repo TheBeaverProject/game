@@ -65,7 +65,17 @@ namespace PlayerManagement
             // Same for ceiling
             isHittingCeiling = Physics.CheckSphere(roofCheck.position, groundDistance, groundMask);
 
-            // If player is grounded then we reset his velocity
+            // TO FIX: get grenade throwing cooldown
+            if (Input.GetKeyDown(KeyCode.G))
+                _animator.Play("Grenade_Throw");
+
+            if (Input.GetKeyDown(KeyCode.R))
+                _animator.Play("Reload");
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+                _animator.Play("Fire");
+            
+                // If player is grounded then we reset his velocity
             if (isGrounded && velocity.y < 0 || isHittingCeiling)
             {
                 _animator.SetBool("inAir", false);
@@ -78,6 +88,8 @@ namespace PlayerManagement
             // RTFM
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
+            _animator.SetFloat("z_axis", z);
+            _animator.SetFloat("x_axis", x);
             Vector3 move = transform.right * x + transform.forward * z;
 
             _animator.SetFloat("x_axis", x);

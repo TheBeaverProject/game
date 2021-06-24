@@ -13,7 +13,7 @@ namespace Guns
         public PlayerManager holder;
 
         private float nextThrowIn = 0;
-        
+
         private void Start()
         {
             holder = GetComponentInParent<PlayerManager>();
@@ -33,7 +33,6 @@ namespace Guns
         private void ThrowGrenade()
         {
             GameObject grenade;
-
             Vector3 forward = holder != null
                 ? holder.playerCamera.transform.forward
                 : transform.forward;

@@ -137,7 +137,6 @@ GameObject:
   - component: {fileID: 7256758337403257194}
   - component: {fileID: 3974186435257617311}
   - component: {fileID: 3149669970216012546}
-  - component: {fileID: 5676429582446700499}
   m_Layer: 14
   m_Name: First Person Player
   m_TagString: Untagged
@@ -176,7 +175,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2
-  m_Radius: 0.45
+  m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0
   m_SkinWidth: 0.08
@@ -221,6 +220,8 @@ MonoBehaviour:
   weaponCamera: {fileID: 0}
   playerText: {fileID: 4056857790444228352}
   health: 100
+  Type: 0
+  shootingTransform: {fileID: 0}
   playerWeapon: {fileID: 0}
 --- !u!114 &5542504120066630004
 MonoBehaviour:
@@ -238,6 +239,7 @@ MonoBehaviour:
   BuyMenu: {fileID: 0}
   HUD: {fileID: 0}
   playerCamera: {fileID: 0}
+  allowBuy: 1
 --- !u!114 &7256758337403257194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,19 +296,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &5676429582446700499
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4419865850928438867}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.26019764, y: 0.42449784, z: 0.15628004}
-  m_Center: {x: -0.0067391396, y: 0.28775108, z: 0.0061256886}
 --- !u!1 &5214809212190195146
 GameObject:
   m_ObjectHideFlags: 0

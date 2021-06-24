@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1880777023368604331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 960104311849498791}
+  - component: {fileID: 3725854324509724523}
+  m_Layer: 0
+  m_Name: TutorialGameMode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &960104311849498791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880777023368604331}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.111619, y: -12.223835, z: -49.587666}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3725854324509724523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880777023368604331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93959830f6ec4849beee80edc5b74484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EndgameScreenPrefab: {fileID: 2603762395528671364, guid: c1bc93e8ba85489488a720dfd545b790,
+    type: 3}
+  ZoneA: {fileID: 0}
+  ZoneB: {fileID: 0}
+  ZoneAPoints: 0000000000000000
+  ZoneBPoints: 0000000000000000
+  ZoneACapturedBy: 0
+  ZoneBCapturedBy: 0
+  PointsToCaptureZone: 700

@@ -684,17 +684,25 @@ MonoBehaviour:
   PreviewContainer: {fileID: 5410824786212704170}
   PistolsList:
   - {fileID: 2315013621611233435, guid: 30546c109a0417f44a3326a9bc15c95c, type: 3}
+  - {fileID: 1172287231956885879, guid: d2cd63dda2560394d9b941bd517b5ad0, type: 3}
   SMGsList:
   - {fileID: 453968371809676688, guid: f15a96dc56d564745a5f28ecd8233c26, type: 3}
+  - {fileID: 97106283181204398, guid: eaca9898512a2de4cbe94c4a096d1bc4, type: 3}
   RiflesList:
-  - {fileID: 8733454776496846757, guid: d83ce67c6122e314d8a8eba47e3d6b3b, type: 3}
+  - {fileID: 5953262064615160729, guid: d2600edbf770db84b9e11864b7ebf4ae, type: 3}
+  - {fileID: 8519269924778499643, guid: 9c0e3f165a32ce543ae427b4af7ab231, type: 3}
   - {fileID: 924397973067062058, guid: 35dcd41215d31b0418f071c29d93683b, type: 3}
-  HMGsList: []
-  ShotgunsList: []
+  - {fileID: 4221617674686306928, guid: 6c9e2b866fe4fcb49bbcecb48b0fc9b2, type: 3}
+  - {fileID: 8733454776496846757, guid: d83ce67c6122e314d8a8eba47e3d6b3b, type: 3}
+  HMGsList:
+  - {fileID: 4847508099293230872, guid: a1f32346766e36542807309df9ff3bac, type: 3}
+  ShotgunsList:
+  - {fileID: 1198756844042124, guid: f2dff810f7de44f43bf862d86fd6a102, type: 3}
+  - {fileID: 8182436808933784963, guid: 98ca38bf0043e8c4a9c4226f6d69d4fb, type: 3}
   SnipersList:
   - {fileID: 7898734623884308151, guid: c957c479916cd4c4a98843804ecf4ec6, type: 3}
-  GrenadesList:
-  - {fileID: 3640159830457496505, guid: 1fdada0efd4a6f8468e0aa764f17aa23, type: 3}
+  - {fileID: 1198812445287890, guid: 543532c11a4433d4ba152dc54082c84b, type: 3}
+  GrenadesList: []
 --- !u!1 &5410824786014997134
 GameObject:
   m_ObjectHideFlags: 0

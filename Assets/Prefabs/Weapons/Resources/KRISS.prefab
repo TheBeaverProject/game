@@ -194,9 +194,9 @@ MonoBehaviour:
   spread: 0.03
   range: 100
   rotationSpeed: 8
-  returnSpeed: 39
-  RecoilRotation: {x: 30, y: 12, z: 12}
-  RecoilRotationAiming: {x: 20, y: 10, z: 10}
+  returnSpeed: 35
+  RecoilRotation: {x: 35, y: 12, z: 12}
+  RecoilRotationAiming: {x: 30, y: 10, z: 10}
   weaponBodyPlacement: {x: 0.23, y: 0.33, z: 0.4}
   weaponCameraPlacement: {x: 0.175, y: -0.224, z: 0.52}
   weaponAimingPlacement: {x: 0, y: -0.1, z: 0.1}
@@ -214,6 +214,7 @@ MonoBehaviour:
   weaponAudioSource: {fileID: 95758515374081467}
   singleShotSoundEffect: {fileID: 8300000, guid: cf32c12791a313549af7642f5f8fd998,
     type: 3}
+  AIShooting: 0
   aiming: 0
   AllowShooting: 0
   holder: {fileID: 0}

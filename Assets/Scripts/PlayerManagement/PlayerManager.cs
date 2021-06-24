@@ -16,6 +16,11 @@ using Random = UnityEngine.Random;
 
 namespace PlayerManagement
 {
+    public enum PlayerType
+    {
+        Client,
+        IA
+    }
     public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         #region Public Fields
@@ -46,6 +51,10 @@ namespace PlayerManagement
 
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
+        
+        public PlayerType Type;
+
+        public Transform shootingTransform;
 
         #endregion
 
@@ -66,9 +75,19 @@ namespace PlayerManagement
 
         private void Start()
         {
-            if (PhotonNetwork.IsConnected && !photonView.IsMine)
+            if (PhotonNetwork.IsConnected)
             {
                 playerText.text = $"{photonView.Controller.NickName}";
+
+                PhotonTeam team = photonView.Controller.GetPhotonTeam();
+                if (team != null)
+                {
+                    playerText.color = team.Color;
+                }
+            }
+
+            if (PhotonNetwork.IsConnected && !photonView.IsMine)
+            {
                 return;
             }
 
@@ -82,7 +101,20 @@ namespace PlayerManagement
             
             satPrevValue = _colorAdjustments.saturation.value;
 
-            HUD.playerName.text = PhotonNetwork.NickName;
+            if (Type == PlayerType.Client)
+            {
+                // Set this to avoid the camera crashing into the walls
+                GetComponent<CharacterController>().radius = 1;
+                
+                HUD.playerName.text = PhotonNetwork.NickName;
+                this.gameObject.name = PhotonNetwork.NickName;
+            }
+            else
+            {
+                int numberOfBot = FindObjectsOfType<AI>().Length;
+                playerText.text = $"Bot #{numberOfBot}";
+                this.gameObject.name = $"Bot #{numberOfBot}";
+            }
         }
 
         #endregion
@@ -109,27 +141,42 @@ namespace PlayerManagement
             {
                 PhotonNetwork.Destroy(playerWeapon);
             }
-            
-            var transform = playerCamera.transform;
-            playerWeapon = PhotonNetwork.Instantiate(gunPrefab.name, transform.position, transform.rotation, 0);
-            
-            // Sets the gun as the children of the camera
-            playerWeapon.transform.SetParent(transform);
-            
-            // Sets the layer so it is rendered by the weaponCamera
-            Utils.SetLayerRecursively(playerWeapon, 12);
-            playerWeapon.layer = 12;
-            
 
-            // Position correctly the gun
-            // Local values so it looks good on camera
-            playerWeapon.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
-            playerWeapon.transform.localPosition = playerWeapon.GetComponent<Gunnable>().weaponCameraPlacement;
-            playerWeapon.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            Gunnable gunnable;
+            
+            if (Type == PlayerType.IA)
+            {
+                
+                playerWeapon = PhotonNetwork.Instantiate(gunPrefab.name, new Vector3(0, 0.7f, 0), this.transform.rotation);
+                var gunnableScript = playerWeapon.GetComponent<Gunnable>();
 
-            // Sets the holder of the gun
-            var GunnableScript = playerWeapon.GetComponent<Gunnable>();
-            GunnableScript.holder = this;
+                // Sets the holder of the gun
+                gunnable = playerWeapon.GetComponent<Gunnable>();
+                gunnable.holder = this;
+                gunnable.PlaceAIWeapon();
+            }
+            else
+            {
+                var transform = playerCamera.transform;
+                playerWeapon = PhotonNetwork.Instantiate(gunPrefab.name, transform.position, transform.rotation, 0);
+            
+                // Sets the gun as the children of the camera
+                playerWeapon.transform.SetParent(transform);
+            
+                // Sets the layer so it is rendered by the weaponCamera
+                Utils.SetLayerRecursively(playerWeapon, 12);
+                playerWeapon.layer = 12;
+
+                // Position correctly the gun
+                // Local values so it looks good on camera
+                playerWeapon.transform.Rotate(gunPrefab.transform.rotation.eulerAngles);
+                playerWeapon.transform.localPosition = playerWeapon.GetComponent<Gunnable>().weaponCameraPlacement;
+                playerWeapon.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                
+                // Sets the holder of the gun
+                gunnable = playerWeapon.GetComponent<Gunnable>();
+                gunnable.holder = this;
+            }
         }
 
         public void DisableShooting()
@@ -164,18 +211,42 @@ namespace PlayerManagement
         private float satPrevValue;
         public void EnterSpecMode()
         {
+            if (Type == PlayerType.IA)
+            {
+                this.gameObject.SetActive(false);
+                return;
+            }
+            
             DisableShooting();
             this.gameObject.GetComponent<PlayerMovementManager>().enabled = false;
-
-            // Remove the layers so player does not interact with zones and grenades
-            Utils.SetLayerRecursively(this.gameObject, 0);
+            this.gameObject.GetComponent<PlayerMenusHandler>().allowBuy = false;
 
             // Set the screen in surveillance camera like
             _colorAdjustments.saturation.value = -100f;
             _chromaticAberration.intensity.value = 1f;
             
-            playerText.text = "[Spec] " + playerText.text;
+            photonView.RPC("SpecMode", RpcTarget.All);
+            
+            HUD.DisplayAnnouncement("You've entered spec mode until the round ends.");
+        }
 
+        public void ExitSpecMode()
+        {
+            // Reset the screen effects
+            _colorAdjustments.saturation.value = satPrevValue;
+            _chromaticAberration.intensity.value = 0f;
+            this.gameObject.GetComponent<PlayerMenusHandler>().allowBuy = true;
+            this.gameObject.GetComponent<PlayerMovementManager>().enabled = true;
+        }
+
+        [PunRPC]
+        void SpecMode()
+        {
+            // Remove the layers so player does not interact with zones and grenades
+            Utils.SetLayerRecursively(this.gameObject, 0);
+            
+            playerText.text = "[Spec] " + playerText.text;
+            
             GameObject playerModel = null;
 
             foreach (var go in this.GetComponentsInChildren<Animator>())
@@ -200,16 +271,7 @@ namespace PlayerManagement
                 {
                     playerWeapon.SetActive(false);
                 }
-            
-                HUD.DisplayAnnouncement("You've entered spec mode until the round ends.");
             }
-        }
-
-        public void ExitSpecMode()
-        {
-            // Reset the screen effects
-            _colorAdjustments.saturation.value = satPrevValue;
-            _chromaticAberration.intensity.value = 0f;
         }
         
         // List to hold the actor number of the players who dealt damage to this player and the dealt damage
@@ -282,7 +344,7 @@ namespace PlayerManagement
         [PunRPC] 
         void DamageEffect(float amount)
         {
-            if (!photonView.IsMine) return;   
+            if (!photonView.IsMine || Type == PlayerType.IA) return;   
             
             var effScript = playerCamera.GetComponent<ChromaticAberration>();
             float duration = 0.4f;
@@ -307,7 +369,7 @@ namespace PlayerManagement
             
             Health = newHealth;
             
-            if (PhotonNetwork.IsConnected && photonView.IsMine)
+            if (PhotonNetwork.IsConnected && photonView.IsMine && Type != PlayerType.IA)
             {
                 HUD.healthDisplay.SetHUDHealth(Health);
             }

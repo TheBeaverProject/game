@@ -19,6 +19,8 @@ namespace UI
         private PlayerManager _playerManager;
         private MouseLook _mouseLook;
 
+        public bool allowBuy = true;
+
         private void Start()
         {
             if (!PhotonNetwork.OfflineMode && PhotonNetwork.IsConnected && !photonView.IsMine)
@@ -42,7 +44,7 @@ namespace UI
                 return;
             }
             
-            if (BuyMenuController != null && Input.GetKeyDown(KeyCode.B) && !EscapeMenuController.EscapeMenuContainer.activeInHierarchy)
+            if (Input.GetKeyDown(KeyCode.B) && allowBuy && BuyMenuController != null && !EscapeMenuController.EscapeMenuContainer.activeInHierarchy)
             {
                 BuyMenuController.Container.SetActive(true);
                 UnLockCursor();

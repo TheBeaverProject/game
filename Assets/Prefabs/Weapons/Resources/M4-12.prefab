@@ -633,7 +633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: M4-12
-  damage: 35
+  damage: 30
   magazineSize: 20
   magazineNumber: 3
   allowScope: 1
@@ -667,6 +667,7 @@ MonoBehaviour:
   weaponAudioSource: {fileID: 4640369964523755329}
   singleShotSoundEffect: {fileID: 8300000, guid: 52ebddf3728a76746973aed9c7c0e90d,
     type: 3}
+  AIShooting: 0
   aiming: 0
   AllowShooting: 0
   holder: {fileID: 0}

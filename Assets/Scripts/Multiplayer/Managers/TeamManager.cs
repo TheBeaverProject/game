@@ -83,18 +83,11 @@ namespace Multiplayer
             var currentTeam = View.Controller.GetPhotonTeam();
             
             Debug.Log($"Joining team {localPlayerTeamCode}");
-
+            
             bool success;
-            if (currentTeam != null)
-            {
-                if (currentTeam.Code == localPlayerTeamCode)
-                {
-                    return true;
-                }
+            success = View.Controller.SwitchTeam(localPlayerTeamCode);
 
-                success = View.Controller.SwitchTeam(localPlayerTeamCode);
-            }
-            else
+            if (!success)
             {
                 success = View.Controller.JoinTeam(localPlayerTeamCode);
             }

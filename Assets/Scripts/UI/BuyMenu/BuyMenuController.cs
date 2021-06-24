@@ -55,7 +55,6 @@ namespace UI.BuyMenu
             categoriesAssociation.Add(Step1Categories[3], HMGsList);
             categoriesAssociation.Add(Step1Categories[4], ShotgunsList);
             categoriesAssociation.Add(Step1Categories[5], SnipersList);
-            categoriesAssociation.Add(Step1Categories[6], GrenadesList);
 
             Vector3 localPosition = Step1Button.transform.localPosition;
 

@@ -99,6 +99,8 @@ namespace Guns
         [Header("Sound Effects")]
         public AudioSource weaponAudioSource;
         public AudioClip singleShotSoundEffect;
+
+        [Header("AI related")] public bool AIShooting;
         
         protected int bulletsLeft, bulletsShot, magazineUsed = 0;
         public int GetMagSize => magazineSize;
@@ -109,7 +111,7 @@ namespace Guns
 
         public bool aiming;
 
-        public bool AllowShooting = true;
+        public bool AllowShooting = false;
         
         #endregion
 
@@ -131,15 +133,14 @@ namespace Guns
             if (photonView.Owner == null)
                 return;
 
-            if (photonView.IsMine)
+            if (photonView.IsMine && holder.Type == PlayerType.Client)
             {
                 // Update the HUD
                 holder.HUD.UpdateWeaponDisplay(this);
                 
                 // Set the recoil values on the camera script
                 holder.playerCameraHolder.GetComponent<CameraRecoil>().SetValues(this);
-            }
-            else // View is not ours, we need to find the parent
+            } else if (!photonView.IsMine && !(holder?.Type == PlayerType.IA))
             {
                 FindWeaponParent();
             }
@@ -148,10 +149,21 @@ namespace Guns
         private void Update()
         {
             if (!AllowShooting)
+            {
                 return;
+            }
 
-            //MyInput dictates weapon beahvior
-            MyInput();
+            if (holder != null)
+            {
+                if (holder.Type == PlayerType.Client)
+                {
+                    MyInput();
+                }
+                else
+                {
+                    AIInput();
+                }
+            }
         }
 
         private void OnDestroy()
@@ -168,6 +180,8 @@ namespace Guns
         #region Input Mechanics
         
         protected abstract void MyInput();
+
+        protected abstract void AIInput();
 
         #endregion
         
@@ -198,10 +212,13 @@ namespace Guns
             //Finishes the reload
             bulletsLeft = magazineSize;
             reloading = false;
-            magazineUsed++;
-            
-            // Update the HUD
-            holder.HUD.UpdateWeaponDisplay(this);
+
+            if (holder.Type != PlayerType.IA)
+            {
+                magazineUsed++; // AI have infinite magazines because we are lazy
+                // Update the HUD
+                holder.HUD.UpdateWeaponDisplay(this);
+            }
         }
 
         #endregion
@@ -219,10 +236,7 @@ namespace Guns
                 holder.HUD.DisplayCrosshair(true);
                 holder.GetComponentInChildren<ScopeHUDController>().Toggle(ScopeType);
                 
-                if (ScopeType != ScopeHUDController.scopeType.RedDot)
-                {
-                    holder.weaponCamera.gameObject.SetActive(true);
-                }
+                holder.weaponCamera.gameObject.SetActive(true);
 
                 StartCoroutine(Utils.SmoothTransition(
                     f => transform.localPosition = Vector3.Lerp(this.transform.localPosition, weaponCameraPlacement, f)
@@ -238,7 +252,7 @@ namespace Guns
                 baseFov = holder.playerCamera.fieldOfView;
                 holder.HUD.DisplayCrosshair(false);
                 
-                if (ScopeType != ScopeHUDController.scopeType.RedDot)
+                if (ScopeType != ScopeHUDController.scopeType.RedDot && ScopeType != ScopeHUDController.scopeType.None)
                 {
                     holder.weaponCamera.gameObject.SetActive(false);
                 }
@@ -278,6 +292,18 @@ namespace Guns
                     transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
                 }
             }
+        }
+
+        public void PlaceAIWeapon()
+        {
+            transform.SetParent(holder.transform);
+            
+            transform.position = holder.transform.position;
+            transform.rotation = holder.transform.rotation;
+            transform.Rotate(0, 180, 0);
+            transform.localPosition = weaponBodyPlacement + new Vector3(0, 0.7f, 0);
+            transform.RotateAround(transform.position, Vector3.up, -2);
+            transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
         }
 
         #endregion

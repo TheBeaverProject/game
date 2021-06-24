@@ -200,6 +200,11 @@ namespace UI.MainMenu.Tabs.SettingsTab
             SceneManager.LoadScene("Authentication");
         }
 
+        public void ResetTutorial()
+        {
+            PlayerPrefs.SetInt(PlayerPrefKeys.HasDoneTutorial, 0);
+        }
+
         #endregion
     }
 }

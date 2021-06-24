@@ -16,7 +16,7 @@ namespace Multiplayer
         /// <summary>
         /// Client's version number
         /// </summary>
-        public const string gameVersion = "0.6.0";
+        public const string gameVersion = "0.7.1";
         public const string GAMEMODE_PROP_KEY = "gm";
         public const string MAP_PROP_KEY = "map"; 
 
@@ -136,40 +136,43 @@ namespace Multiplayer
         {
             PhotonNetwork.NickName = Firebase.AuthHandler.loggedinUser?.Username != null ? 
                 Firebase.AuthHandler.loggedinUser?.Username : "OfflinePlayer";
-            
-            PlayerHandler.RefreshLocalPlayerInfo((success =>
+
+            if (controlPanel == null) // Offline / standalone connection
             {
-                if (controlPanel != null)
-                {
-                    progressLabel.SetActive(true);
-                    controlPanel.SetActive(false);
-                }
-                else // Offline / standalone connection
-                {
-                    if (PhotonNetwork.IsConnectedAndReady)
-                    {
-                        PhotonNetwork.JoinRandomRoom();
-                    }
-                    else
-                    {
-                        isConnecting = PhotonNetwork.ConnectUsingSettings();
-                        PhotonNetwork.GameVersion = gameVersion;
-                    }
-                    return;
-                }
-            
-                // Checks if the client is connected
                 if (PhotonNetwork.IsConnectedAndReady)
                 {
-                    JoinPhotonRoom(GamemodeSelection.SelectedGameMode);
+                    PhotonNetwork.JoinRandomRoom();
                 }
                 else
                 {
-                    // keep track of the will to join a room
                     isConnecting = PhotonNetwork.ConnectUsingSettings();
                     PhotonNetwork.GameVersion = gameVersion;
                 }
-            }));
+                return;
+            }
+            else
+            {
+                PlayerHandler.RefreshLocalPlayerInfo((success =>
+                {
+                    if (controlPanel != null)
+                    {
+                        progressLabel.SetActive(true);
+                        controlPanel.SetActive(false);
+                    }
+
+                    // Checks if the client is connected
+                    if (PhotonNetwork.IsConnectedAndReady)
+                    {
+                        JoinPhotonRoom(GamemodeSelection.SelectedGameMode);
+                    }
+                    else
+                    {
+                        // keep track of the will to join a room
+                        isConnecting = PhotonNetwork.ConnectUsingSettings();
+                        PhotonNetwork.GameVersion = gameVersion;
+                    }
+                }));
+            }
         }
 
         public void JoinPhotonRoom(Type gamemode)
